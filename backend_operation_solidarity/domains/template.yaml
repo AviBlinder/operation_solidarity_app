@@ -1,5 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
+# unified template
 Globals:
   Function:
     Runtime: nodejs18.x
@@ -35,7 +36,9 @@ Resources:
     Properties:
       Handler: index.postUserHandler
       CodeUri: users/code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UsersTable
       Events:
         PostUser:
           Type: HttpApi
@@ -49,7 +52,9 @@ Resources:
     Properties:
       Handler: index.getUserHandler
       CodeUri: users/code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UsersTable
       Events:
         GetUser:
           Type: HttpApi
@@ -63,7 +68,9 @@ Resources:
     Properties:
       Handler: index.updateUsersHandler
       CodeUri: users/code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UsersTable
       Events:
         UpdateUser:
           Type: HttpApi
@@ -77,7 +84,9 @@ Resources:
     Properties:
       Handler: index.deleteUserHandler
       CodeUri: users/code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UsersTable
       Events:
         DeleteUser:
           Type: HttpApi
@@ -91,7 +100,9 @@ Resources:
     Properties:
       Handler: index.listUsersHandler
       CodeUri: users/code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UsersTable
       Events:
         ListUsers:
           Type: HttpApi
@@ -119,9 +130,11 @@ Resources:
     Properties:
       Handler: index.postAssignmentHandler
       CodeUri: assignments/code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref AssignmentsTable
       Events:
-        PostVolunteer:
+        PostAssignment:
           Type: HttpApi
           Properties:
             Path: /assignments
@@ -132,37 +145,41 @@ Resources:
     Properties:
       Handler: index.getAssignmentHandler
       CodeUri: assignments/code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref AssignmentsTable
       Events:
-        GetVolunteer:
+        GetAssignment:
           Type: HttpApi
           Properties:
             Path: /assignments/{AssignmentsId}
             Method: get
             ApiId: !Ref SolidarityApi
-
   UpdateAssignmentFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.updateAssignmentsHandler
       CodeUri: assignments/code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref AssignmentsTable
       Events:
-        UpdateVolunteer:
+        UpdateAssignment:
           Type: HttpApi
           Properties:
             Path: /assignments/{AssignmentsId}
             Method: put
             ApiId: !Ref SolidarityApi
-
   DeleteAssignmentFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.deleteAssignmentHandler
       CodeUri: assignments/code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref AssignmentsTable
       Events:
-        DeleteVolunteer:
+        DeleteAssignment:
           Type: HttpApi
           Properties:
             Path: /assignments/{AssignmentsId}
@@ -174,9 +191,11 @@ Resources:
     Properties:
       Handler: index.listAssignmentsHandler
       CodeUri: assignments/code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref AssignmentsTable
       Events:
-        Listvolunteers:
+        ListAssignment:
           Type: HttpApi
           Properties:
             Path: /assignments
@@ -203,65 +222,71 @@ Resources:
     Properties:
       Handler: index.postTaskHandler
       CodeUri: tasks/code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TasksTable
       Events:
-        PostVolunteer:
+        PostTask:
           Type: HttpApi
           Properties:
             Path: /tasks
             Method: post
             ApiId: !Ref SolidarityApi
-
   GetTaskFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.getTaskHandler
       CodeUri: tasks/code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TasksTable
       Events:
-        GetVolunteer:
+        GetTask:
           Type: HttpApi
           Properties:
             Path: /tasks/{TaskId}
             Method: get
             ApiId: !Ref SolidarityApi
-
   UpdateTaskFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.listTasksHandler
       CodeUri: tasks/code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TasksTable
       Events:
-        UpdateVolunteer:
+        UpdateTask:
           Type: HttpApi
           Properties:
             Path: /tasks/{TaskId}
             Method: put
             ApiId: !Ref SolidarityApi
-
   DeleteTaskFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.deleteTaskHandler
       CodeUri: tasks/code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TasksTable
       Events:
-        DeleteVolunteer:
+        DeleteTask:
           Type: HttpApi
           Properties:
             Path: /tasks/{TaskId}
             Method: delete
             ApiId: !Ref SolidarityApi
-
   ListTasksFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: index.listTasksHandler
       CodeUri: tasks/code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TasksTable
       Events:
-        Listvolunteers:
+        ListTask:
           Type: HttpApi
           Properties:
             Path: /tasks

@@ -32,7 +32,9 @@ Resources:
     Properties:
       Handler: index.postUserHandler
       CodeUri: code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UsersTable
       Events:
         PostUser:
           Type: HttpApi
@@ -46,7 +48,9 @@ Resources:
     Properties:
       Handler: index.getUserHandler
       CodeUri: code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UsersTable
       Events:
         GetUser:
           Type: HttpApi
@@ -60,7 +64,9 @@ Resources:
     Properties:
       Handler: index.updateUsersHandler
       CodeUri: code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UsersTable
       Events:
         UpdateUser:
           Type: HttpApi
@@ -74,7 +80,9 @@ Resources:
     Properties:
       Handler: index.deleteUserHandler
       CodeUri: code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UsersTable
       Events:
         DeleteUser:
           Type: HttpApi
@@ -88,7 +96,9 @@ Resources:
     Properties:
       Handler: index.listUsersHandler
       CodeUri: code/
-      Policies: AmazonDynamoDBFullAccess
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UsersTable
       Events:
         ListUsers:
           Type: HttpApi
