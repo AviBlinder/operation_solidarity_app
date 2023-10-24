@@ -1,0 +1,112 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Globals:
+  Function:
+    Runtime: nodejs18.x
+    Timeout: 10
+    Environment:
+      Variables:
+        USERS_TABLE: !Ref UsersTable
+Resources:
+  # DynamoDB Tables
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Users
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+  # API GW
+  SolidarityApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      StageName: dev
+
+  # Lambda Functions for Users Start
+  PostUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.postUserHandler
+      CodeUri: code/
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        PostUser:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref SolidarityApi
+            Path: /users
+            Method: post
+
+  GetUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.getUserHandler
+      CodeUri: code/
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetUser:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref SolidarityApi
+            Path: /users/{UserId}
+            Method: get
+
+  UpdateUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.updateUsersHandler
+      CodeUri: code/
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        UpdateUser:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref SolidarityApi
+            Path: /users/{UserId}
+            Method: put
+
+  DeleteUserFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.deleteUserHandler
+      CodeUri: code/
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        DeleteUser:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref SolidarityApi
+            Path: /users/{UserId}
+            Method: delete
+
+  ListUsersFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.listUsersHandler
+      CodeUri: code/
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        ListUsers:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref SolidarityApi
+            Path: /users
+            Method: get
+
+  # Lambda Functions for Users End
+Outputs:
+  ApiURL:
+    Description: 'API Gateway endpoint URL'
+    Value: !Sub 'https://${SolidarityApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/'
+  ApiId:
+    Description: The ID of the shared HTTP API
+    Value:
+      Fn::GetAtt:
+        - SolidarityApi
+        - ApiId
+    Export:
+      Name: shared-httpapi-apiid

@@ -1,0 +1,93 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Globals:
+  Function:
+    Runtime: nodejs18.x
+    Timeout: 10
+    Environment:
+      Variables:
+        ASSIGNMENTS_TABLE: !Ref AssignmentsTable
+Resources:
+  # DynamoDB Tables
+  AssignmentsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Assignments
+      AttributeDefinitions:
+        - AttributeName: assignmentId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: assignmentId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  # Lambda Functions for Assignments Start
+  PostAssignmentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.postAssignmentHandler
+      CodeUri: code/
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        PostVolunteer:
+          Type: HttpApi
+          Properties:
+            Path: /assignments
+            Method: post
+  GetAssignmentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.getAssignmentHandler
+      CodeUri: code/
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetVolunteer:
+          Type: HttpApi
+          Properties:
+            Path: /assignments/{AssignmentsId}
+            Method: get
+
+  UpdateAssignmentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.updateAssignmentsHandler
+      CodeUri: code/
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        UpdateVolunteer:
+          Type: HttpApi
+          Properties:
+            Path: /assignments/{AssignmentsId}
+            Method: put
+
+  DeleteAssignmentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.deleteAssignmentHandler
+      CodeUri: code/
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        DeleteVolunteer:
+          Type: HttpApi
+          Properties:
+            Path: /assignments/{AssignmentsId}
+            Method: delete
+
+  ListAssignmentsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.listAssignmentsHandler
+      CodeUri: code/
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        Listvolunteers:
+          Type: HttpApi
+          Properties:
+            Path: /assignments
+            Method: get
+
+  # Lambda Functions for Assignments End
+Outputs:
+  ApiURL:
+    Description: 'API Gateway endpoint URL'
+    Value: !Sub 'https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/'

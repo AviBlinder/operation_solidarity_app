@@ -1,0 +1,94 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Globals:
+  Function:
+    Runtime: nodejs18.x
+    Timeout: 30
+    Environment:
+      Variables:
+        TASKS_TABLE: !Ref TasksTable
+Resources:
+  # DynamoDB Tables
+  TasksTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Tasks
+      AttributeDefinitions:
+        - AttributeName: taskId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: taskId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  # Lambda Functions for Tasks Start
+  PostTaskFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.postTaskHandler
+      CodeUri: code/
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        PostVolunteer:
+          Type: HttpApi
+          Properties:
+            Path: /tasks
+            Method: post
+
+  GetTaskFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.getTaskHandler
+      CodeUri: code/
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        GetVolunteer:
+          Type: HttpApi
+          Properties:
+            Path: /tasks/{TaskId}
+            Method: get
+
+  UpdateTaskFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.listTasksHandler
+      CodeUri: code/
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        UpdateVolunteer:
+          Type: HttpApi
+          Properties:
+            Path: /tasks/{TaskId}
+            Method: put
+
+  DeleteTaskFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.deleteTaskHandler
+      CodeUri: code/
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        DeleteVolunteer:
+          Type: HttpApi
+          Properties:
+            Path: /tasks/{TaskId}
+            Method: delete
+
+  ListTasksFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.listTasksHandler
+      CodeUri: code/
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        Listvolunteers:
+          Type: HttpApi
+          Properties:
+            Path: /tasks
+            Method: get
+
+  # Lambda Functions for Tasks End
+Outputs:
+  ApiURL:
+    Description: 'API Gateway endpoint URL'
+    Value: !Sub 'https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/'
