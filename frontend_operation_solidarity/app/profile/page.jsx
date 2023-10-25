@@ -56,7 +56,7 @@ const MyProfile = () => {
   };
 
   return (
-    <div>
+    <section className="bg-primary-400/90">
       Profile Page !
       <div>
         {myTasks.map((post, index) => (
@@ -66,7 +66,9 @@ const MyProfile = () => {
           </div>
         ))}
       </div>
-    </div>
+      <div className="bg-supporting2-300/95 h-28 w-28"> Secondary</div>
+    </section>
+
     // <Profile
     //   name={session?.user.name}
     //   desc="Welcome to your personalized profile page. Share your exceptional prompts and inspire others with the power of your imagination"
