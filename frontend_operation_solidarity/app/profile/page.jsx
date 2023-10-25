@@ -1,5 +1,5 @@
 'use client';
-
+import { Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -58,17 +58,20 @@ const MyProfile = () => {
   return (
     <section className="bg-primary-400/90">
       Profile Page !
-      <div>
-        {myTasks.map((post, index) => (
-          <div key={index}>
-            {' '}
-            {post.taskId} - {post.name}{' '}
-          </div>
-        ))}
-      </div>
-      <div className="bg-supporting2-300/95 h-28 w-28"> Secondary</div>
+      <Suspense fallback={<div>Loading Your tasks...</div>}>
+        <ul>
+          {myTasks.map((post, index) => (
+            <div key={index}>
+              <li>
+                <p>{post.description} </p>
+                {/* <p> Requester: {post.email}</p> */}
+              </li>
+            </div>
+          ))}
+        </ul>
+        <div className="bg-supporting2-300/95 h-28 w-28"> Secondary</div>
+      </Suspense>
     </section>
-
     // <Profile
     //   name={session?.user.name}
     //   desc="Welcome to your personalized profile page. Share your exceptional prompts and inspire others with the power of your imagination"

@@ -1,15 +1,41 @@
-import Prompt from '@models/prompt';
-import { connectToDB } from '@utils/database';
-
 export const POST = async (request) => {
-  const { userId, prompt, tag } = await request.json();
+  const baseURL = process.env.baseURL;
+  const env = process.env.APIGW_ENV;
 
   try {
-    await connectToDB();
+    const {
+      userId,
+      userName,
+      description,
+      category,
+      location,
+      from,
+      to,
+      status,
+      availability,
+      entryDate,
+    } = await request.json();
 
-    const newPrompt = new Prompt({ creator: userId, prompt, tag });
+    const res = await fetch(`${baseURL}/${env}/tasks`, {
+      method: 'POST',
+      body: JSON.stringify({
+        userId,
+        userName: userName ? userName : null,
+        description: description ? description : 'No description',
+        category: category ? category : null,
+        location: location ? location : null,
+        from: from ? from : null,
+        to: to ? to : null,
+        status: status ? status : 'new',
+        availability: availability ? availability : null,
+        entryDate: entryDate ? entryDate : new Date(),
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    const tasks = await res.json();
 
-    await newPrompt.save();
     return new Response(JSON.stringify(newPrompt), { status: 201 });
   } catch (error) {
     return new Response('Failed to create a new prompt', { status: 500 });

@@ -13,9 +13,6 @@ const Nav = () => {
   const [toggleDropdown, setToggleDropdown] = useState(false);
   const baseURL = process.env.NEXT_PUBLIC_BASEURL;
   useEffect(() => {
-    // annonymous function declaration
-    // called automatically when component is mounted
-
     (async () => {
       const res = await getProviders();
       setProviders(res);
@@ -42,10 +39,12 @@ const Nav = () => {
       <div className="sm:flex hidden">
         {session?.user ? (
           <div className="flex gap-3 md:gap-5">
-            <Link href="/create-prompt" className="black_btn">
-              Create Post
+            <Link href="/create-request" className="black_btn">
+              Create Request
             </Link>
-
+            <Link href="/create-proposal" className="black_btn">
+              Create Proposal
+            </Link>
             <button
               type="button"
               onClick={() => {
