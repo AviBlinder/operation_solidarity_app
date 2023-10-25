@@ -1,25 +1,39 @@
-## SAM Workflow
-
 ########################################################################################
-ToDO:
-General
-
-1. Create test scripts and run them
-2. Migrate to aws-sdk v3:
-   https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/migrating-to-v3.html
-3. Add Authententication to Lambda functions
-4. fix: Policies: AmazonDynamoDBFullAccess
-   Policies:
-   - DynamoDBCrudPolicy:
-     TableName: !Ref BeneficiariesTable
-
-// Re-build github repo without .aws-sam
+ToDo:
 Frontend
+
+1. General site structure
+
+2. Create User form
+3. Create Task form
+4. Landing Page:
+5. review session? logic
+6. Create Userpool + google identity
+
+---
 
 - [Multilanguage](https://phrase.com/blog/posts/nextjs-i18n/)
 - Availability (font-size, text2voice, darkness, colors-schema)
 - Accessible and **user-friendly**
-  ########################################################################################
+
+//
+// Typhography setup:
+// 1. font-size (text-sm, text-base, text-lg,text-xl...)
+// 2. font-weight (font-extralight ...)
+// 3. text-color (lightness lower for de-emphasazing)
+// 4. letter spacing (tracking-tighter...)
+// 5. Line Hight (leading-3 ...)
+// 6. text-align (text-center, text-left, text-start, text-justify ...)
+// 7. Vertical align (align-baseline, align-middle, align-top...)
+
+//
+Backend
+
+1. Migrate to aws-sdk v3:
+   https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/migrating-to-v3.html
+2. Add Authententication to Lambda functions (via userPool)
+
+########################################################################################
 
 ```sh
 AWS_PROFILE=operation_solidarity_admin

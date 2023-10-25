@@ -35,9 +35,18 @@ const handler = NextAuth({
   // [nextauth callbacks](https://next-auth.js.org/configuration/callbacks)
   callbacks: {
     async session({ session }) {
-      // store the user id from MongoDB to session
-      // const sessionUser = await User.findOne({ email: session.user.email });
-      // session.user.id = sessionUser._id.toString();
+      const baseURL = process.env.baseURL;
+      const env = process.env.APIGW_ENV;
+      const email = session.user.email;
+      try {
+        const res = await fetch(`${baseURL}/${env}/users/{user}`);
+        const user = await res.json();
+        session.user.id = user.id;
+      } catch (error) {
+        return new Response('Failed to create a new prompt', { status: 500 });
+      }
+
+      //
       return session;
     },
     async signIn({ account, profile, user, credentials }) {

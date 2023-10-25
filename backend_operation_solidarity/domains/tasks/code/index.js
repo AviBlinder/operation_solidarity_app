@@ -30,8 +30,6 @@ exports.getTaskHandler = async (event) => {
         taskId: event.pathParameters.TaskId,
       },
     };
-    console.log('inside getTaskHandler - event:', event);
-    console.log('inside getTaskHandler - params:', params);
     const result = await dynamoDb.get(params).promise();
     if (result.Item) {
       return { statusCode: 200, body: JSON.stringify(result.Item) };

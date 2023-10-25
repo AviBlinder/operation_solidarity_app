@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import LocationSelector from '@/components/LocationSelector';
 // import Form from '@/components/Form';
 const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
   return (
@@ -30,33 +31,25 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
             className="form_textarea "
           />
         </label>
-
+        <LocationSelector
+          post={post}
+          setPost={setPost}
+          handleSubmit={handleSubmit}
+        />
         <label id="from">
           <span className="font-satoshi font-semibold text-base text-gray-700">
-            <span className="font-normal">From Location</span>
+            <span className="font-normal">Category</span>
           </span>
           <input
             name="from"
-            value={post.from}
-            onChange={(e) => setPost({ ...post, from: e.target.value })}
+            value={post.category}
+            onChange={(e) => setPost({ ...post, category: e.target.value })}
             type="text"
-            placeholder="from where?"
+            placeholder="Type of task"
             required
             className="form_input"
           />
         </label>
-        <label id="location">Pick a Location:</label>
-        <select
-          name="location"
-          value={post.location}
-          onChange={(e) => setPost({ ...post, location: e.target.value })}
-          placeholder="From where?"
-          className="form_input"
-        >
-          <option value="Tel-Aviv">Tel-Aviv</option>
-          <option value="Hertzlia">Hertzlia</option>
-          <option value="Ramat-Gan">Ramat-Gan</option>
-        </select>
 
         <div className="flex-end mx-3 mb-5 gap-4">
           <Link href="/" className="text-gray-500 text-sm">
@@ -79,12 +72,12 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
 const CreatePrompt = () => {
   const router = useRouter();
   const { data: session } = useSession();
-  console.log('session', session);
   const [submitting, setIsSubmitting] = useState(false);
   const [post, setPost] = useState({
     description: '',
     category: '',
-    location: '',
+    city: '',
+    street: '',
     from: '',
     to: '',
     status: '',
@@ -106,7 +99,8 @@ const CreatePrompt = () => {
           userName: session?.user.name,
           description: post.description,
           category: post.category,
-          location: post.location,
+          city: post.city,
+          street: post.street,
           from: post.from,
           to: post.to,
           status: 'new',
@@ -114,12 +108,12 @@ const CreatePrompt = () => {
           entryDate: new Date(),
         }),
       });
-
       if (response.ok) {
         setPost({
           description: '',
           category: '',
-          location: '',
+          city: '',
+          street: '',
           from: '',
           to: '',
           status: '',
@@ -138,7 +132,6 @@ const CreatePrompt = () => {
 
   return (
     <div>
-      <p>location {post.location}</p>
       <Form
         type="Create Request"
         post={post}

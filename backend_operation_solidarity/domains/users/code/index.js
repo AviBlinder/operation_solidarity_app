@@ -49,8 +49,6 @@ exports.getUserHandler = async (event) => {
 };
 
 exports.listUsersHandler = async () => {
-  console.log('listUsersHandler', entity);
-
   try {
     const params = {
       TableName: entity,

@@ -14,11 +14,9 @@ const MyProfile = () => {
 
   useEffect(() => {
     const fetchTasks = async () => {
-      console.log('inside useEffect');
       // const response = await fetch(`/api/users/${session?.user.id}/posts`);
       const response = await fetch(`/api/users`);
       const data = await response.json();
-      console.log('data =', data);
       setMyTasks(data);
     };
 
