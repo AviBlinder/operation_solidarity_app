@@ -1,17 +1,30 @@
-import { Inter } from 'next/font/google';
-import './globals.css';
+import '@/styles/globals.css';
 
-const inter = Inter({ subsets: ['latin'] });
+import Nav from '@/app/components/Nav';
+import Provider from '@/app/components/Provider';
 
 export const metadata = {
-  title: 'Operation Solidarity App',
-  description: 'Operation Solidarity App - Manage and Match Volunteering Tasks',
+  title: 'Operation Solidarity',
+  description: 'Share and Match Tasks',
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
-export default function RootLayout({ children }) {
-  return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
-    </html>
-  );
-}
+const RootLayout = ({ children }) => (
+  <html lang="en">
+    <body>
+      <Provider>
+        <div className="main">
+          <div className="gradient" />
+        </div>
+        <main className="app">
+          <Nav />
+          {children}
+        </main>
+      </Provider>
+    </body>
+  </html>
+);
+
+export default RootLayout;
