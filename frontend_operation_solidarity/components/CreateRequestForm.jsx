@@ -26,7 +26,7 @@ const weekDays = [
   'Saturday',
 ];
 
-function AssistanceRequestForm() {
+function CreateRequestForm({ type, post, setPost, submitting, handleSubmit }) {
   const { data: session } = useSession();
 
   const [requestDescription, setRequestDescription] = useState('');
@@ -64,18 +64,18 @@ function AssistanceRequestForm() {
     }
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = {
-      requestDescription,
-      location:
-        locationType === 'cityAddress' ? { city, address } : { from, to },
-      availability,
-      category,
-    };
-    console.log(data);
-    // Here you can send the data to your backend
-  };
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   const data = {
+  //     requestDescription,
+  //     location:
+  //       locationType === 'cityAddress' ? { city, address } : { from, to },
+  //     availability,
+  //     category,
+  //   };
+  //   console.log(data);
+  //   // Here you can send the data to your backend
+  // };
 
   const handleSelectAllDays = () => {
     if (availability.length < weekDays.length) {
@@ -90,23 +90,24 @@ function AssistanceRequestForm() {
         <form className="p-8" onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-primary-800"
               htmlFor="requestDescription"
             >
               Request Description
             </label>
             <input
-              type="text"
+              type="textarea"
               id="requestDescription"
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
+              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-xs placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
               value={requestDescription}
               onChange={(e) => setRequestDescription(e.target.value)}
               required
+              placeholder="Write your request here"
             />
           </div>
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-primary-800">
               Location Type
             </label>
             <div className="mt-2">
@@ -139,14 +140,14 @@ function AssistanceRequestForm() {
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
                 <label
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-primary-800"
                   htmlFor="city"
                 >
                   City
                 </label>
                 <select
                   id="city"
-                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
+                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                   required
@@ -164,14 +165,14 @@ function AssistanceRequestForm() {
 
               <div>
                 <label
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-primary-800"
                   htmlFor="address"
                 >
                   Address
                 </label>
                 <select
                   id="address"
-                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
+                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   required
@@ -191,14 +192,14 @@ function AssistanceRequestForm() {
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>
                 <label
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-primary-800"
                   htmlFor="from"
                 >
                   From
                 </label>
                 <select
                   id="from"
-                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
+                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
                   value={from}
                   onChange={(e) => setFrom(e.target.value)}
                   required
@@ -216,14 +217,14 @@ function AssistanceRequestForm() {
 
               <div>
                 <label
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-medium text-primary-800"
                   htmlFor="to"
                 >
                   To
                 </label>
                 <select
                   id="to"
-                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
+                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
                   value={to}
                   onChange={(e) => setTo(e.target.value)}
                   required
@@ -242,7 +243,7 @@ function AssistanceRequestForm() {
           )}
 
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-sm font-medium text-primary-800">
               Availability
             </label>
             <div className="mt-2 flex flex-col">
@@ -276,14 +277,14 @@ function AssistanceRequestForm() {
 
           <div className="mb-4">
             <label
-              className="block text-sm font-medium text-gray-700"
+              className="block text-sm font-medium text-primary-800"
               htmlFor="category"
             >
               Category
             </label>
             <select
               id="category"
-              className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
+              className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               required
@@ -315,4 +316,4 @@ function AssistanceRequestForm() {
   );
 }
 
-export default AssistanceRequestForm;
+export default CreateRequestForm;

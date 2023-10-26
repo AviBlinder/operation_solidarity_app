@@ -17,7 +17,6 @@ export const GET = async (request) => {
 
   try {
     const data = await docClient.query(params).promise();
-    console.log('data =', data);
     const categories = data.Items;
 
     return new Response(JSON.stringify(categories), { status: 200 });

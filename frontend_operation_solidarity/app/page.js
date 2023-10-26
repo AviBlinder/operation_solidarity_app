@@ -14,6 +14,7 @@ export default function Home() {
       next: { revalidate: 3600 },
     });
     const categories = await response.json();
+    console.log('fetched categories = ', categories);
     setCategories(categories);
   };
 
