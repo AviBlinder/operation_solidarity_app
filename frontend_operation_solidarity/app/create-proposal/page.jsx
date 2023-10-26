@@ -1,8 +1,11 @@
 'use client';
 import React, { useState } from 'react';
+import { cities_short_list } from '@/constants/index';
 
 const categories = ['Food', 'Clothing', 'Shelter', 'Medical', 'Transportation'];
-const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'];
+// const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'];
+const cities = cities_short_list.map((city) => city.city);
+
 const addresses = {
   'New York': ['5th Avenue', 'Madison Avenue', 'Broadway'],
   'Los Angeles': [
@@ -53,6 +56,13 @@ function AssistanceRequestForm() {
     // Here you can send the data to your backend
   };
 
+  const handleSelectAllDays = () => {
+    if (availability.length < weekDays.length) {
+      setAvailability(weekDays);
+    } else {
+      setAvailability([]);
+    }
+  };
   return (
     <form className="p-8" onSubmit={handleSubmit}>
       <div className="mb-4">
@@ -213,6 +223,16 @@ function AssistanceRequestForm() {
           Availability
         </label>
         <div className="mt-2">
+          <label className="inline-flex items-center mr-4">
+            <input
+              type="checkbox"
+              className="form-checkbox"
+              checked={availability.length === weekDays.length}
+              onChange={handleSelectAllDays}
+            />
+            <span className="ml-2">Select All</span>
+          </label>
+
           {weekDays.map((day) => (
             <label key={day} className="inline-flex items-center mr-4">
               <input
