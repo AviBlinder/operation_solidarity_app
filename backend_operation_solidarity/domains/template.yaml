@@ -220,9 +220,20 @@ Resources:
       AttributeDefinitions:
         - AttributeName: taskId
           AttributeType: S
+        - AttributeName: email
+          AttributeType: S
       KeySchema:
         - AttributeName: taskId
           KeyType: HASH
+      # email-index GSI
+      GlobalSecondaryIndexes:
+        - IndexName: email-index
+          KeySchema:
+            - AttributeName: email
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+            # GSI addition end
       BillingMode: PAY_PER_REQUEST
 
   # Lambda Functions for Tasks Start

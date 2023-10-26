@@ -3,7 +3,7 @@ export const POST = async (request) => {
   const env = process.env.APIGW_ENV;
   try {
     const {
-      userEmail,
+      email,
       userName,
       userId,
       description,
@@ -25,7 +25,7 @@ export const POST = async (request) => {
     const res = await fetch(`${baseURL}/${env}/tasks`, {
       method: 'POST',
       body: JSON.stringify({
-        userEmail,
+        email,
         userId,
         taskType: 'request',
         userName: userName ? userName : null,

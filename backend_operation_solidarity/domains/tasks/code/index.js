@@ -58,14 +58,47 @@ exports.getTaskHandler = async (event) => {
   }
 };
 
-exports.listTasksHandler = async () => {
+exports.listTasksHandler = async (event) => {
   console.log('listTasksHandler', entity);
   try {
     const params = {
       TableName: entity,
     };
-    const result = await dynamoDb.scan(params).promise();
-    return { statusCode: 200, body: JSON.stringify(result.Items) };
+
+    // handle queryParam=email
+    if (
+      event.queryStringParameters &&
+      event.queryStringParameters.email != null
+    ) {
+      params.IndexName = 'email-index';
+      params.KeyConditionExpression = 'email = :emailValue';
+      params.ExpressionAttributeValues = {
+        ':emailValue': event.queryStringParameters.email,
+      };
+      queryType = 'email';
+    } else {
+      queryType = 'all';
+    }
+    // Handling the records retrieval
+    let result = null;
+
+    // result = await dynamoDb.scan(params).promise();
+    // return { statusCode: 200, body: JSON.stringify(result.Items) };
+    if (queryType == 'email') {
+      result = await dynamoDb.query(params).promise();
+      // check 'query' result
+      if (result.Items) {
+        return { statusCode: 200, body: JSON.stringify(result.Items) };
+      } else {
+        return {
+          statusCode: 404,
+          body: JSON.stringify({ error: 'tasks by email not found' }),
+        };
+      }
+    } else if (queryType == 'all') {
+      result = await dynamoDb.scan(params).promise();
+      return { statusCode: 200, body: JSON.stringify(result.Items) };
+    }
   } catch (error) {
     console.error(error);
     return {

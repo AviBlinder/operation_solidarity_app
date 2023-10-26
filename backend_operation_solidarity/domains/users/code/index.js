@@ -79,8 +79,6 @@ exports.updateUserHandler = async (event) => {
 };
 
 exports.getUserHandler = async (event) => {
-  console.log('inside getUserHandler :', event);
-
   if (!event.pathParameters && !event.pathParameters.userId) {
     return {
       statusCode: 500,
