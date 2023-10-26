@@ -11,6 +11,8 @@
     "mocha": "^10.2.0"
   },
   "dependencies": {
-    "aws-sdk": "^2.1480.0"
+    "aws-sdk": "^2.1480.0",
+    "aws-sdk-mock": "^5.8.0",
+    "sinon": "^17.0.0"
   }
 }
