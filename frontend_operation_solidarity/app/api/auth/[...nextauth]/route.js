@@ -39,9 +39,9 @@ const handler = NextAuth({
       const env = process.env.APIGW_ENV;
       const email = session.user.email;
       try {
-        const res = await fetch(`${baseURL}/${env}/users/{user}`);
+        const res = await fetch(`${baseURL}/${env}/users?email=${email}`);
         const user = await res.json();
-        session.user.id = user.id;
+        session.user.userId = user.userId;
       } catch (error) {
         return new Response('Failed to create a new prompt', { status: 500 });
       }
@@ -50,20 +50,32 @@ const handler = NextAuth({
       return session;
     },
     async signIn({ account, profile, user, credentials }) {
+      // fetch the user details on each sign In
       try {
-        // await connectToDB();
-
-        // // check if user already exists
-        // const userExists = await User.findOne({ email: profile.email });
-        // // if not, create a new document and save user in MongoDB
-        // if (!userExists) {
-        //   await User.create({
-        //     email: profile.email,
-        //     username: profile.name.replace(' ', '').toLowerCase(),
-        //     image: profile.picture,
-        //   });
-        // }
-
+        // check if user already exists
+        const baseURL = process.env.baseURL;
+        const env = process.env.APIGW_ENV;
+        const email = profile.email;
+        const res = await fetch(`${baseURL}/${env}/users?email=${email}`);
+        const userExists = await res.json();
+        // // if not, create a new User and save it in the DynamoDB users table
+        if (userExists.length === 0) {
+          const response = await fetch(`${baseURL}/${env}/users`, {
+            method: 'POST',
+            body: JSON.stringify({
+              email: profile.email,
+              username: profile.name.replace(' ', '').toLowerCase(),
+              createDate: new Date().toISOString(),
+            }),
+          });
+          if (response.ok) {
+            const user = await response.json();
+            console.log('created new user ', user);
+            // profile.user.userId = user.userId;
+          } else {
+            console.log('Error creating user: ', response);
+          }
+        }
         return true;
       } catch (error) {
         console.log('Error checking if user exists: ', error.message);
