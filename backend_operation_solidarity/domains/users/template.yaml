@@ -16,9 +16,20 @@ Resources:
       AttributeDefinitions:
         - AttributeName: userId
           AttributeType: S
+        - AttributeName: email
+          AttributeType: S
       KeySchema:
         - AttributeName: userId
           KeyType: HASH
+      # email-index GSI
+      GlobalSecondaryIndexes:
+        - IndexName: email-index
+          KeySchema:
+            - AttributeName: email
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+            # GSI addition end
       BillingMode: PAY_PER_REQUEST
   # API GW
   SolidarityApi:
@@ -52,13 +63,12 @@ Resources:
         - DynamoDBCrudPolicy:
             TableName: !Ref UsersTable
       Events:
-        GetUser:
+        GetUserByUserId:
           Type: HttpApi
           Properties:
             ApiId: !Ref SolidarityApi
-            Path: /users/{UserId}
+            Path: /users/{userId}
             Method: get
-
   UpdateUserFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -72,7 +82,7 @@ Resources:
           Type: HttpApi
           Properties:
             ApiId: !Ref SolidarityApi
-            Path: /users/{UserId}
+            Path: /users/{userId}
             Method: put
 
   DeleteUserFunction:
@@ -88,7 +98,7 @@ Resources:
           Type: HttpApi
           Properties:
             ApiId: !Ref SolidarityApi
-            Path: /users/{UserId}
+            Path: /users/{userId}
             Method: delete
 
   ListUsersFunction:

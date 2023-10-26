@@ -9,5 +9,8 @@
   "devDependencies": {
     "chai": "^4.3.10",
     "mocha": "^10.2.0"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.1480.0"
   }
 }
