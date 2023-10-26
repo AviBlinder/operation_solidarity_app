@@ -91,11 +91,12 @@ const CreatePrompt = () => {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const response = await fetch('/api/prompt/new', {
+      const response = await fetch('/api/task/new', {
         method: 'POST',
         body: JSON.stringify({
           //
-          userId: session?.user.email,
+          userEmail: session?.user.email,
+          userId: session?.user.userId,
           userName: session?.user.name,
           description: post.description,
           category: post.category,
