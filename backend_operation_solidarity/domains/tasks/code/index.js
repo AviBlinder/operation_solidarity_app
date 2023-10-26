@@ -23,6 +23,16 @@ exports.deleteTaskHandler = async (event) => {
 };
 
 exports.getTaskHandler = async (event) => {
+  if (!event.pathParameters && !event.pathParameters.TaskId) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: 'pathParameters.TaskId not provided',
+        event: event,
+      }),
+    };
+  }
+
   try {
     const params = {
       TableName: entity,

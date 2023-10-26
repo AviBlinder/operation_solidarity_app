@@ -10,9 +10,9 @@ export default function Home() {
 
   const fetchUserTasks = async () => {
     const response = await fetch(`/api/tasks?userEmail=${session?.user.email}`);
-    const data = await response.json();
+    const tasks = await response.json();
 
-    setUserTasks(data);
+    setUserTasks(tasks);
   };
   return (
     <main>
@@ -27,6 +27,16 @@ export default function Home() {
             <div> Login to get your tasks</div>
           )}
         </div>
+        {session?.user.email && userTasks.length > 0 ? (
+          <div>
+            {' '}
+            {userTasks.map((task) => (
+              <div>{task.description}</div>
+            ))}
+          </div>
+        ) : (
+          session?.user.email && <div> No tasks</div>
+        )}
       </div>
     </main>
   );
