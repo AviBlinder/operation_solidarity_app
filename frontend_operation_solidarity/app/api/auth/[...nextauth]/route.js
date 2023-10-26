@@ -66,6 +66,10 @@ const handler = NextAuth({
               email: profile.email,
               username: profile.name.replace(' ', '').toLowerCase(),
               createDate: new Date().toISOString(),
+              isVolunteer: null,
+              isRequester: null,
+              isAdmin: false,
+              status: 'active',
             }),
           });
           if (response.ok) {
