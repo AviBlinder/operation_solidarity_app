@@ -6,7 +6,16 @@ import { useSession } from 'next-auth/react';
 
 export default function Home() {
   const [userTasks, setUserTasks] = useState([]);
+  const [categories, setCategories] = useState([]);
   const { data: session } = useSession();
+
+  const fetchCategories = async () => {
+    const response = await fetch(`/api/reference-data/categories`, {
+      next: { revalidate: 3600 },
+    });
+    const categories = await response.json();
+    setCategories(categories);
+  };
 
   const fetchUserTasks = async () => {
     const response = await fetch(`/api/tasks?userEmail=${session?.user.email}`);
@@ -18,7 +27,20 @@ export default function Home() {
     <main>
       <div>
         <div className="text-4xl">Operation Solidarity</div>
+        <ul>
+          {' '}
+          {categories.length > 0 ? (
+            categories.map((category, index) => (
+              <div key={index}>{category.itemName}</div>
+            ))
+          ) : (
+            <div>No categories</div>
+          )}
+        </ul>
         <div>
+          <button onClick={fetchCategories} className="black_btn">
+            Get Categories
+          </button>
           {session?.user.email ? (
             <button className="black_btn" onClick={fetchUserTasks}>
               Get My Tasks

@@ -46,6 +46,6 @@ export const POST = async (request) => {
     const tasks = await res.json();
     return new Response(JSON.stringify(tasks), { status: 201 });
   } catch (error) {
-    return new Response('Failed to create a new prompt', { status: 500 });
+    return new Response('Failed to create a new task', { status: 500 });
   }
 };

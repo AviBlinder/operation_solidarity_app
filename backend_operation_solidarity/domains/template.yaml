@@ -222,15 +222,21 @@ Resources:
           AttributeType: S
         - AttributeName: email
           AttributeType: S
+        - AttributeName: entryDate
+          AttributeType: S
       KeySchema:
         - AttributeName: taskId
           KeyType: HASH
+        - AttributeName: entryDate
+          KeyType: RANGE
       # email-index GSI
       GlobalSecondaryIndexes:
         - IndexName: email-index
           KeySchema:
             - AttributeName: email
               KeyType: HASH
+            - AttributeName: entryDate
+              KeyType: RANGE
           Projection:
             ProjectionType: ALL
             # GSI addition end
