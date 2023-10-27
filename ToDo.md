@@ -5,13 +5,14 @@ Frontend
 1. Fix b.e. call to DynamoDB with V3
 2. Fix name of project on cloud.google
 3. Finish Requests form
+4. If 'city' -> update GeoLocation on DB
 
-4. Create Proposal form (?)
-5. create 'update request' form
-6. Create User form
-7. Landing Page:
-8. review session? logic
-9. Create Userpool + google identity
+5. Create Proposal form (?)
+6. create 'update request' form
+7. Create User form/Update Preferences Form
+8. Landing Page:
+9. review session? logic
+10. Create Userpool + google identity
 
 ---
 

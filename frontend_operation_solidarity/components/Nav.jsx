@@ -21,7 +21,7 @@ const Nav = () => {
 
   return (
     <nav className="flex-between w-full mb-16 pt-3">
-      <Link href="/" className="flex flex-row gap-2 flex-justify text-center">
+      <Link href="/" className="flex flex-row gap-2  ">
         <Image
           src="/assets/images/logo.svg"
           alt="logo"
@@ -29,13 +29,17 @@ const Nav = () => {
           height="80"
           className="object-contain"
         />
-        <p className="sm:hidden lg:flex text-3xl logo_text ml-6">
-          Operation Solidarity
-        </p>
       </Link>
+      <p
+        className="sm:hidden lg:flex text-4xl logo_text ml-6 text-center justify-center
+         px-20 py-4
+        "
+      >
+        Operation Solidarity
+      </p>
 
       {/* Desktop Navigation */}
-      <div className=" hidden lg:flex">
+      <div className=" hidden lg:flex ">
         {/* <p>Desktop</p> */}
         {session?.user ? (
           <div className="flex gap-3 md:gap-5">
@@ -45,19 +49,10 @@ const Nav = () => {
             <Link href="/create-proposal" className="btn_primary">
               Create Proposal
             </Link>
-            <Link href="/profile">
-              <p className="btn_secondary">Get tasks</p>
+            <Link href="/profile" className="btn_secondary">
+              Get tasks
             </Link>
 
-            {/* <button
-              type="button"
-              onClick={() => {
-                signOut({ callbackUrl: `${baseURL}` });
-              }}
-              className="outline_btn"
-            >
-              Sign Out
-            </button> */}
             <div className="relative">
               <Link href="/profile">
                 <Image
