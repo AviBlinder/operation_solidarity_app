@@ -21,31 +21,35 @@ const Nav = () => {
 
   return (
     <nav className="flex-between w-full mb-16 pt-3">
-      <Link href="/profile">
-        <p className="">Get tasks</p>
-      </Link>
-      <Link href="/" className="flex gap-2 flex-center">
+      <Link href="/" className="flex flex-row gap-2 flex-justify text-center">
         <Image
           src="/assets/images/logo.svg"
           alt="logo"
-          width={30}
-          height={30}
+          width="80"
+          height="80"
           className="object-contain"
         />
-        <p className="logo_text">Operation Solidarity</p>
+        <p className="sm:hidden lg:flex text-3xl logo_text ml-6">
+          Operation Solidarity
+        </p>
       </Link>
 
       {/* Desktop Navigation */}
-      <div className="sm:flex hidden">
+      <div className=" hidden lg:flex">
+        {/* <p>Desktop</p> */}
         {session?.user ? (
           <div className="flex gap-3 md:gap-5">
-            <Link href="/create-request" className="black_btn">
+            <Link href="/create-request" className="btn_primary">
               Create Request
             </Link>
-            <Link href="/create-proposal" className="black_btn">
+            <Link href="/create-proposal" className="btn_primary">
               Create Proposal
             </Link>
-            <button
+            <Link href="/profile">
+              <p className="btn_secondary">Get tasks</p>
+            </Link>
+
+            {/* <button
               type="button"
               onClick={() => {
                 signOut({ callbackUrl: `${baseURL}` });
@@ -53,17 +57,49 @@ const Nav = () => {
               className="outline_btn"
             >
               Sign Out
-            </button>
-
-            <Link href="/profile">
-              <Image
-                src={session?.user.image}
-                width={37}
-                height={37}
-                className="rounded-full"
-                alt="profile"
-              />
-            </Link>
+            </button> */}
+            <div className="relative">
+              <Link href="/profile">
+                <Image
+                  src={session?.user.image}
+                  width={50}
+                  height={50}
+                  className="rounded-full"
+                  alt="profile"
+                  onClick={() => setToggleDropdown((prev) => !prev)}
+                />
+              </Link>
+              <div className="">
+                {toggleDropdown && (
+                  <div className="dropdown">
+                    <Link
+                      href="/create-request"
+                      className="dropdown_link"
+                      onClick={() => setToggleDropdown(false)}
+                    >
+                      Create request
+                    </Link>
+                    <Link
+                      href="/create-request"
+                      className="dropdown_link"
+                      onClick={() => setToggleDropdown(false)}
+                    >
+                      Propose Help
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setToggleDropdown(false);
+                        signOut({ callbackUrl: `${baseURL}` });
+                      }}
+                      className="mt-5 w-full btn_primary"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         ) : (
           <>
@@ -75,7 +111,7 @@ const Nav = () => {
                   onClick={() => {
                     signIn(provider.id);
                   }}
-                  className="black_btn"
+                  className="btn_primary"
                 >
                   Sign in
                 </button>
@@ -85,13 +121,14 @@ const Nav = () => {
       </div>
 
       {/* Mobile Navigation */}
-      <div className="sm:hidden flex relative">
+      <div className="flex lg:hidden relative">
+        {/* <p>Mobile</p> */}
         {session?.user ? (
-          <div className="flex">
+          <div className="flex mt-4">
             <Image
               src={session?.user.image}
-              width={37}
-              height={37}
+              width={50}
+              height={50}
               className="rounded-full"
               alt="profile"
               // onClick={() => setToggleDropdown(!toggleDropdown)}
@@ -101,18 +138,18 @@ const Nav = () => {
             {toggleDropdown && (
               <div className="dropdown">
                 <Link
-                  href="/profile"
+                  href="/create-request"
                   className="dropdown_link"
                   onClick={() => setToggleDropdown(false)}
                 >
-                  My Profile
+                  Create request
                 </Link>
                 <Link
-                  href="/create-prompt"
+                  href="/create-request"
                   className="dropdown_link"
                   onClick={() => setToggleDropdown(false)}
                 >
-                  Create Prompt
+                  Propose Help
                 </Link>
                 <button
                   type="button"
@@ -120,7 +157,7 @@ const Nav = () => {
                     setToggleDropdown(false);
                     signOut({ callbackUrl: `${baseURL}` });
                   }}
-                  className="mt-5 w-full black_btn"
+                  className="mt-5 w-full btn_primary"
                 >
                   Sign Out
                 </button>
@@ -137,7 +174,7 @@ const Nav = () => {
                   onClick={() => {
                     signIn(provider.id);
                   }}
-                  className="black_btn"
+                  className="btn_primary"
                 >
                   Sign in
                 </button>

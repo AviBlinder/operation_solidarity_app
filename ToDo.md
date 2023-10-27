@@ -2,13 +2,16 @@
 ToDo:
 Frontend
 
-1. General site structure
+1. Fix b.e. call to DynamoDB with V3
+2. Fix name of project on cloud.google
+3. Finish Requests form
 
-2. Create User form
-3. Create Task form
-4. Landing Page:
-5. review session? logic
-6. Create Userpool + google identity
+4. Create Proposal form (?)
+5. create 'update request' form
+6. Create User form
+7. Landing Page:
+8. review session? logic
+9. Create Userpool + google identity
 
 ---
 

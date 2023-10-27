@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240">
   <!-- Rounded rectangle as background -->
-  <rect width="400" height="240" fill="#0056b3" rx="120" ry="120"/>
+  <!-- <rect width="400" height="240" fill="#0056b3" rx="120" ry="120"/> -->
+  <rect  fill="#0056b3" rx="120" ry="120"/>
   <!-- White circle -->
   <circle cx="200" cy="120" r="100" fill="#ffffff"/>
   <!-- Text -->

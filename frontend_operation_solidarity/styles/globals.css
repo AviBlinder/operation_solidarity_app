@@ -4,6 +4,12 @@
 @tailwind components;
 @tailwind utilities;
 
+/* text size: text- */
+/* text color: text-{some-color} */
+/* font strength font- */
+/* space between letters: leading-[] */
+/* line-height */
+/* letter-spacing */
 /* 
   Note: The styles for this gradient grid background is heavily inspired by the creator of this amazing site (https://dub.sh) – all credits go to them! 
 */
@@ -59,12 +65,16 @@
   @apply relative z-10 flex justify-center items-center flex-col max-w-7xl mx-auto sm:px-16 px-6;
 }
 
-.black_btn {
-  @apply rounded-full border border-primary-300 bg-black py-2 px-5 text-white transition-all hover:bg-white hover:text-black text-center text-sm  flex items-center justify-center;
+.btn_primary {
+  @apply rounded-full border border-gray-300 bg-primary-500/90 sm:py-0 sm:px-0 sm:text-xs md:py-2 md:px-5 md:text-sm text-white transition-all hover:bg-primary-600/95 hover:text-white text-center flex items-center justify-center;
+}
+
+.btn_secondary {
+  @apply rounded-full border border-gray-300 bg-secondary-500/90 sm:py-0 sm:px-0 sm:text-xs md:py-2 md:px-5 md:text-sm text-white transition-all hover:bg-secondary-600/95 hover:text-white text-center flex items-center justify-center;
 }
 
 .outline_btn {
-  @apply rounded-full border border-primary-300 bg-transparent py-2 px-5 text-black transition-all hover:bg-black hover:text-white text-center text-sm  flex items-center justify-center;
+  @apply rounded-full border border-primary-500 bg-transparent py-2 px-5 text-black transition-all hover:bg-primary-500/95 hover:text-white text-center text-sm  flex items-center justify-center;
 }
 
 .head_text {
@@ -119,7 +129,7 @@
 
 /* Nav Component */
 .logo_text {
-  @apply max-sm:hidden  font-semibold text-lg text-black tracking-wide;
+  @apply max-sm:hidden font-semibold sm:text-xl text-2xl  text-supporting1-800 tracking-tight;
 }
 
 .dropdown {
