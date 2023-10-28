@@ -26,7 +26,7 @@ function TaskList() {
     if (session?.user.email) {
       fetchTasks();
     }
-  }, []);
+  }, [session]);
 
   useEffect(() => {
     let result = [...tasks];
@@ -119,8 +119,8 @@ function TaskList() {
             </p>
             <p className="text-sm text-gray-600">
               <strong>City:</strong> {task?.city?.city || 'N/A'}
-              <strong>City:</strong> {task?.city?.lat || 'N/A'}
-              <strong>City:</strong> {task?.city?.lng || 'N/A'}
+              <strong>City Lat:</strong> {task?.city?.lat || 'N/A'}
+              <strong>City Lng:</strong> {task?.city?.lng || 'N/A'}
             </p>
             <p className="text-sm text-gray-600">
               <strong>Status:</strong>{' '}

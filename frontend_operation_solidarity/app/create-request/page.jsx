@@ -34,7 +34,7 @@ const CreateRequest = () => {
   const router = useRouter();
 
   const createRequest = async (e) => {
-    // e.preventDefault();
+    e.preventDefault();
     setIsSubmitting(true);
     console.log('before insert task: ', task);
     try {
@@ -77,8 +77,24 @@ const CreateRequest = () => {
       });
       if (response.ok) {
         setAvailability([]);
-        setGeolocations({});
-        setTask({});
+        setGeolocations({
+          cityLat: '',
+          cityLng: '',
+          fromLat: '',
+          fromLng: '',
+          toLat: '',
+          toLng: '',
+        });
+        setTask({
+          description: '',
+          category: '',
+          city: '',
+          address: '',
+          from: '',
+          to: '',
+          status: '',
+          entryDate: '',
+        });
 
         router.push('/tasks');
       }

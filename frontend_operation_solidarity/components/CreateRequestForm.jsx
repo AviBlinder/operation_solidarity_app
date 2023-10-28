@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 import { cities_short_list } from '@/constants/index';
 import { useSession } from 'next-auth/react';
@@ -80,29 +80,36 @@ function CreateRequestForm({
     const lng = result[0].lng;
     return [lat, lng];
   };
-  const handleSubmitForm = (e) => {
-    e.preventDefault();
-    if (task.from) {
-      const [fromLat, fromLng] = findLatLng(task.from);
-      setGeolocations({ ...geoLocations, fromLat: fromLat, fromLng: fromLng });
-    }
-
-    if (task.to) {
-      const [toLat, toLng] = findLatLng(task.to);
-      setGeolocations({ ...geoLocations, toLat: toLat, toLng: toLng });
-    }
-
-    if (task.city) {
-      const [cityLat, cityLng] = findLatLng(task.city);
-      setGeolocations({ ...geoLocations, cityLat: cityLat, cityLng: cityLng });
-    }
-
-    handleSubmit();
+  const handleCity = (value) => {
+    const [cityLat, cityLng] = findLatLng(value);
+    setGeolocations({
+      ...geoLocations,
+      cityLat: cityLat,
+      cityLng: cityLng,
+    });
   };
+
+  const handleFrom = (value) => {
+    const [fromLat, fromLng] = findLatLng(value);
+    setGeolocations({
+      ...geoLocations,
+      fromLat: fromLat,
+      fromLng: fromLng,
+    });
+  };
+  const handleTo = (value) => {
+    const [toLat, toLng] = findLatLng(value);
+    setGeolocations({
+      ...geoLocations,
+      toLat: toLat,
+      toLng: toLng,
+    });
+  };
+
   return (
     <div>
       {session?.user.email ? (
-        <form className="p-8" onSubmit={handleSubmitForm}>
+        <form className="p-8" onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               className="block text-sm font-medium text-primary-800"
@@ -167,7 +174,10 @@ function CreateRequestForm({
                   id="city"
                   className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
                   value={task.city}
-                  onChange={(e) => setTask({ ...task, city: e.target.value })}
+                  onChange={(e) => {
+                    setTask({ ...task, city: e.target.value });
+                    handleCity(e.target.value);
+                  }}
                   required
                 >
                   <option value="" disabled>
@@ -224,7 +234,10 @@ function CreateRequestForm({
                   id="from"
                   className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
                   value={task.from}
-                  onChange={(e) => setTask({ ...task, from: e.target.value })}
+                  onChange={(e) => {
+                    setTask({ ...task, from: e.target.value });
+                    handleFrom(e.target.value);
+                  }}
                   required
                 >
                   <option value="" disabled>
@@ -249,7 +262,10 @@ function CreateRequestForm({
                   id="to"
                   className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
                   value={task.to}
-                  onChange={(e) => setTask({ ...task, to: e.target.value })}
+                  onChange={(e) => {
+                    setTask({ ...task, to: e.target.value });
+                    handleTo(e.target.value);
+                  }}
                   required
                 >
                   <option value="" disabled>
@@ -280,9 +296,6 @@ function CreateRequestForm({
                   />
                   <span className="ml-2">Select All</span>
                 </label>
-              </div>
-              <div>
-                Availability: {availability.length}: {availability}
               </div>
               <div>
                 {weekDays.map((day) => (
