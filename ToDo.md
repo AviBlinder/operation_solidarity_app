@@ -2,16 +2,29 @@
 ToDo:
 Frontend
 
-1. Fix b.e. call to DynamoDB with V3
-2. Finish Requests form
-3. If 'city' -> update GeoLocation on DB
+1. If 'city' -> update GeoLocation on DB
 
-4. Create Proposal form (?)
-5. create 'update request' form
-6. Create User form/Update Preferences Form
-7. Landing Page:
-8. review session? logic
-9. Create Userpool + google identity
+2. Create Proposal form (?)
+3. create 'update request' form
+4. Create User form/Update Preferences Form
+5. Landing Page:
+6. review session? logic
+7. Create Userpool + google identity
+
+---
+
+Routes:
+/tasks/ --> sort , filter by city/distance range/availability/ and 'link to update'
+/tasks/[id]
+/tasks/create-request/
+/tasks/create-proposal/
+/tasks/update/[id]
+/tasks/delete/[id]
+
+/users/
+/users/[id]/update-profile
+
+## ?? find me a match??
 
 ---
 
@@ -105,4 +118,10 @@ npx mocha --exit --recursive tests/
 ```sh
 sam logs -n sqs-example-QueueConsumerFunction-M1GVFCEH030D --tail
 
+```
+
+### Migraring aws-sdk to V3
+
+```sh
+npx aws-sdk-js-codemod -t v2-to-v3 temp.js
 ```

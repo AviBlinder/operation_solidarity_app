@@ -1,25 +1,26 @@
-import AWS from 'aws-sdk';
+import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb';
+import { marshall } from '@aws-sdk/util-dynamodb';
 
 export const GET = async (request) => {
-  AWS.config.update({
+  const client = new DynamoDBClient({
     region: process.env.AWS_REGION,
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    },
   });
-  const docClient = new AWS.DynamoDB.DocumentClient();
-  const params = {
+
+  const command = new QueryCommand({
     TableName: 'ReferenceData',
     KeyConditionExpression: 'categoryId = :categoryId',
     ExpressionAttributeValues: {
-      ':categoryId': 'Categories',
+      ':categoryId': { S: 'Categories' },
     },
-  };
+  });
 
   try {
-    const data = await docClient.query(params).promise();
-    const categories = data.Items;
-
-    return new Response(JSON.stringify(categories), { status: 200 });
+    const { Items } = await client.send(command);
+    return new Response(JSON.stringify(Items), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response('Failed to get Reference Data', { status: 500 });

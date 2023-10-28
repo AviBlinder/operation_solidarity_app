@@ -10,6 +10,7 @@ import Loading from './loading';
 
 const CreateRequest = () => {
   const { data: session } = useSession();
+  const [availability, setAvailability] = useState([]);
 
   const [post, setPost] = useState({
     description: '',
@@ -19,7 +20,6 @@ const CreateRequest = () => {
     from: '',
     to: '',
     status: '',
-    ableDays: [''],
     entryDate: '',
   });
   const [submitting, setIsSubmitting] = useState(false);
@@ -46,11 +46,12 @@ const CreateRequest = () => {
           from: post.from,
           to: post.to,
           status: 'new',
-          availability: post.ableDays,
+          availability: availability,
           entryDate: new Date(),
         }),
       });
       if (response.ok) {
+        setAvailability([]);
         setPost({
           description: '',
           category: '',
@@ -59,15 +60,14 @@ const CreateRequest = () => {
           from: '',
           to: '',
           status: '',
-          ableDays: [''],
           entryDate: '',
         });
 
-        router.push('/profile');
+        router.push('/tasks');
       }
     } catch (error) {
       console.log(error);
-      router.push('/profile');
+      router.push('/tasks');
     } finally {
       setIsSubmitting(false);
     }
@@ -83,6 +83,8 @@ const CreateRequest = () => {
         <CreateRequestForm
           type="request"
           post={post}
+          setAvailability={setAvailability}
+          availability={availability}
           setPost={setPost}
           submitting={submitting}
           handleSubmit={createRequest}

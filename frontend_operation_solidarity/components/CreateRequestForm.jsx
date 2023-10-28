@@ -26,7 +26,15 @@ const weekDays = [
   'Saturday',
 ];
 
-function CreateRequestForm({ type, post, setPost, submitting, handleSubmit }) {
+function CreateRequestForm({
+  type,
+  post,
+  setPost,
+  submitting,
+  handleSubmit,
+  availability,
+  setAvailability,
+}) {
   const { data: session } = useSession();
 
   const [description, setDescription] = useState('');
@@ -34,7 +42,6 @@ function CreateRequestForm({ type, post, setPost, submitting, handleSubmit }) {
   const [address, setAddress] = useState('');
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
-  const [availability, setAvailability] = useState([]);
   const [category, setCategory] = useState('');
   const [categories, setCategories] = useState([]);
 
@@ -62,26 +69,12 @@ function CreateRequestForm({ type, post, setPost, submitting, handleSubmit }) {
     if (checked) {
       // add checked day Array
       setAvailability([...availability, day]);
-      let temp = availability.map((a) => a);
       // posts.filter((post) => temp.includes(post));
-      setPost({ ...post, ableDays: [...weekDays] });
-      setPost({
-        ...post,
-        ableDays: weekDays.filter((day) => availability.includes(day)),
-      });
 
       // setPost({ ...post, ableDays: [...temp] });
     } else {
       // Remove
       setAvailability(availability.filter((a) => a != day));
-      let temp = availability.map((a) => a);
-      setPost({ ...post, ableDays: [...weekDays] });
-      setPost({
-        ...post,
-        ableDays: weekDays.filter((day) => availability.includes(day)),
-      });
-
-      // setPost({ ...post, ableDays: [...temp] });
     }
   };
 
@@ -321,8 +314,8 @@ function CreateRequestForm({ type, post, setPost, submitting, handleSubmit }) {
                 Choose a category
               </option>
               {categories.map((category, index) => (
-                <option key={index} value={category.itemName}>
-                  {category.itemNameHebrew}
+                <option key={index} value={category.itemName.S}>
+                  {category.itemNameHebrew.S}
                 </option>
               ))}
             </select>

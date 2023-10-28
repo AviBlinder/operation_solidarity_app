@@ -49,7 +49,7 @@ const Nav = () => {
             <Link href="/create-proposal" className="btn_primary">
               Create Proposal
             </Link>
-            <Link href="/profile" className="btn_secondary">
+            <Link href="/tasks" className="btn_secondary">
               Get tasks
             </Link>
 
@@ -146,6 +146,14 @@ const Nav = () => {
                 >
                   Propose Help
                 </Link>
+                <Link
+                  href="/tasks"
+                  className="dropdown_link"
+                  onClick={() => setToggleDropdown(false)}
+                >
+                  Get tasks
+                </Link>
+
                 <button
                   type="button"
                   onClick={() => {
