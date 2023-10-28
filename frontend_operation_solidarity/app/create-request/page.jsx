@@ -11,8 +11,16 @@ import Loading from './loading';
 const CreateRequest = () => {
   const { data: session } = useSession();
   const [availability, setAvailability] = useState([]);
+  const [geoLocations, setGeolocations] = useState({
+    cityLat: '',
+    cityLng: '',
+    fromLat: '',
+    fromLng: '',
+    toLat: '',
+    toLng: '',
+  });
 
-  const [post, setPost] = useState({
+  const [task, setTask] = useState({
     description: '',
     category: '',
     city: '',
@@ -25,26 +33,43 @@ const CreateRequest = () => {
   const [submitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  const initPost = () => {};
-
   const createRequest = async (e) => {
-    console.log('inside createRequest', e);
-    e.preventDefault();
+    // e.preventDefault();
     setIsSubmitting(true);
+    console.log('before insert task: ', task);
     try {
       const response = await fetch('/api/tasks/new', {
         method: 'POST',
         body: JSON.stringify({
           //
+
           email: session?.user.email,
           userId: session?.user.userId,
           userName: session?.user.name,
-          description: post.description,
-          category: post.category,
-          city: post.city,
-          address: post.address,
-          from: post.from,
-          to: post.to,
+          description: task.description,
+          category: task.category,
+          city: task.city
+            ? {
+                city: task.city,
+                lat: geoLocations.cityLat ? geoLocations.cityLat : null,
+                lng: geoLocations.cityLng ? geoLocations.cityLng : null,
+              }
+            : null,
+          address: task.address,
+          from: task.from
+            ? {
+                cityFrom: task.from,
+                lat: geoLocations.fromLat ? geoLocations.fromLat : null,
+                lng: geoLocations.fromLng ? geoLocations.fromLng : null,
+              }
+            : null,
+          to: task.to
+            ? {
+                cityTo: task.to,
+                lat: geoLocations.toLat ? geoLocations.toLat : null,
+                lng: geoLocations.toLng ? geoLocations.toLng : null,
+              }
+            : null,
           status: 'new',
           availability: availability,
           entryDate: new Date(),
@@ -52,16 +77,8 @@ const CreateRequest = () => {
       });
       if (response.ok) {
         setAvailability([]);
-        setPost({
-          description: '',
-          category: '',
-          city: '',
-          address: '',
-          from: '',
-          to: '',
-          status: '',
-          entryDate: '',
-        });
+        setGeolocations({});
+        setTask({});
 
         router.push('/tasks');
       }
@@ -82,10 +99,12 @@ const CreateRequest = () => {
       <Suspense fallback={<Loading />}>
         <CreateRequestForm
           type="request"
-          post={post}
-          setAvailability={setAvailability}
+          task={task}
+          setTask={setTask}
           availability={availability}
-          setPost={setPost}
+          setAvailability={setAvailability}
+          geoLocations={geoLocations}
+          setGeolocations={setGeolocations}
           submitting={submitting}
           handleSubmit={createRequest}
         />

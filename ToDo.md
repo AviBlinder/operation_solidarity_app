@@ -2,8 +2,6 @@
 ToDo:
 Frontend
 
-1. If 'city' -> update GeoLocation on DB
-
 2. Create Proposal form (?)
 3. create 'update request' form
 4. Create User form/Update Preferences Form

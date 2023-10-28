@@ -28,7 +28,6 @@ describe('getUserHandler', () => {
     };
 
     const response = await getUserHandler(event);
-    console.log('response 1:', response);
     expect(response.statusCode).to.equal(200);
     expect(JSON.parse(response.body)).to.deep.equal(userData);
   });

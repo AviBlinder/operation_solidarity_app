@@ -14,7 +14,6 @@ export const GET = async (request) => {
       const env = process.env.APIGW_ENV;
       const res = await fetch(`${baseURL}/${env}/tasks?email=${userEmail}`);
       const tasks = await res.json();
-      console.log('fetch by userEmail =', tasks);
       return new Response(JSON.stringify(tasks), { status: 200 });
     } else {
       return new Response('No email provided', { status: 500 });

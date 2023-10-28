@@ -1,53 +1,148 @@
 'use client';
-import { Suspense } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
-// import Profile from '../components/Profile';
-
-const UserTasks = () => {
-  const router = useRouter();
+function TaskList() {
   const { data: session } = useSession();
 
-  const [myTasks, setMyTasks] = useState([]);
+  const [tasks, setTasks] = useState([]);
+  const [filteredTasks, setFilteredTasks] = useState([]);
+  const [filter, setFilter] = useState('');
+  const [sortField, setSortField] = useState('entryDate');
+  const [sortOrder, setSortOrder] = useState('desc');
 
   useEffect(() => {
+    console.log('session?.user.email ', session);
+    // Fetch the tasks from your API or server here
     const fetchTasks = async () => {
       const response = await fetch(
         `/api/tasks?userEmail=${session?.user.email}`
       );
       const data = await response.json();
-      setMyTasks(data);
+      console.log('data =', data);
+      setTasks(data);
+      setFilteredTasks(data);
     };
+    if (session?.user.email) {
+      fetchTasks();
+    }
+  }, []);
 
-    // if (session?.user.id) fetchTasks();
-    fetchTasks();
+  useEffect(() => {
+    let result = [...tasks];
 
-    return () => {
-      setMyTasks([]);
-    };
-    //
-  }, [session?.user.id]);
+    if (filter) {
+      result = result.filter((task) =>
+        Object.values(task).some((value) =>
+          value.toString().toLowerCase().includes(filter.toLowerCase())
+        )
+      );
+    }
+
+    result.sort((a, b) => {
+      let valueA = a[sortField];
+      let valueB = b[sortField];
+
+      if (typeof valueA === 'string') {
+        valueA = valueA.toLowerCase();
+        valueB = valueB.toLowerCase();
+      }
+
+      if (sortOrder === 'asc') {
+        return valueA > valueB ? 1 : -1;
+      } else {
+        return valueA < valueB ? 1 : -1;
+      }
+    });
+
+    setFilteredTasks(result);
+  }, [filter, sortField, sortOrder, tasks]);
+
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+  };
+
+  const handleSortFieldChange = (event) => {
+    setSortField(event.target.value);
+  };
+
+  const handleSortOrderChange = (event) => {
+    setSortOrder(event.target.value);
+  };
 
   return (
-    <section className="bg-primary-400/90">
-      Tasks Page !
-      <Suspense fallback={<div>Loading Your tasks...</div>}>
-        <ul>
-          {myTasks.map((post, index) => (
-            <div key={index}>
-              <li>
-                <p>{post.description} </p>
-                {/* <p> Requester: {post.email}</p> */}
-              </li>
-            </div>
-          ))}
-        </ul>
-        <div className="bg-supporting2-300/95 h-28 w-28"> Secondary</div>
-      </Suspense>
-    </section>
-  );
-};
+    <div>
+      <div className="flex justify-between mb-4">
+        <input
+          type="text"
+          placeholder="Search..."
+          value={filter}
+          onChange={handleFilterChange}
+          className="px-4 py-2 border rounded"
+        />
+        <div>
+          <label>
+            Sort by:
+            <select
+              value={sortField}
+              onChange={handleSortFieldChange}
+              className="ml-2 px-2 py-1 border rounded"
+            >
+              {/* Add sort fields based on your task structure */}
+              <option value="entryDate">Entry Date</option>
+              <option value="description">Description</option>
+              <option value="category">Category</option>
+            </select>
+          </label>
+          <select
+            value={sortOrder}
+            onChange={handleSortOrderChange}
+            className="ml-2 px-2 py-1 border rounded"
+          >
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </select>
+        </div>
+      </div>
 
-export default UserTasks;
+      <ul>
+        {filteredTasks.map((task, index) => (
+          <li
+            key={index}
+            className="mb-4 p-4 border rounded bg-white shadow-md"
+          >
+            <h3 className="text-lg font-semibold text-primary-800">
+              {task.description || 'No Description'}
+            </h3>
+            <p className="text-sm text-gray-600">
+              <strong>Category:</strong> {task.category || 'N/A'}
+            </p>
+            <p className="text-sm text-gray-600">
+              <strong>City:</strong> {task?.city?.city || 'N/A'}
+              <strong>City:</strong> {task?.city?.lat || 'N/A'}
+              <strong>City:</strong> {task?.city?.lng || 'N/A'}
+            </p>
+            <p className="text-sm text-gray-600">
+              <strong>Status:</strong>{' '}
+              {task.status
+                ? task.status.charAt(0).toUpperCase() + task.status.slice(1)
+                : 'N/A'}
+            </p>
+            <p className="text-sm text-gray-600">
+              <strong>Entry Date:</strong>{' '}
+              {task.entryDate
+                ? new Date(task.entryDate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })
+                : 'N/A'}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default TaskList;

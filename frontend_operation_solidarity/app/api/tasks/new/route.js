@@ -17,8 +17,6 @@ export const POST = async (request) => {
       entryDate,
     } = await request.json();
 
-    console.log('inside task/new', availability);
-
     // const location = await getLocations(city);
     // console.log('after getLocations', location);
 

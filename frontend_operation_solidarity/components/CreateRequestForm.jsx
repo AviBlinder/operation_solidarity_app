@@ -4,9 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { cities_short_list } from '@/constants/index';
 import { useSession } from 'next-auth/react';
 
-// const cities = ['New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix'];
-const cities = cities_short_list.map((city) => city.city);
-
 const addresses = {
   'New York': ['5th Avenue', 'Madison Avenue', 'Broadway'],
   'Los Angeles': [
@@ -14,7 +11,6 @@ const addresses = {
     'Hollywood Boulevard',
     'Mulholland Drive',
   ],
-  // Add addresses for other cities
 };
 const weekDays = [
   'Sunday',
@@ -28,25 +24,20 @@ const weekDays = [
 
 function CreateRequestForm({
   type,
-  post,
-  setPost,
-  submitting,
-  handleSubmit,
+  task,
+  setTask,
   availability,
   setAvailability,
+  geoLocations,
+  setGeolocations,
+  submitting,
+  handleSubmit,
 }) {
   const { data: session } = useSession();
 
-  const [description, setDescription] = useState('');
-  const [city, setCity] = useState('');
-  const [address, setAddress] = useState('');
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
-  const [category, setCategory] = useState('');
   const [categories, setCategories] = useState([]);
 
   const [locationType, setLocationType] = useState('cityAddress');
-  let tempAvailabilities = [];
 
   // load Categories
   useEffect(() => {
@@ -67,13 +58,8 @@ function CreateRequestForm({
   const handleWeekDayChange = (day, checked) => {
     let temp = [];
     if (checked) {
-      // add checked day Array
       setAvailability([...availability, day]);
-      // posts.filter((post) => temp.includes(post));
-
-      // setPost({ ...post, ableDays: [...temp] });
     } else {
-      // Remove
       setAvailability(availability.filter((a) => a != day));
     }
   };
@@ -81,17 +67,42 @@ function CreateRequestForm({
   const handleSelectAllDays = () => {
     if (availability.length < weekDays.length) {
       setAvailability(weekDays);
-      setPost({ ...post, ableDays: [...weekDays] });
+      setTask({ ...task, ableDays: [...weekDays] });
     } else {
       setAvailability([]);
-      setPost({ ...post, ableDays: [] });
+      setTask({ ...task, ableDays: [] });
     }
+  };
+
+  const findLatLng = (property) => {
+    const result = cities_short_list.filter((city) => city.city === property);
+    const lat = result[0].lat;
+    const lng = result[0].lng;
+    return [lat, lng];
+  };
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
+    if (task.from) {
+      const [fromLat, fromLng] = findLatLng(task.from);
+      setGeolocations({ ...geoLocations, fromLat: fromLat, fromLng: fromLng });
+    }
+
+    if (task.to) {
+      const [toLat, toLng] = findLatLng(task.to);
+      setGeolocations({ ...geoLocations, toLat: toLat, toLng: toLng });
+    }
+
+    if (task.city) {
+      const [cityLat, cityLng] = findLatLng(task.city);
+      setGeolocations({ ...geoLocations, cityLat: cityLat, cityLng: cityLng });
+    }
+
+    handleSubmit();
   };
   return (
     <div>
-      <p> Availability: {availability}</p>
       {session?.user.email ? (
-        <form className="p-8" onSubmit={handleSubmit}>
+        <form className="p-8" onSubmit={handleSubmitForm}>
           <div className="mb-4">
             <label
               className="block text-sm font-medium text-primary-800"
@@ -103,10 +114,10 @@ function CreateRequestForm({
               type="textarea"
               id="description"
               className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-xs placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
-              value={post.description}
+              value={task.description}
               // onChange={(e) => setDescription(e.target.value)}
               onChange={(e) =>
-                setPost({ ...post, description: e.target.value })
+                setTask({ ...task, description: e.target.value })
               }
               required
               placeholder="Write your request here"
@@ -155,17 +166,16 @@ function CreateRequestForm({
                 <select
                   id="city"
                   className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-                  value={post.city}
-                  // onChange={(e) => setCity(e.target.value)}
-                  onChange={(e) => setPost({ ...post, city: e.target.value })}
+                  value={task.city}
+                  onChange={(e) => setTask({ ...task, city: e.target.value })}
                   required
                 >
                   <option value="" disabled>
                     Choose a city
                   </option>
-                  {cities.map((city) => (
-                    <option key={city} value={city}>
-                      {city}
+                  {cities_short_list.map((city, index) => (
+                    <option key={index} value={city.city}>
+                      {city.city}
                     </option>
                   ))}
                 </select>
@@ -184,10 +194,9 @@ function CreateRequestForm({
                   placeholder="Enter address"
                   id="address"
                   className="mt-1 block w-full py-1 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-                  value={post.address}
-                  // onChange={(e) => setAddress(e.target.value)}
+                  value={task.address}
                   onChange={(e) =>
-                    setPost({ ...post, address: e.target.value })
+                    setTask({ ...task, address: e.target.value })
                   }
                   // required
                 >
@@ -214,17 +223,16 @@ function CreateRequestForm({
                 <select
                   id="from"
                   className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-                  value={post.from}
-                  // onChange={(e) => setFrom(e.target.value)}
-                  onChange={(e) => setPost({ ...post, from: e.target.value })}
+                  value={task.from}
+                  onChange={(e) => setTask({ ...task, from: e.target.value })}
                   required
                 >
                   <option value="" disabled>
                     Choose a city
                   </option>
-                  {cities.map((city) => (
-                    <option key={city} value={city}>
-                      {city}
+                  {cities_short_list.map((city, index) => (
+                    <option key={index} value={city.city}>
+                      {city.city}
                     </option>
                   ))}
                 </select>
@@ -240,17 +248,16 @@ function CreateRequestForm({
                 <select
                   id="to"
                   className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-                  value={post.to}
-                  // onChange={(e) => setTo(e.target.value)}
-                  onChange={(e) => setPost({ ...post, to: e.target.value })}
+                  value={task.to}
+                  onChange={(e) => setTask({ ...task, to: e.target.value })}
                   required
                 >
                   <option value="" disabled>
                     Choose a city
                   </option>
-                  {cities.map((city) => (
-                    <option key={city} value={city}>
-                      {city}
+                  {cities_short_list.map((city, index) => (
+                    <option key={index} value={city.city}>
+                      {city.city}
                     </option>
                   ))}
                 </select>
@@ -306,8 +313,8 @@ function CreateRequestForm({
             <select
               id="category"
               className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              value={task.category}
+              onChange={(e) => setTask({ ...task, category: e.target.value })}
               required
             >
               <option value="" disabled>
