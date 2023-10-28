@@ -17,7 +17,7 @@ export const POST = async (request) => {
       entryDate,
     } = await request.json();
 
-    console.log('inside task/new');
+    console.log('inside task/new', availability);
 
     // const location = await getLocations(city);
     // console.log('after getLocations', location);
@@ -44,6 +44,7 @@ export const POST = async (request) => {
       },
     });
     const tasks = await res.json();
+    console.log('tasks', tasks);
     return new Response(JSON.stringify(tasks), { status: 201 });
   } catch (error) {
     return new Response('Failed to create a new task', { status: 500 });

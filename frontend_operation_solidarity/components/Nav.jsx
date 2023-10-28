@@ -31,7 +31,7 @@ const Nav = () => {
         />
       </Link>
       <p
-        className="sm:hidden lg:flex text-4xl logo_text ml-6 text-center justify-center
+        className="sm:hidden md:flex text-2xl text-supporting1-800 tracking-tighter font-bold text-center justify-center
          px-20 py-4
         "
       >
@@ -122,8 +122,8 @@ const Nav = () => {
           <div className="flex mt-4">
             <Image
               src={session?.user.image}
-              width={50}
-              height={50}
+              width={100}
+              height={100}
               className="rounded-full"
               alt="profile"
               // onClick={() => setToggleDropdown(!toggleDropdown)}

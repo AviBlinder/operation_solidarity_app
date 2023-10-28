@@ -29,7 +29,7 @@ const weekDays = [
 function CreateRequestForm({ type, post, setPost, submitting, handleSubmit }) {
   const { data: session } = useSession();
 
-  const [requestDescription, setRequestDescription] = useState('');
+  const [description, setDescription] = useState('');
   const [city, setCity] = useState('');
   const [address, setAddress] = useState('');
   const [from, setFrom] = useState('');
@@ -39,6 +39,7 @@ function CreateRequestForm({ type, post, setPost, submitting, handleSubmit }) {
   const [categories, setCategories] = useState([]);
 
   const [locationType, setLocationType] = useState('cityAddress');
+  let tempAvailabilities = [];
 
   // load Categories
   useEffect(() => {
@@ -56,51 +57,64 @@ function CreateRequestForm({ type, post, setPost, submitting, handleSubmit }) {
   }, []);
   //
 
-  const handleWeekDayChange = (day) => {
-    if (availability.includes(day)) {
-      setAvailability(availability.filter((d) => d !== day));
-    } else {
+  const handleWeekDayChange = (day, checked) => {
+    let temp = [];
+    if (checked) {
+      // add checked day Array
       setAvailability([...availability, day]);
+      let temp = availability.map((a) => a);
+      // posts.filter((post) => temp.includes(post));
+      setPost({ ...post, ableDays: [...weekDays] });
+      setPost({
+        ...post,
+        ableDays: weekDays.filter((day) => availability.includes(day)),
+      });
+
+      // setPost({ ...post, ableDays: [...temp] });
+    } else {
+      // Remove
+      setAvailability(availability.filter((a) => a != day));
+      let temp = availability.map((a) => a);
+      setPost({ ...post, ableDays: [...weekDays] });
+      setPost({
+        ...post,
+        ableDays: weekDays.filter((day) => availability.includes(day)),
+      });
+
+      // setPost({ ...post, ableDays: [...temp] });
     }
   };
-
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-  //   const data = {
-  //     requestDescription,
-  //     location:
-  //       locationType === 'cityAddress' ? { city, address } : { from, to },
-  //     availability,
-  //     category,
-  //   };
-  //   console.log(data);
-  //   // Here you can send the data to your backend
-  // };
 
   const handleSelectAllDays = () => {
     if (availability.length < weekDays.length) {
       setAvailability(weekDays);
+      setPost({ ...post, ableDays: [...weekDays] });
     } else {
       setAvailability([]);
+      setPost({ ...post, ableDays: [] });
     }
   };
   return (
     <div>
+      <p> Availability: {availability}</p>
       {session?.user.email ? (
         <form className="p-8" onSubmit={handleSubmit}>
           <div className="mb-4">
             <label
               className="block text-sm font-medium text-primary-800"
-              htmlFor="requestDescription"
+              htmlFor="description"
             >
               Request Description
             </label>
             <input
               type="textarea"
-              id="requestDescription"
+              id="description"
               className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-xs placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
-              value={requestDescription}
-              onChange={(e) => setRequestDescription(e.target.value)}
+              value={post.description}
+              // onChange={(e) => setDescription(e.target.value)}
+              onChange={(e) =>
+                setPost({ ...post, description: e.target.value })
+              }
               required
               placeholder="Write your request here"
             />
@@ -148,8 +162,9 @@ function CreateRequestForm({ type, post, setPost, submitting, handleSubmit }) {
                 <select
                   id="city"
                   className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
+                  value={post.city}
+                  // onChange={(e) => setCity(e.target.value)}
+                  onChange={(e) => setPost({ ...post, city: e.target.value })}
                   required
                 >
                   <option value="" disabled>
@@ -170,22 +185,28 @@ function CreateRequestForm({ type, post, setPost, submitting, handleSubmit }) {
                 >
                   Address
                 </label>
-                <select
+                <input
+                  type="text"
+                  name="address"
+                  placeholder="Enter address"
                   id="address"
-                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  required
+                  className="mt-1 block w-full py-1 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
+                  value={post.address}
+                  // onChange={(e) => setAddress(e.target.value)}
+                  onChange={(e) =>
+                    setPost({ ...post, address: e.target.value })
+                  }
+                  // required
                 >
-                  <option value="" disabled>
+                  {/* <option value="" disabled>
                     Choose an address
                   </option>
                   {(addresses[city] || []).map((address) => (
                     <option key={address} value={address}>
                       {address}
                     </option>
-                  ))}
-                </select>
+                  ))} */}
+                </input>
               </div>
             </div>
           ) : (
@@ -200,8 +221,9 @@ function CreateRequestForm({ type, post, setPost, submitting, handleSubmit }) {
                 <select
                   id="from"
                   className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-                  value={from}
-                  onChange={(e) => setFrom(e.target.value)}
+                  value={post.from}
+                  // onChange={(e) => setFrom(e.target.value)}
+                  onChange={(e) => setPost({ ...post, from: e.target.value })}
                   required
                 >
                   <option value="" disabled>
@@ -225,8 +247,9 @@ function CreateRequestForm({ type, post, setPost, submitting, handleSubmit }) {
                 <select
                   id="to"
                   className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-                  value={to}
-                  onChange={(e) => setTo(e.target.value)}
+                  value={post.to}
+                  // onChange={(e) => setTo(e.target.value)}
+                  onChange={(e) => setPost({ ...post, to: e.target.value })}
                   required
                 >
                   <option value="" disabled>
@@ -259,6 +282,9 @@ function CreateRequestForm({ type, post, setPost, submitting, handleSubmit }) {
                 </label>
               </div>
               <div>
+                Availability: {availability.length}: {availability}
+              </div>
+              <div>
                 {weekDays.map((day) => (
                   <label key={day} className="inline-flex items-center mr-4">
                     <input
@@ -266,7 +292,9 @@ function CreateRequestForm({ type, post, setPost, submitting, handleSubmit }) {
                       className="form-checkbox"
                       value={day}
                       checked={availability.includes(day)}
-                      onChange={() => handleWeekDayChange(day)}
+                      onChange={(event) =>
+                        handleWeekDayChange(day, event.target.checked)
+                      }
                     />
                     <span className="ml-2">{day}</span>
                   </label>
@@ -303,9 +331,10 @@ function CreateRequestForm({ type, post, setPost, submitting, handleSubmit }) {
           <div className="flex justify-end">
             <button
               type="submit"
+              disabled={submitting}
               className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 active:bg-blue-800"
             >
-              Submit Request
+              {submitting ? `submitting request` : 'submit'}
             </button>
           </div>
         </form>

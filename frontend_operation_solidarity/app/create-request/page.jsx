@@ -1,26 +1,34 @@
 'use client';
 import { Suspense, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 import CreateRequestForm from '@/components/CreateRequestForm';
 import Loading from './loading';
 
+//
+
 const CreateRequest = () => {
+  const { data: session } = useSession();
+
   const [post, setPost] = useState({
     description: '',
     category: '',
     city: '',
-    street: '',
+    address: '',
     from: '',
     to: '',
     status: '',
-    availability: [''],
+    ableDays: [''],
     entryDate: '',
   });
   const [submitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
+  const initPost = () => {};
+
   const createRequest = async (e) => {
+    console.log('inside createRequest', e);
     e.preventDefault();
     setIsSubmitting(true);
     try {
@@ -34,11 +42,11 @@ const CreateRequest = () => {
           description: post.description,
           category: post.category,
           city: post.city,
-          street: post.street,
+          address: post.address,
           from: post.from,
           to: post.to,
           status: 'new',
-          availability: post.availability,
+          availability: post.ableDays,
           entryDate: new Date(),
         }),
       });
@@ -47,18 +55,19 @@ const CreateRequest = () => {
           description: '',
           category: '',
           city: '',
-          street: '',
+          address: '',
           from: '',
           to: '',
           status: '',
-          availability: [''],
+          ableDays: [''],
           entryDate: '',
         });
 
-        router.push('/');
+        router.push('/profile');
       }
     } catch (error) {
       console.log(error);
+      router.push('/profile');
     } finally {
       setIsSubmitting(false);
     }
@@ -72,7 +81,7 @@ const CreateRequest = () => {
       </p>
       <Suspense fallback={<Loading />}>
         <CreateRequestForm
-          type="Create Request"
+          type="request"
           post={post}
           setPost={setPost}
           submitting={submitting}
