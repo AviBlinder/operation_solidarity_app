@@ -23,8 +23,6 @@ exports.deleteTaskHandler = async (event) => {
 };
 
 exports.getTaskHandler = async (event) => {
-  console.log('inside getTaskHandler :', event);
-
   const taskId = event.pathParameters.TaskId;
   const entryDate = event.pathParameters.EntryDate;
 
@@ -140,11 +138,24 @@ exports.postTaskHandler = async (event) => {
 
 exports.updateTaskHandler = async (event) => {
   try {
+    const taskId = event.pathParameters.TaskId;
+    const entryDate = event.pathParameters.EntryDate;
+
+    if (!taskId || !entryDate) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          error: 'taskId and entryDate must be provided',
+        }),
+      };
+    }
+
     const data = JSON.parse(event.body);
     const params = {
       TableName: entity,
       Key: {
-        taskId: event.pathParameters.TaskId,
+        taskId: taskId,
+        entryDate: entryDate,
       },
       UpdateExpression:
         'set #name = :name, contactInfo = :contactInfo, address = :address',
