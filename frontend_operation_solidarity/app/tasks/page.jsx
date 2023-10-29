@@ -71,13 +71,6 @@ function TaskList() {
   return (
     <div>
       <div className="flex justify-between mb-4">
-        <input
-          type="text"
-          placeholder="Search..."
-          value={filter}
-          onChange={handleFilterChange}
-          className="px-4  border rounded"
-        />
         <div>
           <label>
             Sort by:
@@ -103,22 +96,31 @@ function TaskList() {
         </div>
       </div>
 
-      <ul>
+      <ul className="flex flex-row gap-6 ">
         {filteredTasks.map((task, index) => (
           <li
             key={index}
-            className="mb-4 p-4 border rounded bg-white shadow-md"
+            // className="mb-4 p-4 border rounded bg-white shadow-md"
+            className={`mb-4 p-4 border rounded-xl shadow-md ${
+              task.taskType === 'request'
+                ? 'bg-red-200'
+                : task.taskType === 'proposal'
+                ? 'bg-yellow-200'
+                : 'bg-white'
+            }`}
           >
             <h3 className="text-lg font-semibold text-primary-800">
               {task.description || 'No Description'}
             </h3>
             <p className="text-sm text-gray-600">
+              <strong>Task Type:</strong> {task.taskType || 'N/A'}
+            </p>
+
+            <p className="text-sm text-gray-600">
               <strong>Category:</strong> {task.category || 'N/A'}
             </p>
             <p className="text-sm text-gray-600">
               <strong>City:</strong> {task?.city?.city || 'N/A'}
-              <strong>City Lat:</strong> {task?.city?.lat || 'N/A'}
-              <strong>City Lng:</strong> {task?.city?.lng || 'N/A'}
             </p>
             <p className="text-sm text-gray-600">
               <strong>Status:</strong>{' '}

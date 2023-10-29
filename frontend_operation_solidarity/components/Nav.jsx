@@ -54,13 +54,13 @@ const Nav = () => {
             </Link>
 
             <div className="relative">
-              <Link href="/profile">
+              <Link href="/tasks">
                 <Image
                   src={session?.user.image}
                   width={50}
                   height={50}
                   className="rounded-full"
-                  alt="profile"
+                  alt="tasks"
                   onClick={() => setToggleDropdown((prev) => !prev)}
                 />
               </Link>
@@ -140,7 +140,7 @@ const Nav = () => {
                   Create request
                 </Link>
                 <Link
-                  href="/create-request"
+                  href="/create-proposal"
                   className="dropdown_link"
                   onClick={() => setToggleDropdown(false)}
                 >

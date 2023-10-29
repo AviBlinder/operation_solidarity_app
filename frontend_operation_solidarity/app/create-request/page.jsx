@@ -36,7 +36,6 @@ const CreateRequest = () => {
   const createRequest = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    console.log('before insert task: ', task);
     try {
       const response = await fetch('/api/tasks/new', {
         method: 'POST',
@@ -47,6 +46,7 @@ const CreateRequest = () => {
           userId: session?.user.userId,
           userName: session?.user.name,
           description: task.description,
+          taskType: 'request',
           category: task.category,
           city: task.city
             ? {

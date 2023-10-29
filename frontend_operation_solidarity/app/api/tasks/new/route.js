@@ -1,15 +1,17 @@
 export const POST = async (request) => {
+  console.log('POST request: ', request);
   const baseURL = process.env.baseURL;
   const env = process.env.APIGW_ENV;
   try {
     const {
       email,
-      userName,
       userId,
+      userName,
       description,
+      taskType,
       category,
       city,
-      street,
+      address,
       from,
       to,
       status,
@@ -25,12 +27,12 @@ export const POST = async (request) => {
       body: JSON.stringify({
         email,
         userId,
-        taskType: 'request',
+        taskType: taskType,
         userName: userName ? userName : null,
         description: description ? description : 'No description',
         category: category ? category : null,
         city: city ? city : null,
-        street: street ? street : null,
+        address: address ? address : null,
         from: from ? from : null,
         to: to ? to : null,
         status: status ? status : 'new',
