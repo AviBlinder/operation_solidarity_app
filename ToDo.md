@@ -2,22 +2,16 @@
 ToDo:
 Frontend
 
-2. Create Proposal form (?)
-3. create 'update request' form
+3. create 'update request' and update proposal form
 4. Create User form/Update Preferences Form
-5. Landing Page:
-6. review session? logic
-7. Create Userpool + google identity
+5. Landing Page
+6. Create Userpool + google identity
 
 ## // for a 'volunteer': create page for listing all request and add filter and message capabilities
 
 Routes:
 /tasks/ --> sort , filter by city/distance range/availability/ and 'link to update'
 /tasks/[id]
-/tasks/create-request/
-/tasks/create-proposal/
-/tasks/update/[id]
-/tasks/delete/[id]
 
 /users/
 /users/[id]/update-profile

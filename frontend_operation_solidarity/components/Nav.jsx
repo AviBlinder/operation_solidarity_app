@@ -43,10 +43,10 @@ const Nav = () => {
         {/* <p>Desktop</p> */}
         {session?.user ? (
           <div className="flex gap-3 md:gap-5">
-            <Link href="/create-request" className="btn_primary">
+            <Link href="/request/create" className="btn_primary">
               Create Request
             </Link>
-            <Link href="/create-proposal" className="btn_primary">
+            <Link href="/proposal/create" className="btn_primary">
               Create Proposal
             </Link>
             <Link href="/tasks" className="btn_secondary">
@@ -68,14 +68,14 @@ const Nav = () => {
                 {toggleDropdown && (
                   <div className="dropdown">
                     <Link
-                      href="/create-request"
+                      href="/request/create"
                       className="dropdown_link"
                       onClick={() => setToggleDropdown(false)}
                     >
                       Create request
                     </Link>
                     <Link
-                      href="/create-request"
+                      href="/request/create"
                       className="dropdown_link"
                       onClick={() => setToggleDropdown(false)}
                     >
@@ -133,14 +133,14 @@ const Nav = () => {
             {toggleDropdown && (
               <div className="dropdown">
                 <Link
-                  href="/create-request"
+                  href="/request/create"
                   className="dropdown_link"
                   onClick={() => setToggleDropdown(false)}
                 >
                   Create request
                 </Link>
                 <Link
-                  href="/create-proposal"
+                  href="/proposal/create"
                   className="dropdown_link"
                   onClick={() => setToggleDropdown(false)}
                 >
