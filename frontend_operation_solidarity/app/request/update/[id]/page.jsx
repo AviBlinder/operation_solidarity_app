@@ -80,8 +80,8 @@ const updateRequest = ({ params }) => {
         from: data.from?.cityFrom ? data.from.cityFrom : '',
         to: data.to?.cityTo ? data.to.cityTo : '',
       });
-      setSelectedCategories(data.category || []);
-      setAvailability(data.availability || []);
+      setSelectedCategories([...selectedCategories, ...data.category]);
+      setAvailability([...availability, ...data.availability]);
       setGeolocations({
         ...geoLocations,
         cityLat: data.city?.lat,
@@ -91,7 +91,7 @@ const updateRequest = ({ params }) => {
         toLat: data.to?.lat,
         toLng: data.to?.lng,
       });
-      data.city.city
+      data.city?.city
         ? setLocationType('cityAddress')
         : setLocationType('fromTo');
     };
@@ -153,29 +153,21 @@ const updateRequest = ({ params }) => {
 
   const handleCategoryChange = (category, isChecked) => {
     console.log('handleCategoryChange :', category);
-    setSelectedCategories((prevSelectedCategories) => {
-      if (isChecked) {
-        // If the checkbox is checked, add the category to the selectedCategories
-        return [...prevSelectedCategories, category];
+    console.log('selectedCategories.length =', selectedCategories.length);
+    if (isChecked) {
+      setSelectedCategories([...selectedCategories, category]);
+    } else {
+      if (selectedCategories.length === 1) {
+        setSelectedCategories([]);
       } else {
-        // If the checkbox is unchecked, remove the category from selectedCategories
-        return prevSelectedCategories.filter(
-          (selectedCategory) => selectedCategory !== category
-        );
+        setSelectedCategories(selectedCategories.filter((a) => a != category));
       }
-    });
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    console.log('inside handleSubmit! - task:', task);
-    console.log('inside handleSubmit - availability:', availability);
-    console.log('inside handleSubmit - geoLocations:', geoLocations);
-    console.log(
-      'inside handleSubmit - selectedCategories:',
-      selectedCategories
-    );
 
     if (locationType === 'cityAddress') {
       setTask({ ...task, from: '', to: '' });
@@ -267,6 +259,8 @@ const updateRequest = ({ params }) => {
     <div>
       {session?.user.email ? (
         <form className="p-8" onSubmit={handleSubmit}>
+          <p> Categories: {categories}</p>
+          <p> selectedCategories : {selectedCategories}</p>
           <div className="mb-4">
             <label
               className="block text-sm font-medium text-primary-800"
