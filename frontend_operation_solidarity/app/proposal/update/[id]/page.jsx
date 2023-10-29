@@ -41,7 +41,7 @@ const updateProposal = ({ params }) => {
   useEffect(() => {
     const fetchTask = async () => {
       const response = await fetch(
-        `/api/tasks/${params?.id}/?entryDate=${entryDate}`
+        `/api/tasks/${params?.id}?entryDate=${entryDate}`
       );
       const data = await response.json();
       console.log('fetched data', data);

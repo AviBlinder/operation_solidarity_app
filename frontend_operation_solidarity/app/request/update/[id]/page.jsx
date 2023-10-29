@@ -4,21 +4,17 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { cities_short_list } from '@/constants/index';
 import { useSession } from 'next-auth/react';
-
+import { useRouter } from 'next/navigation';
 import { weekDays } from '@/constants/index';
 
 const updateRequest = ({ params }) => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const entryDate = searchParams.get('entryDate');
   const [submitting, setIsSubmitting] = useState(false);
 
   const [task, setTask] = useState({
     description: '',
-    status: '',
-    email: '',
-    entryDate: '',
-    userName: '',
-    taskType: '',
     city: '',
     from: '',
     to: '',
@@ -75,9 +71,9 @@ const updateRequest = ({ params }) => {
         entryDate: entryDate,
         userName: data.userName,
         taskType: data.taskType,
-        city: data.city?.city ? data.city?.city : '',
-        from: data.from?.cityFrom ? data.from?.cityFrom : '',
-        to: data.to?.cityTo ? data.to?.cityTo : '',
+        city: data.city?.city ? data.city.city : '',
+        from: data.from?.cityFrom ? data.from.cityFrom : '',
+        to: data.to?.cityTo ? data.to.cityTo : '',
       });
       setSelectedCategories(data.category || []);
       setAvailability(data.availability || []);
@@ -166,7 +162,97 @@ const updateRequest = ({ params }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    console.log('inside handleSubmit');
+    console.log('inside handleSubmit! - task:', tasks);
+    console.log('inside handleSubmit - availability:', availability);
+    console.log('inside handleSubmit - geoLocations:', geoLocations);
+    console.log(
+      'inside handleSubmit - selectedCategories:',
+      selectedCategories
+    );
+
+    if (locationType === 'cityAddress') {
+      setTask({ ...task, from: '', to: '' });
+      setGeolocations({
+        ...geoLocations,
+        fromLat: '',
+        fromLng: '',
+        toLat: '',
+        toLng: '',
+      });
+    } else {
+      setTask({ ...task, city: '' });
+      setGeolocations({ ...geoLocations, cityLat: '', cityLng: '' });
+    }
+
+    // update start
+    try {
+      const response = await fetch(
+        `/api/tasks/${params?.id}?entryDate=${entryDate}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify({
+            //
+            description: task.description,
+            category: selectedCategories,
+            city: task.city
+              ? {
+                  city: task.city,
+                  lat: geoLocations.cityLat ? geoLocations.cityLat : null,
+                  lng: geoLocations.cityLng ? geoLocations.cityLng : null,
+                }
+              : null,
+            // address: task.address,
+            from: task.from
+              ? {
+                  cityFrom: task.from,
+                  lat: geoLocations.fromLat ? geoLocations.fromLat : null,
+                  lng: geoLocations.fromLng ? geoLocations.fromLng : null,
+                }
+              : null,
+            to: task.to
+              ? {
+                  cityTo: task.to,
+                  lat: geoLocations.toLat ? geoLocations.toLat : null,
+                  lng: geoLocations.toLng ? geoLocations.toLng : null,
+                }
+              : null,
+            // status: 'new',
+            availability: availability,
+            updateDate: new Date(),
+          }),
+        }
+      );
+      if (response.ok) {
+        setAvailability([]);
+        setGeolocations({
+          cityLat: '',
+          cityLng: '',
+          fromLat: '',
+          fromLng: '',
+          toLat: '',
+          toLng: '',
+        });
+        setTask({
+          description: '',
+          category: '',
+          city: '',
+          address: '',
+          from: '',
+          to: '',
+          status: '',
+          entryDate: '',
+        });
+
+        router.push('/tasks');
+      }
+    } catch (error) {
+      console.log('error updatin request ', error);
+      router.push('/tasks');
+    } finally {
+      setIsSubmitting(false);
+    }
+
+    // update end
     setIsSubmitting(false);
   };
 
@@ -252,27 +338,6 @@ const updateRequest = ({ params }) => {
                     </option>
                   ))}
                 </select>
-              </div>
-
-              <div>
-                <label
-                  className="block text-sm font-medium text-primary-800"
-                  htmlFor="address"
-                >
-                  Address
-                </label>
-                <input
-                  type="text"
-                  name="address"
-                  placeholder="Enter address"
-                  id="address"
-                  className="mt-1 block w-full py-1 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-                  value={task.address}
-                  onChange={(e) =>
-                    setTask({ ...task, address: e.target.value })
-                  }
-                  // required
-                ></input>
               </div>
             </div>
           ) : (

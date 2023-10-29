@@ -1,7 +1,5 @@
 ########################################################################################
 ToDo:
-// add 'check box city / from-to
-// manage pre-selected categories
 // update chages
 // sync. 'proposal/update'
 
