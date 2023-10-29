@@ -24,7 +24,6 @@ export const GET = async (request, { params }) => {
 };
 
 export const PUT = async (request, { params }) => {
-  console.log('PUT request: ', request);
   const baseURL = process.env.baseURL;
   const env = process.env.APIGW_ENV;
   const { id } = params;
@@ -39,6 +38,7 @@ export const PUT = async (request, { params }) => {
   try {
     const { description, category, city, from, to, availability, updateDate } =
       await request.json();
+    console.log('description :', description);
     const res = await fetch(`${baseURL}/${env}/tasks/${id}/${entryDate}`, {
       method: 'PUT',
       body: JSON.stringify({

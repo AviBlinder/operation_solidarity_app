@@ -15,6 +15,11 @@ const updateRequest = ({ params }) => {
 
   const [task, setTask] = useState({
     description: '',
+    status: '',
+    email: '',
+    entryDate: '',
+    userName: '',
+    taskType: '',
     city: '',
     from: '',
     to: '',
@@ -86,9 +91,10 @@ const updateRequest = ({ params }) => {
         toLat: data.to?.lat,
         toLng: data.to?.lng,
       });
+      data.city.city
+        ? setLocationType('cityAddress')
+        : setLocationType('fromTo');
     };
-
-    task.city ? setLocationType('cityAddress') : setLocationType('fromTo');
 
     if (params?.id) {
       fetchTask();
@@ -146,6 +152,7 @@ const updateRequest = ({ params }) => {
   };
 
   const handleCategoryChange = (category, isChecked) => {
+    console.log('handleCategoryChange :', category);
     setSelectedCategories((prevSelectedCategories) => {
       if (isChecked) {
         // If the checkbox is checked, add the category to the selectedCategories
@@ -162,7 +169,7 @@ const updateRequest = ({ params }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    console.log('inside handleSubmit! - task:', tasks);
+    console.log('inside handleSubmit! - task:', task);
     console.log('inside handleSubmit - availability:', availability);
     console.log('inside handleSubmit - geoLocations:', geoLocations);
     console.log(
@@ -272,7 +279,6 @@ const updateRequest = ({ params }) => {
               id="description"
               className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-xs placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
               value={task.description}
-              // onChange={(e) => setDescription(e.target.value)}
               onChange={(e) =>
                 setTask({ ...task, description: e.target.value })
               }
@@ -309,7 +315,7 @@ const updateRequest = ({ params }) => {
               </label>
             </div>
           </div>
-
+          <p> locationType: {locationType}</p>
           {locationType === 'cityAddress' ? (
             <div className="grid grid-cols-2 gap-4 mb-4">
               <div>

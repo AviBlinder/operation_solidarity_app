@@ -68,7 +68,7 @@ Resources:
   UpdateTaskFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: index.listTasksHandler
+      Handler: index.updateTaskHandler
       CodeUri: code/
       Policies: AmazonDynamoDBFullAccess
       Events:

@@ -277,7 +277,7 @@ Resources:
   UpdateTaskFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: index.listTasksHandler
+      Handler: index.updateTaskHandler
       CodeUri: tasks/code/
       Policies:
         - DynamoDBCrudPolicy:

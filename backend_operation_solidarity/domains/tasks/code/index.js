@@ -151,22 +151,45 @@ exports.updateTaskHandler = async (event) => {
     }
 
     const data = JSON.parse(event.body);
+    console.log('data for update : ', data);
+    const updateExpression = [];
+    const expressionAttributeValues = {};
+    const expressionAttributeNames = {};
+    const fieldsToUpdate = [
+      'description',
+      'category',
+      'city',
+      'from',
+      'to',
+      'availability',
+      'updateDate',
+    ];
+
+    fieldsToUpdate.forEach((field) => {
+      if (data[field] !== undefined) {
+        updateExpression.push(`#${field} = :${field}`);
+        expressionAttributeValues[`:${field}`] = data[field];
+        expressionAttributeNames[`#${field}`] = field;
+      }
+    });
+    if (updateExpression.length === 0) {
+      return {
+        statusCode: 400,
+        body: JSON.stringify({
+          error: 'No valid fields provided for update',
+        }),
+      };
+    }
+
     const params = {
       TableName: entity,
       Key: {
         taskId: taskId,
         entryDate: entryDate,
       },
-      UpdateExpression:
-        'set #name = :name, contactInfo = :contactInfo, address = :address',
-      ExpressionAttributeNames: {
-        '#name': 'name',
-      },
-      ExpressionAttributeValues: {
-        ':name': data.name,
-        ':contactInfo': data.contactInfo,
-        ':address': data.address,
-      },
+      UpdateExpression: 'set ' + updateExpression.join(', '),
+      ExpressionAttributeNames: expressionAttributeNames,
+      ExpressionAttributeValues: expressionAttributeValues,
       ReturnValues: 'ALL_NEW',
     };
     const result = await dynamoDb.update(params).promise();
