@@ -36,7 +36,6 @@ const updateRequest = ({ params }) => {
   const { data: session } = useSession();
 
   const [categories, setCategories] = useState([]);
-  // const [categories, setCategories] = useState([]);
   const [categoriesHebrew, setCategoriesHebrew] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
 
@@ -76,11 +75,11 @@ const updateRequest = ({ params }) => {
         entryDate: entryDate,
         userName: data.userName,
         taskType: data.taskType,
-        city: data.city?.city ? data.city?.city : null,
-        from: data.from?.cityFrom ? data.from?.cityFrom : null,
-        to: data.to?.cityTo ? data.to?.cityTo : to,
+        city: data.city?.city ? data.city?.city : '',
+        from: data.from?.cityFrom ? data.from?.cityFrom : '',
+        to: data.to?.cityTo ? data.to?.cityTo : '',
       });
-      setCategories(data.category || []);
+      setSelectedCategories(data.category || []);
       setAvailability(data.availability || []);
       setGeolocations({
         ...geoLocations,
@@ -98,7 +97,7 @@ const updateRequest = ({ params }) => {
     if (params?.id) {
       fetchTask();
     }
-  }, [params.id, session]);
+  }, [params.id, session?.user.email]);
 
   const handleWeekDayChange = (day, isChecked) => {
     if (isChecked) {
@@ -130,6 +129,23 @@ const updateRequest = ({ params }) => {
       ...geoLocations,
       cityLat: cityLat,
       cityLng: cityLng,
+    });
+  };
+
+  const handleFrom = (value) => {
+    const [fromLat, fromLng] = findLatLng(value);
+    setGeolocations({
+      ...geoLocations,
+      fromLat: fromLat,
+      fromLng: fromLng,
+    });
+  };
+  const handleTo = (value) => {
+    const [toLat, toLng] = findLatLng(value);
+    setGeolocations({
+      ...geoLocations,
+      toLat: toLat,
+      toLng: toLng,
     });
   };
 
@@ -369,6 +385,7 @@ const updateRequest = ({ params }) => {
                     type="checkbox"
                     className="form-checkbox"
                     value={categoryHebrew}
+                    checked={selectedCategories.includes(categories[index])}
                     onChange={(event) =>
                       handleCategoryChange(
                         categories[index],
@@ -388,7 +405,7 @@ const updateRequest = ({ params }) => {
               disabled={submitting}
               className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 active:bg-blue-800"
             >
-              {submitting ? `submitting request` : 'submit'}
+              {submitting ? `updating request` : 'update'}
             </button>
           </div>
         </form>
