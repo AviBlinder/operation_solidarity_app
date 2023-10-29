@@ -12,12 +12,8 @@ export const GET = async (request, { params }) => {
   const entryDate = getStringParams(request.url, 'entryDate');
 
   try {
-    console.log('inside route tasks/[id]:', id, entryDate);
-    console.log('baseURL :', baseURL);
-    console.log('env :', env);
     const res = await fetch(`${baseURL}/${env}/tasks/${id}/${entryDate}`);
     const task = await res.json();
-    console.log('task ', task);
     return new Response(JSON.stringify(task), { status: 200 });
   } catch (error) {
     console.log('fetch task error ', error);
