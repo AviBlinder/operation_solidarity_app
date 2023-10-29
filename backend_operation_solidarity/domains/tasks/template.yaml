@@ -59,10 +59,10 @@ Resources:
       CodeUri: code/
       Policies: AmazonDynamoDBFullAccess
       Events:
-        GetVolunteer:
+        GetTask:
           Type: HttpApi
           Properties:
-            Path: /tasks/{TaskId}
+            Path: /tasks/{TaskId}/{EntryDate}
             Method: get
 
   UpdateTaskFunction:
@@ -72,7 +72,7 @@ Resources:
       CodeUri: code/
       Policies: AmazonDynamoDBFullAccess
       Events:
-        UpdateVolunteer:
+        UpdateTask:
           Type: HttpApi
           Properties:
             Path: /tasks/{TaskId}
@@ -98,7 +98,7 @@ Resources:
       CodeUri: code/
       Policies: AmazonDynamoDBFullAccess
       Events:
-        Listvolunteers:
+        ListTasks:
           Type: HttpApi
           Properties:
             Path: /tasks

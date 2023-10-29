@@ -1,11 +1,33 @@
 ########################################################################################
+router.push(`/profile/${post.creator._id}?name=${post.creator.username}`);
+
+const UserProfile = ({ params }) => {
+const searchParams = useSearchParams();
+const userName = searchParams.get('name');
+
+const [userPosts, setUserPosts] = useState([]);
+
+useEffect(() => {
+const fetchPosts = async () => {
+const response = await fetch(`/api/users/${params?.id}/posts`);
+const data = await response.json();
+
+      setUserPosts(data);
+    };
+
+    if (params?.id) fetchPosts();
+
+}, [params.id]);
+
+################################
 ToDo:
 Frontend
 
-3. create 'update request' and update proposal form
-4. Create User form/Update Preferences Form
-5. Landing Page
-6. Create Userpool + google identity
+1. create 'update request' and update proposal form
+2. Create User form/Update Preferences Form
+3. Landing Page
+4. Create Userpool + google identity
+5. Create 'tasks/[id]' view details page
 
 ## // for a 'volunteer': create page for listing all request and add filter and message capabilities
 

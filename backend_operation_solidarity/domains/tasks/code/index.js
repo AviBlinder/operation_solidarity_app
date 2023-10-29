@@ -23,12 +23,16 @@ exports.deleteTaskHandler = async (event) => {
 };
 
 exports.getTaskHandler = async (event) => {
-  if (!event.pathParameters && !event.pathParameters.TaskId) {
+  console.log('inside getTaskHandler :', event);
+
+  const taskId = event.pathParameters.TaskId;
+  const entryDate = event.pathParameters.EntryDate;
+
+  if (!taskId || !entryDate) {
     return {
-      statusCode: 500,
+      statusCode: 400,
       body: JSON.stringify({
-        error: 'pathParameters.TaskId not provided',
-        event: event,
+        error: 'taskId and entryDate must be provided',
       }),
     };
   }
@@ -37,7 +41,8 @@ exports.getTaskHandler = async (event) => {
     const params = {
       TableName: entity,
       Key: {
-        taskId: event.pathParameters.TaskId,
+        taskId: taskId,
+        entryDate: entryDate,
       },
     };
     const result = await dynamoDb.get(params).promise();

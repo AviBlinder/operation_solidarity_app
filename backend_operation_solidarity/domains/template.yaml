@@ -270,7 +270,8 @@ Resources:
         GetTask:
           Type: HttpApi
           Properties:
-            Path: /tasks/{TaskId}
+            # Path: /tasks/{TaskId}
+            Path: /tasks/{TaskId}/{EntryDate}
             Method: get
             ApiId: !Ref SolidarityApi
   UpdateTaskFunction:

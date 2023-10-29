@@ -1,9 +1,14 @@
 'use client';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
 function TaskList() {
   const { data: session } = useSession();
+  const router = useRouter();
 
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
@@ -138,6 +143,22 @@ function TaskList() {
                   })
                 : 'N/A'}
             </p>
+            <Link
+              href={
+                task.taskType === 'request'
+                  ? `/request/update/${task.taskId}?entryDate=${task.entryDate}`
+                  : `/proposal/update/${task.taskId}?entryDate=${task.entryDate}`
+              }
+            >
+              <Image
+                src="/assets/icons/link.svg"
+                width={30}
+                height={30}
+                className="rounded-full"
+                alt="update"
+                // onClick={() => setToggleDropdown((prev) => !prev)}
+              />
+            </Link>
           </li>
         ))}
       </ul>
