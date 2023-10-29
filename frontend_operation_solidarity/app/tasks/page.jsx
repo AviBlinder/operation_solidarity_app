@@ -12,14 +12,12 @@ function TaskList() {
   const [sortOrder, setSortOrder] = useState('desc');
 
   useEffect(() => {
-    console.log('session?.user.email ', session);
     // Fetch the tasks from your API or server here
     const fetchTasks = async () => {
       const response = await fetch(
         `/api/tasks?userEmail=${session?.user.email}`
       );
       const data = await response.json();
-      console.log('data =', data);
       setTasks(data);
       setFilteredTasks(data);
     };
@@ -78,7 +76,7 @@ function TaskList() {
           placeholder="Search..."
           value={filter}
           onChange={handleFilterChange}
-          className="px-4 py-2 border rounded"
+          className="px-4  border rounded"
         />
         <div>
           <label>

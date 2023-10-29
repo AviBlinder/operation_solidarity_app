@@ -50,7 +50,7 @@ const Nav = () => {
               Create Proposal
             </Link>
             <Link href="/tasks" className="btn_secondary">
-              Get tasks
+              My requests
             </Link>
 
             <div className="relative">
@@ -151,7 +151,7 @@ const Nav = () => {
                   className="dropdown_link"
                   onClick={() => setToggleDropdown(false)}
                 >
-                  Get tasks
+                  My requests
                 </Link>
 
                 <button

@@ -9,7 +9,7 @@ Frontend
 6. review session? logic
 7. Create Userpool + google identity
 
----
+## // for a 'volunteer': create page for listing all request and add filter and message capabilities
 
 Routes:
 /tasks/ --> sort , filter by city/distance range/availability/ and 'link to update'
