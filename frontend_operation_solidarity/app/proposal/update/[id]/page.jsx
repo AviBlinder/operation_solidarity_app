@@ -3,13 +3,20 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { cities_short_list } from '@/constants/index';
 import { useSession } from 'next-auth/react';
-const [submitting, setIsSubmitting] = useState(false);
-
-import { weekDays } from '@/constants/index';
+import { useRouter } from 'next/navigation';
+import DescriptionField from '@/components/forms/DescriptionField';
+import LocationTypeSelector from '@/components/forms/LocationTypeSelector';
+import CitySelector from '@/components/forms/CitySelector';
+import FromToSelector from '@/components/forms/FromToSelector';
+import AvailabilitySelector from '@/components/forms/AvailabilitySelector';
+import CategorySelector from '@/components/forms/CategorySelector';
 
 const updateProposal = ({ params }) => {
+  const type = 'propsal';
+  const router = useRouter();
   const searchParams = useSearchParams();
   const entryDate = searchParams.get('entryDate');
+  const [submitting, setIsSubmitting] = useState(false);
 
   const [task, setTask] = useState({
     description: '',
@@ -21,6 +28,7 @@ const updateProposal = ({ params }) => {
     city: '',
     from: '',
     to: '',
+    taskType: type,
   });
   const [availability, setAvailability] = useState([]);
   const [geoLocations, setGeolocations] = useState({
@@ -35,16 +43,36 @@ const updateProposal = ({ params }) => {
   const { data: session } = useSession();
 
   const [categories, setCategories] = useState([]);
+  const [categoriesHebrew, setCategoriesHebrew] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
-  const [locationType, setLocationType] = useState('cityAddress');
+  const [locationType, setLocationType] = useState('');
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const response = await fetch(`/api/reference-data/categories`, {
+        next: { revalidate: 3600 },
+      });
+      const allCategories = await response.json();
+      const categoriesNames = allCategories.map((cat) => cat.itemName.S);
+      const categoriesHebrewNames = allCategories.map(
+        (cat) => cat.itemNameHebrew.S
+      );
+
+      setCategories(categoriesNames);
+      setCategoriesHebrew(categoriesHebrewNames);
+    };
+
+    if (categories.length === 0) {
+      fetchCategories();
+    }
+  }, []);
   useEffect(() => {
     const fetchTask = async () => {
       const response = await fetch(
-        `/api/tasks/${params?.id}?entryDate=${entryDate}`
+        `/api/tasks/${params?.id}/?entryDate=${entryDate}`
       );
       const data = await response.json();
-      console.log('fetched data', data);
       setTask({
         ...task,
         description: data.description,
@@ -53,12 +81,12 @@ const updateProposal = ({ params }) => {
         entryDate: entryDate,
         userName: data.userName,
         taskType: data.taskType,
-        city: data.city?.city ? data.city?.city : null,
-        from: data.from?.cityFrom ? data.from?.cityFrom : null,
-        to: data.to?.cityTo ? data.to?.cityTo : to,
+        city: data.city?.city ? data.city.city : '',
+        from: data.from?.cityFrom ? data.from.cityFrom : '',
+        to: data.to?.cityTo ? data.to.cityTo : '',
       });
-      setCategories(data.category || []);
-      setAvailability(data.availability || []);
+      setSelectedCategories([...selectedCategories, ...data.category]);
+      setAvailability([...availability, ...data.availability]);
       setGeolocations({
         ...geoLocations,
         cityLat: data.city?.lat,
@@ -68,130 +96,155 @@ const updateProposal = ({ params }) => {
         toLat: data.to?.lat,
         toLng: data.to?.lng,
       });
+      data.city?.city
+        ? setLocationType('cityAddress')
+        : setLocationType('fromTo');
     };
 
     if (params?.id) {
       fetchTask();
     }
-  }, [params.id, session]);
+  }, [params.id, session?.user.email]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    if (locationType === 'cityAddress') {
+      setTask((prevTask) => ({ ...prevTask, from: '', to: '' }));
+      setGeolocations((prevGeoLocations) => ({
+        ...prevGeoLocations,
+        fromLat: '',
+        fromLng: '',
+        toLat: '',
+        toLng: '',
+      }));
+    } else {
+      setTask((prevTask) => ({ ...prevTask, city: '' }));
+      setGeolocations((prevGeoLocations) => ({
+        ...prevGeoLocations,
+        cityLat: '',
+        cityLng: '',
+      }));
+    }
+
+    // update start
+    try {
+      const response = await fetch(
+        `/api/tasks/${params?.id}?entryDate=${entryDate}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify({
+            //
+            description: task.description,
+            category: selectedCategories,
+            city: task.city
+              ? {
+                  city: task.city,
+                  lat: geoLocations.cityLat ? geoLocations.cityLat : null,
+                  lng: geoLocations.cityLng ? geoLocations.cityLng : null,
+                }
+              : null,
+            // address: task.address,
+            from: task.from
+              ? {
+                  cityFrom: task.from,
+                  lat: geoLocations.fromLat ? geoLocations.fromLat : null,
+                  lng: geoLocations.fromLng ? geoLocations.fromLng : null,
+                }
+              : null,
+            to: task.to
+              ? {
+                  cityTo: task.to,
+                  lat: geoLocations.toLat ? geoLocations.toLat : null,
+                  lng: geoLocations.toLng ? geoLocations.toLng : null,
+                }
+              : null,
+            // status: 'new',
+            availability: availability,
+            updateDate: new Date(),
+          }),
+        }
+      );
+      if (response.ok) {
+        setAvailability([]);
+        setGeolocations({
+          cityLat: '',
+          cityLng: '',
+          fromLat: '',
+          fromLng: '',
+          toLat: '',
+          toLng: '',
+        });
+        setTask({
+          description: '',
+          category: '',
+          city: '',
+          address: '',
+          from: '',
+          to: '',
+          status: '',
+          entryDate: '',
+        });
+
+        router.push('/tasks');
+      }
+    } catch (error) {
+      console.log('error updatin request ', error);
+      router.push('/tasks');
+    } finally {
+      setIsSubmitting(false);
+    }
+
+    // update end
+    setIsSubmitting(false);
+  };
 
   return (
     <div>
       {session?.user.email ? (
         <form className="p-8" onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label
-              className="block text-sm font-medium text-primary-800"
-              htmlFor="description"
-            >
-              Request Description
-            </label>
-            <input
-              type="textarea"
-              id="description"
-              className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-md shadow-xs placeholder-gray-400 focus:outline-none focus:border-sky-500 focus:ring-sky-500 sm:text-sm"
-              value={task.description}
-              // onChange={(e) => setDescription(e.target.value)}
-              onChange={(e) =>
-                setTask({ ...task, description: e.target.value })
-              }
-              required
-              placeholder="Write your request here"
-            />
-          </div>
+          <DescriptionField
+            type={type}
+            task={task}
+            setTask={setTask}
+          ></DescriptionField>
 
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div>
-              <label
-                className="block text-sm font-medium text-primary-800"
-                htmlFor="city"
-              >
-                City
-              </label>
-              <select
-                id="city"
-                className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-                value={task.city}
-                onChange={(e) => {
-                  setTask({ ...task, city: e.target.value });
-                  handleCity(e.target.value);
-                }}
-                required
-              >
-                <option value="" disabled>
-                  Choose a city
-                </option>
-                {cities_short_list.map((city, index) => (
-                  <option key={index} value={city.city}>
-                    {city.city}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+          <LocationTypeSelector
+            locationType={locationType}
+            setLocationType={setLocationType}
+          ></LocationTypeSelector>
+          {locationType === 'cityAddress' ? (
+            <CitySelector
+              task={task}
+              setTask={setTask}
+              geoLocations={geoLocations}
+              setGeolocations={setGeolocations}
+              cities_short_list={cities_short_list}
+            ></CitySelector>
+          ) : (
+            <FromToSelector
+              cities_short_list={cities_short_list}
+              task={task}
+              setTask={setTask}
+              geoLocations={geoLocations}
+              setGeolocations={setGeolocations}
+            ></FromToSelector>
+          )}
 
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-primary-800">
-              Availability
-            </label>
-            <div className="mt-2 flex flex-col">
-              <div>
-                <label className="inline-flex items-center mr-4">
-                  <input
-                    type="checkbox"
-                    className="form-checkbox"
-                    checked={availability.length === weekDays.length}
-                    onChange={handleSelectAllDays}
-                  />
-                  <span className="ml-2">Select All</span>
-                </label>
-              </div>
-              <div>
-                {weekDays.map((day) => (
-                  <label key={day} className="inline-flex items-center mr-4">
-                    <input
-                      type="checkbox"
-                      className="form-checkbox"
-                      value={day}
-                      checked={availability.includes(day)}
-                      onChange={(event) =>
-                        handleWeekDayChange(day, event.target.checked)
-                      }
-                    />
-                    <span className="ml-2">{day}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          </div>
+          <AvailabilitySelector
+            task={task}
+            setTask={setTask}
+            availability={availability}
+            setAvailability={setAvailability}
+          ></AvailabilitySelector>
 
-          <div className="mb-4">
-            <label
-              className="block text-sm font-medium text-primary-800"
-              htmlFor="category"
-            >
-              Categories
-            </label>
-
-            <div>
-              {categoriesHebrew.map((categoryHebrew, index) => (
-                <label key={index} className="inline-flex items-center mr-4">
-                  <input
-                    type="checkbox"
-                    className="form-checkbox"
-                    value={categoryHebrew}
-                    onChange={(event) =>
-                      handleCategoryChange(
-                        categories[index],
-                        event.target.checked
-                      )
-                    }
-                  />
-                  <span className="ml-2">{categoryHebrew}</span>
-                </label>
-              ))}
-            </div>
-          </div>
+          <CategorySelector
+            categories={categories}
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+            categoriesHebrew={categoriesHebrew}
+          ></CategorySelector>
 
           <div className="flex justify-end">
             <button
@@ -199,7 +252,7 @@ const updateProposal = ({ params }) => {
               disabled={submitting}
               className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 active:bg-blue-800"
             >
-              {submitting ? `submitting request` : 'submit'}
+              {submitting ? `updating request` : 'update'}
             </button>
           </div>
         </form>

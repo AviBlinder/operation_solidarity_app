@@ -29,6 +29,7 @@ const updateRequest = ({ params }) => {
     city: '',
     from: '',
     to: '',
+    taskType: type,
   });
   const [availability, setAvailability] = useState([]);
   const [geoLocations, setGeolocations] = useState({
@@ -204,7 +205,11 @@ const updateRequest = ({ params }) => {
     <div>
       {session?.user.email ? (
         <form className="p-8" onSubmit={handleSubmit}>
-          <DescriptionField task={task} setTask={setTask}></DescriptionField>
+          <DescriptionField
+            type={type}
+            task={task}
+            setTask={setTask}
+          ></DescriptionField>
 
           <LocationTypeSelector
             locationType={locationType}

@@ -1,11 +1,11 @@
-const DescriptionField = ({ task, setTask }) => {
+const DescriptionField = ({ type, task, setTask }) => {
   return (
     <div className="mb-4">
       <label
         className="block text-sm font-medium text-primary-800"
         htmlFor="description"
       >
-        Request Description
+        <span className="capitalize">{type}</span> Description
       </label>
       <input
         type="textarea"
