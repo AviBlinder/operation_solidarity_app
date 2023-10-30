@@ -27,7 +27,7 @@ const CategorySelector = ({
               type="radio"
               className="form-checkbox"
               value={categoryHebrew}
-              checked={selectedCategories.includes(categories[index])}
+              checked={selectedCategories?.includes(categories[index])}
               onChange={(event) =>
                 handleCategoryChange(categories[index], event.target.checked)
               }

@@ -11,7 +11,6 @@ import Loading from './loading';
 const CreateRequest = () => {
   const { data: session } = useSession();
   const [selectedCategories, setSelectedCategories] = useState([]);
-
   const [availability, setAvailability] = useState([]);
   const [geoLocations, setGeolocations] = useState({
     cityLat: '',
@@ -21,7 +20,6 @@ const CreateRequest = () => {
     toLat: '',
     toLng: '',
   });
-
   const [task, setTask] = useState({
     description: '',
     category: '',
@@ -42,14 +40,11 @@ const CreateRequest = () => {
       const response = await fetch('/api/tasks/new', {
         method: 'POST',
         body: JSON.stringify({
-          //
-
           email: session?.user.email,
           userId: session?.user.userId,
           userName: session?.user.name,
           description: task.description,
           taskType: 'request',
-          // category: task.category,
           category: selectedCategories,
           city: task.city
             ? {
@@ -80,6 +75,7 @@ const CreateRequest = () => {
       });
       if (response.ok) {
         setAvailability([]);
+        setSelectedCategories([]);
         setGeolocations({
           cityLat: '',
           cityLng: '',

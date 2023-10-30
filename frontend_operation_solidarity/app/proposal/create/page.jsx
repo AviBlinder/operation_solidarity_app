@@ -10,16 +10,19 @@ import Loading from './loading';
 
 const CreateProposal = () => {
   const { data: session } = useSession();
-  const [availability, setAvailability] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-
+  const [availability, setAvailability] = useState([]);
   const [geoLocations, setGeolocations] = useState({
     cityLat: '',
     cityLng: '',
+    fromLat: '',
+    fromLng: '',
+    toLat: '',
+    toLng: '',
   });
-
   const [task, setTask] = useState({
     description: '',
+    category: '',
     city: '',
     address: '',
     from: '',
@@ -38,13 +41,11 @@ const CreateProposal = () => {
       const response = await fetch('/api/tasks/new', {
         method: 'POST',
         body: JSON.stringify({
-          //
-
           email: session?.user.email,
           userId: session?.user.userId,
           userName: session?.user.name,
-          taskType: 'proposal',
           description: task.description,
+          taskType: 'proposal',
           category: selectedCategories,
           city: task.city
             ? {
@@ -53,6 +54,22 @@ const CreateProposal = () => {
                 lng: geoLocations.cityLng ? geoLocations.cityLng : null,
               }
             : null,
+          address: task.address,
+          from: task.from
+            ? {
+                cityFrom: task.from,
+                lat: geoLocations.fromLat ? geoLocations.fromLat : null,
+                lng: geoLocations.fromLng ? geoLocations.fromLng : null,
+              }
+            : null,
+          to: task.to
+            ? {
+                cityTo: task.to,
+                lat: geoLocations.toLat ? geoLocations.toLat : null,
+                lng: geoLocations.toLng ? geoLocations.toLng : null,
+              }
+            : null,
+
           status: 'new',
           availability: availability,
           entryDate: new Date(),
@@ -64,10 +81,18 @@ const CreateProposal = () => {
         setGeolocations({
           cityLat: '',
           cityLng: '',
+          fromLat: '',
+          fromLng: '',
+          toLat: '',
+          toLng: '',
         });
         setTask({
           description: '',
+          category: '',
           city: '',
+          address: '',
+          from: '',
+          to: '',
           status: '',
           entryDate: '',
         });
@@ -97,7 +122,7 @@ const CreateProposal = () => {
           setAvailability={setAvailability}
           geoLocations={geoLocations}
           setGeolocations={setGeolocations}
-          selectedcategories={selectedCategories}
+          selectedCategories={selectedCategories}
           setSelectedCategories={setSelectedCategories}
           submitting={submitting}
           handleSubmit={createRequest}
