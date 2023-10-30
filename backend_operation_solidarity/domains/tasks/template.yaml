@@ -20,12 +20,25 @@ Resources:
           AttributeType: S
         - AttributeName: entryDate
           AttributeType: S
+        - AttributeName: status
+          AttributeType: S
+        - AttributeName: email-taskType
+          AttributeType: S
       KeySchema:
         - AttributeName: taskId
           KeyType: HASH
         - AttributeName: entryDate
           KeyType: RANGE
-      # email-index GSI
+      # LocalSecondaryIndexes:
+      #   - IndexName: status-index
+      #     KeySchema:
+      #       - AttributeName: taskId
+      #         KeyType: HASH
+      #       - AttributeName: status
+      #         KeyType: RANGE
+      #     Projection:
+      #       ProjectionType: ALL
+      # GSI 1: email-index
       GlobalSecondaryIndexes:
         - IndexName: email-index
           KeySchema:
@@ -36,6 +49,26 @@ Resources:
           Projection:
             ProjectionType: ALL
             # GSI addition end
+        # GSI 2: email#taskType index
+        - IndexName: email-taskType-index
+          KeySchema:
+            - AttributeName: email-taskType
+              KeyType: HASH
+            - AttributeName: entryDate
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        # GSI 3: status index
+        - IndexName: status-index
+          KeySchema:
+            - AttributeName: status
+              KeyType: HASH
+            - AttributeName: entryDate
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL # or specify KEYS_ONLY or INCLUDE based on your access pattern
+
+        # GSI addition end
       BillingMode: PAY_PER_REQUEST
 
   # Lambda Functions for Tasks Start

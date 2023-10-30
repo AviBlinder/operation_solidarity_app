@@ -157,6 +157,7 @@ exports.updateTaskHandler = async (event) => {
     const expressionAttributeNames = {};
     const fieldsToUpdate = [
       'description',
+      'comments',
       'category',
       'city',
       'from',
