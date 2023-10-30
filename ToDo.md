@@ -2,7 +2,6 @@
 ToDo:
 test latest changes:
 
-1. create request/proposal and get phone under contact
 2. update status?
 
 3. Create 'tasks/[id]' view details page
