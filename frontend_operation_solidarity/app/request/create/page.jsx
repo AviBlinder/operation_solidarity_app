@@ -10,6 +10,8 @@ import Loading from './loading';
 
 const CreateRequest = () => {
   const { data: session } = useSession();
+  const [selectedCategories, setSelectedCategories] = useState([]);
+
   const [availability, setAvailability] = useState([]);
   const [geoLocations, setGeolocations] = useState({
     cityLat: '',
@@ -47,7 +49,8 @@ const CreateRequest = () => {
           userName: session?.user.name,
           description: task.description,
           taskType: 'request',
-          category: task.category,
+          // category: task.category,
+          category: selectedCategories,
           city: task.city
             ? {
                 city: task.city,
@@ -121,6 +124,8 @@ const CreateRequest = () => {
           setAvailability={setAvailability}
           geoLocations={geoLocations}
           setGeolocations={setGeolocations}
+          selectedCategories={selectedCategories}
+          setSelectedCategories={setSelectedCategories}
           submitting={submitting}
           handleSubmit={createRequest}
         />

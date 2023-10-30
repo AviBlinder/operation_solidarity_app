@@ -8,15 +8,6 @@ const CategorySelector = ({
     if (isChecked) {
       setSelectedCategories([category]);
     }
-    // if (isChecked) {
-    //   setSelectedCategories([...selectedCategories, category]);
-    // } else {
-    //   if (selectedCategories.length === 1) {
-    //     setSelectedCategories([]);
-    //   } else {
-    //     setSelectedCategories(selectedCategories.filter((a) => a != category));
-    //   }
-    // }
   };
 
   return (

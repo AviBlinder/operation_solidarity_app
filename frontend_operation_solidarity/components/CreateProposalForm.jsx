@@ -5,14 +5,6 @@ import { cities_short_list } from '@/constants/index';
 import { useSession } from 'next-auth/react';
 import { all } from 'axios';
 
-const addresses = {
-  'New York': ['5th Avenue', 'Madison Avenue', 'Broadway'],
-  'Los Angeles': [
-    'Sunset Boulevard',
-    'Hollywood Boulevard',
-    'Mulholland Drive',
-  ],
-};
 const weekDays = [
   'Sunday',
   'Monday',
