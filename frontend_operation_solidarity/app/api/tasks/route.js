@@ -8,15 +8,22 @@ export const GET = async (request) => {
 
   try {
     const userEmail = getStringParams(request.url, 'userEmail');
+    const baseURL = process.env.baseURL;
+    const env = process.env.APIGW_ENV;
 
     if (userEmail) {
-      const baseURL = process.env.baseURL;
-      const env = process.env.APIGW_ENV;
       const res = await fetch(`${baseURL}/${env}/tasks?email=${userEmail}`);
+      console.log('res 1=', res);
+
       const tasks = await res.json();
       return new Response(JSON.stringify(tasks), { status: 200 });
     } else {
-      return new Response('No email provided', { status: 500 });
+      const res = await fetch(`${baseURL}/${env}/tasks`);
+      console.log('res 2=', res);
+      const tasks = await res.json();
+      return new Response(JSON.stringify(tasks), { status: 200 });
+
+      // return new Response('No email provided', { status: 500 });
     }
   } catch (error) {
     console.log(error);

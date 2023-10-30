@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@aws-sdk/lib-dynamodb": "^3.438.0",
+    "@heroicons/react": "^2.0.18",
     "aws-sdk": "^2.1481.0",
     "axios": "^1.5.1",
     "next": "13.5.6",

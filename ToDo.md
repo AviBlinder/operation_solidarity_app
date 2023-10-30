@@ -2,10 +2,12 @@
 ToDo:
 test latest changes:
 
-2. update status?
+1. Update request/proposal --> only if session?.user.email = task.email
+2. filter on frontend or backend?
+3. update status => directly on the details page (also)
 
-3. Create 'tasks/[id]' view details page
-4. Create User form/Update Preferences Form 4. Landing Page with Hero component 5. Create Userpool + google identity
+4. Create 'tasks/[id]' view details page
+5. Create User form/Update Preferences Form 4. Landing Page with Hero component 5. Create Userpool + google identity
 
 ## // for a 'volunteer': create page for listing all request and add filter and message capabilities
 

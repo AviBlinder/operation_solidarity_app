@@ -1,14 +1,9 @@
 'use client';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-
+import TaskCard from '@/components/TaskCard';
 function TaskList() {
   const { data: session } = useSession();
-  const router = useRouter();
 
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
@@ -24,6 +19,7 @@ function TaskList() {
       );
       const data = await response.json();
       setTasks(data);
+      console.log('data: ', data);
       setFilteredTasks(data);
     };
     if (session?.user.email) {
@@ -76,89 +72,19 @@ function TaskList() {
   return (
     <div>
       <div className="flex justify-between mb-4">
-        <div>
-          <label>
-            Sort by:
-            <select
-              value={sortField}
-              onChange={handleSortFieldChange}
-              className="ml-2 px-2 py-1 border rounded"
-            >
-              {/* Add sort fields based on your task structure */}
-              <option value="entryDate">Entry Date</option>
-              <option value="description">Description</option>
-              <option value="category">Category</option>
-            </select>
-          </label>
-          <select
-            value={sortOrder}
-            onChange={handleSortOrderChange}
-            className="ml-2 px-2 py-1 border rounded"
-          >
-            <option value="asc">Ascending</option>
-            <option value="desc">Descending</option>
-          </select>
-        </div>
+        <div>{/* Sorting and Filtering UI Elements */}</div>
       </div>
 
-      <ul className="flex flex-row gap-6 ">
-        {filteredTasks.map((task, index) => (
+      <ul
+        role="list"
+        className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+      >
+        {filteredTasks?.map((task, index) => (
           <li
             key={index}
-            // className="mb-4 p-4 border rounded bg-white shadow-md"
-            className={`mb-4 p-4 border rounded-xl shadow-md ${
-              task.taskType === 'request'
-                ? 'bg-red-200'
-                : task.taskType === 'proposal'
-                ? 'bg-yellow-200'
-                : 'bg-white'
-            }`}
+            className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow"
           >
-            <h3 className="text-lg font-semibold text-primary-800">
-              {task.description || 'No Description'}
-            </h3>
-            <p className="text-sm text-gray-600">
-              <strong>Task Type:</strong> {task.taskType || 'N/A'}
-            </p>
-
-            <p className="text-sm text-gray-600">
-              <strong>Category:</strong> {task.category || 'N/A'}
-            </p>
-            <p className="text-sm text-gray-600">
-              <strong>City:</strong> {task?.city?.city || 'N/A'}
-            </p>
-            <p className="text-sm text-gray-600">
-              <strong>Status:</strong>{' '}
-              {task.status
-                ? task.status.charAt(0).toUpperCase() + task.status.slice(1)
-                : 'N/A'}
-            </p>
-            <p className="text-sm text-gray-600">
-              <strong>Entry Date:</strong>{' '}
-              {task.entryDate
-                ? new Date(task.entryDate).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric',
-                  })
-                : 'N/A'}
-            </p>
-            <Link
-              href={
-                task.taskType === 'request'
-                  ? `/request/update/${task.taskId}?entryDate=${task.entryDate}`
-                  : `/proposal/update/${task.taskId}?entryDate=${task.entryDate}`
-              }
-            >
-              <Image
-                src="/assets/icons/link.svg"
-                width={30}
-                height={30}
-                className="rounded-full"
-                alt="update"
-                // onClick={() => setToggleDropdown((prev) => !prev)}
-              />
-            </Link>
+            <TaskCard task={task}></TaskCard>
           </li>
         ))}
       </ul>
