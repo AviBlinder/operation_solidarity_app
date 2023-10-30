@@ -24,6 +24,7 @@ const CreateRequest = () => {
   });
   const [task, setTask] = useState({
     description: '',
+    comments: '',
     category: '',
     city: '',
     address: '',
@@ -46,6 +47,7 @@ const CreateRequest = () => {
           userId: session?.user.userId,
           userName: session?.user.name,
           description: task.description,
+          comments: task.comments ? task.comments : null,
           contact: contact?.phone ? contact : null,
           taskType: 'request',
           category: selectedCategories,
@@ -90,6 +92,7 @@ const CreateRequest = () => {
         });
         setTask({
           description: '',
+          comments: '',
           category: '',
           city: '',
           address: '',

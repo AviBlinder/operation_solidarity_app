@@ -4,6 +4,7 @@ import CitySelector from './CitySelector';
 import FromToSelector from './FromToSelector';
 import AvailabilitySelector from './AvailabilitySelector';
 import CategorySelector from './CategorySelector';
+import CommentsField from './CommentsField';
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
@@ -273,7 +274,9 @@ const UpdateRequestForm = ({ params }) => {
         category={category}
         setCategory={setCategory}
       />
-      {/* ... other form fields and submit button */}
+      <ContactDetails setContact={setContact} contact={contact} />
+
+      <CommentsField task={task} setTask={setTask}></CommentsField>
     </form>
   );
 };

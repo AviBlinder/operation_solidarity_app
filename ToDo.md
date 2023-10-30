@@ -2,8 +2,36 @@
 ToDo:
 test latest changes:
 
+//tasks GSI 2:
+email#: HASH --> email#taskType
+createDste: SORTKEY1
+
+//tasks PK + SORTKEY2:
+taskId
+status
+
+---
+
+inline filter/sort layout:
+https://tailwindui.com/components/ecommerce/components/category-filters
+
+reactive navbar:
+https://tailwindui.com/components/application-ui/navigation/navbars#component-aaed25b299f2015d2c4276b98d463cee
+
+add to menu:
+requests
+proposals
+create request
+create proposal
+my activity -> requests/proposals tabs
+
+tabs for "my activity" page:
+https://tailwindui.com/components/application-ui/navigation/tabs#component-07e889de48dabb9e22d20353d7c02d16
+
+---
+
 1. Update request/proposal --> only if session?.user.email = task.email
-2. filter on frontend or backend?
+2. add filters functionality and then apply new template
 3. update status => directly on the details page (also)
 
 4. Create 'tasks/[id]' view details page
@@ -20,6 +48,7 @@ Routes:
 
 - find me a match -> based on User's Volunteering Profile
 - Find styled components + fix reactivity issues
+- Multi-language support!!
 
 ---
 

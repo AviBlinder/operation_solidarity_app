@@ -11,6 +11,7 @@ import FromToSelector from '@/components/forms/FromToSelector';
 import AvailabilitySelector from '@/components/forms/AvailabilitySelector';
 import CategorySelector from '@/components/forms/CategorySelector';
 import ContactDetails from '@/components/forms/ContactDetails';
+import CommentsField from '@/components/forms/CommentsField';
 
 function CreateRequestForm({
   type,
@@ -102,6 +103,9 @@ function CreateRequestForm({
           ></CategorySelector>
 
           <ContactDetails setContact={setContact} contact={contact} />
+
+          <CommentsField task={task} setTask={setTask}></CommentsField>
+
           <div className="flex justify-end">
             <button
               type="submit"
