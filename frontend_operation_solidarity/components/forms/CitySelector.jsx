@@ -8,7 +8,9 @@ const CitySelector = ({
   setGeolocations,
 }) => {
   const findLatLng = (property) => {
-    const result = cities_short_list.filter((city) => city.city === property);
+    const result = cities_short_list.filter(
+      (city) => city.cityHebrew === property
+    );
     const lat = result[0].lat;
     const lng = result[0].lng;
     return [lat, lng];
@@ -45,8 +47,8 @@ const CitySelector = ({
             Choose a city
           </option>
           {cities_short_list.map((city, index) => (
-            <option key={index} value={city.city}>
-              {city.city}
+            <option key={index} value={city.cityHebrew}>
+              {city.cityHebrew}
             </option>
           ))}
         </select>
