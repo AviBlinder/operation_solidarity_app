@@ -1,8 +1,8 @@
 version = 0.1
 [default.deploy.parameters]
-stack_name = "operation-solidarity-united"
+stack_name = "operation-solidarity-stack"
 resolve_s3 = true
-s3_prefix = "operation-solidarity-united"
+s3_prefix = "operation-solidarity-stack"
 region = "eu-west-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"

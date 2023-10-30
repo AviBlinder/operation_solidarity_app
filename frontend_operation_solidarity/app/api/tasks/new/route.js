@@ -28,6 +28,7 @@ export const POST = async (request) => {
         userId,
         taskType: taskType,
         userName: userName ? userName : null,
+        emailtaskType: email + '#' + taskType,
         description: description ? description : 'No description',
         comments: comments ? comments : null,
         contact: contact ? contact : null,

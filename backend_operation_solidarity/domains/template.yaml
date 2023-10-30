@@ -226,7 +226,7 @@ Resources:
           AttributeType: S
         - AttributeName: status
           AttributeType: S
-        - AttributeName: email-taskType
+        - AttributeName: emailtaskType
           AttributeType: S
       KeySchema:
         - AttributeName: taskId
@@ -246,7 +246,7 @@ Resources:
         #GSI 2:  email#taskType + entryDate
         - IndexName: email-taskType-index
           KeySchema:
-            - AttributeName: email-taskType
+            - AttributeName: emailtaskType
               KeyType: HASH
             - AttributeName: entryDate
               KeyType: RANGE

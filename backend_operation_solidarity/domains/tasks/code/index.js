@@ -115,6 +115,7 @@ exports.postTaskHandler = async (event) => {
   try {
     const data = JSON.parse(event.body);
     const taskId = uuidv4();
+
     const params = {
       TableName: entity,
       Item: {
