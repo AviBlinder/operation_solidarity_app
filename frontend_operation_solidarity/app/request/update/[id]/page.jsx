@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { weekDays } from '@/constants/index';
 
 const updateRequest = ({ params }) => {
+  const type = 'request';
   const router = useRouter();
   const searchParams = useSearchParams();
   const entryDate = searchParams.get('entryDate');
@@ -67,7 +68,6 @@ const updateRequest = ({ params }) => {
         `/api/tasks/${params?.id}/?entryDate=${entryDate}`
       );
       const data = await response.json();
-      console.log('fetched data', data);
       setTask({
         ...task,
         description: data.description,
@@ -155,14 +155,17 @@ const updateRequest = ({ params }) => {
     console.log('handleCategoryChange :', category);
     console.log('selectedCategories.length =', selectedCategories.length);
     if (isChecked) {
-      setSelectedCategories([...selectedCategories, category]);
-    } else {
-      if (selectedCategories.length === 1) {
-        setSelectedCategories([]);
-      } else {
-        setSelectedCategories(selectedCategories.filter((a) => a != category));
-      }
+      setSelectedCategories([category]);
     }
+    // if (isChecked) {
+    //   setSelectedCategories([...selectedCategories, category]);
+    // } else {
+    //   if (selectedCategories.length === 1) {
+    //     setSelectedCategories([]);
+    //   } else {
+    //     setSelectedCategories(selectedCategories.filter((a) => a != category));
+    //   }
+    // }
   };
 
   const handleSubmit = async (e) => {
@@ -447,7 +450,8 @@ const updateRequest = ({ params }) => {
               {categoriesHebrew.map((categoryHebrew, index) => (
                 <label key={index} className="inline-flex items-center mr-4">
                   <input
-                    type="checkbox"
+                    // type="checkbox"
+                    type="radio"
                     className="form-checkbox"
                     value={categoryHebrew}
                     checked={selectedCategories.includes(categories[index])}

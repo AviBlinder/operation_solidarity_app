@@ -1,13 +1,8 @@
 ########################################################################################
 ToDo:
-// update chages
-// sync. 'proposal/update'
-
-1. create 'update request' and update proposal form
-2. Create 'tasks/[id]' view details page
-3. Create User form/Update Preferences Form
-4. Landing Page
-5. Create Userpool + google identity
+// Add 'phone number' to createRequest
+// update changes + split component
+// sync. 'proposal/update' 2. Create 'tasks/[id]' view details page 3. Create User form/Update Preferences Form 4. Landing Page with Hero component 5. Create Userpool + google identity
 
 ## // for a 'volunteer': create page for listing all request and add filter and message capabilities
 
@@ -18,7 +13,8 @@ Routes:
 /users/
 /users/[id]/update-profile
 
-## ?? find me a match??
+- find me a match -> based on User's Volunteering Profile
+- Find styled components + fix reactivity issues
 
 ---
 
