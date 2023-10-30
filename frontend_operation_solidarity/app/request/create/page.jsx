@@ -12,6 +12,8 @@ const CreateRequest = () => {
   const { data: session } = useSession();
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [availability, setAvailability] = useState([]);
+  const [contact, setContact] = useState({ phone: '' });
+
   const [geoLocations, setGeolocations] = useState({
     cityLat: '',
     cityLng: '',
@@ -44,6 +46,7 @@ const CreateRequest = () => {
           userId: session?.user.userId,
           userName: session?.user.name,
           description: task.description,
+          contact: contact?.phone ? contact : null,
           taskType: 'request',
           category: selectedCategories,
           city: task.city
@@ -76,6 +79,7 @@ const CreateRequest = () => {
       if (response.ok) {
         setAvailability([]);
         setSelectedCategories([]);
+        setContact({ phone: '' });
         setGeolocations({
           cityLat: '',
           cityLng: '',
@@ -122,6 +126,8 @@ const CreateRequest = () => {
           setGeolocations={setGeolocations}
           selectedCategories={selectedCategories}
           setSelectedCategories={setSelectedCategories}
+          contact={contact}
+          setContact={setContact}
           submitting={submitting}
           handleSubmit={createRequest}
         />

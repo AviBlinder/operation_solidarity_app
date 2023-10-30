@@ -163,6 +163,8 @@ exports.updateTaskHandler = async (event) => {
       'to',
       'availability',
       'updateDate',
+      'contact',
+      'status',
     ];
 
     fieldsToUpdate.forEach((field) => {

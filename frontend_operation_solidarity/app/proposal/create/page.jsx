@@ -12,6 +12,8 @@ const CreateProposal = () => {
   const { data: session } = useSession();
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [availability, setAvailability] = useState([]);
+  const [contact, setContact] = useState({ phone: '' });
+
   const [geoLocations, setGeolocations] = useState({
     cityLat: '',
     cityLng: '',
@@ -45,6 +47,7 @@ const CreateProposal = () => {
           userId: session?.user.userId,
           userName: session?.user.name,
           description: task.description,
+          contact: contact?.phone ? contact : null,
           taskType: 'proposal',
           category: selectedCategories,
           city: task.city
@@ -78,6 +81,7 @@ const CreateProposal = () => {
       if (response.ok) {
         setAvailability([]);
         setSelectedCategories([]);
+        setContact({ phone: '' });
         setGeolocations({
           cityLat: '',
           cityLng: '',
@@ -124,6 +128,8 @@ const CreateProposal = () => {
           setGeolocations={setGeolocations}
           selectedCategories={selectedCategories}
           setSelectedCategories={setSelectedCategories}
+          contact={contact}
+          setContact={setContact}
           submitting={submitting}
           handleSubmit={createRequest}
         />

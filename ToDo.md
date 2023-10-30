@@ -1,8 +1,12 @@
 ########################################################################################
 ToDo:
-// Add 'phone number' to createRequest
-// update changes + split component
-// sync. 'proposal/update' 2. Create 'tasks/[id]' view details page 3. Create User form/Update Preferences Form 4. Landing Page with Hero component 5. Create Userpool + google identity
+test latest changes:
+
+1. create request/proposal and get phone under contact
+2. update status?
+
+3. Create 'tasks/[id]' view details page
+4. Create User form/Update Preferences Form 4. Landing Page with Hero component 5. Create Userpool + google identity
 
 ## // for a 'volunteer': create page for listing all request and add filter and message capabilities
 

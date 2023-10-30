@@ -105,24 +105,6 @@ const UpdateRequestForm = ({ params }) => {
     }
   }, [params.id, session?.user.email]);
 
-  const handleWeekDayChange = (day, isChecked) => {
-    if (isChecked) {
-      setAvailability([...availability, day]);
-    } else {
-      setAvailability(availability.filter((a) => a != day));
-    }
-  };
-
-  const handleSelectAllDays = () => {
-    if (availability.length < weekDays.length) {
-      setAvailability(weekDays);
-      setTask({ ...task, ableDays: [...weekDays] });
-    } else {
-      setAvailability([]);
-      setTask({ ...task, ableDays: [] });
-    }
-  };
-
   const findLatLng = (property) => {
     const result = cities_short_list.filter((city) => city.city === property);
     const lat = result[0].lat;
@@ -281,7 +263,8 @@ const UpdateRequestForm = ({ params }) => {
         />
       )}
       <AvailabilitySelector
-        weekDays={weekDays}
+        task={task}
+        setTask={setTask}
         availability={availability}
         setAvailability={setAvailability}
       />

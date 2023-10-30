@@ -7,6 +7,7 @@ const AvailabilitySelector = ({
   availability,
   setAvailability,
 }) => {
+  const weekDaysHebrew = weekDays.hebrew;
   const handleWeekDayChange = (day, isChecked) => {
     if (isChecked) {
       setAvailability([...availability, day]);
@@ -16,9 +17,9 @@ const AvailabilitySelector = ({
   };
 
   const handleSelectAllDays = () => {
-    if (availability.length < weekDays.length) {
-      setAvailability(weekDays);
-      setTask({ ...task, ableDays: [...weekDays] });
+    if (availability.length < weekDaysHebrew.length) {
+      setAvailability(weekDaysHebrew);
+      setTask({ ...task, ableDays: [...weekDaysHebrew] });
     } else {
       setAvailability([]);
       setTask({ ...task, ableDays: [] });
@@ -36,14 +37,14 @@ const AvailabilitySelector = ({
             <input
               type="checkbox"
               className="form-checkbox"
-              checked={availability.length === weekDays.length}
+              checked={availability.length === weekDaysHebrew.length}
               onChange={handleSelectAllDays}
             />
             <span className="ml-2">Select All</span>
           </label>
         </div>
         <div>
-          {weekDays.map((day) => (
+          {weekDaysHebrew.map((day) => (
             <label key={day} className="inline-flex items-center mr-4">
               <input
                 type="checkbox"

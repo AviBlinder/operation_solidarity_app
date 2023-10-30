@@ -10,7 +10,7 @@ import CitySelector from '@/components/forms/CitySelector';
 import FromToSelector from '@/components/forms/FromToSelector';
 import AvailabilitySelector from '@/components/forms/AvailabilitySelector';
 import CategorySelector from '@/components/forms/CategorySelector';
-
+import ContactDetails from '@/components/forms/ContactDetails';
 function CreateProposalForm({
   type,
   task,
@@ -21,6 +21,8 @@ function CreateProposalForm({
   setGeolocations,
   selectedCategories,
   setSelectedCategories,
+  contact,
+  setContact,
   submitting,
   handleSubmit,
 }) {
@@ -28,7 +30,6 @@ function CreateProposalForm({
   const [categories, setCategories] = useState([]);
   const [categoriesHebrew, setCategoriesHebrew] = useState([]);
   const [locationType, setLocationType] = useState('cityAddress');
-
   // load Categories
   useEffect(() => {
     const fetchCategories = async () => {
@@ -97,6 +98,7 @@ function CreateProposalForm({
             setSelectedCategories={setSelectedCategories}
             categoriesHebrew={categoriesHebrew}
           ></CategorySelector>
+          <ContactDetails setContact={setContact} contact={contact} />
 
           <div className="flex justify-end">
             <button

@@ -8,6 +8,7 @@ export const POST = async (request) => {
       userId,
       userName,
       description,
+      contact,
       taskType,
       category,
       city,
@@ -19,9 +20,6 @@ export const POST = async (request) => {
       entryDate,
     } = await request.json();
 
-    // const location = await getLocations(city);
-    // console.log('after getLocations', location);
-
     const res = await fetch(`${baseURL}/${env}/tasks`, {
       method: 'POST',
       body: JSON.stringify({
@@ -30,6 +28,7 @@ export const POST = async (request) => {
         taskType: taskType,
         userName: userName ? userName : null,
         description: description ? description : 'No description',
+        contact: contact ? contact : null,
         category: category ? category : null,
         city: city ? city : null,
         address: address ? address : null,
