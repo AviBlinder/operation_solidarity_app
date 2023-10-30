@@ -1,18 +1,17 @@
 'use client';
+import LocationTypeSelector from './LocationTypeSelector';
+import CitySelector from './CitySelector';
+import FromToSelector from './FromToSelector';
+import AvailabilitySelector from './AvailabilitySelector';
+import CategorySelector from './CategorySelector';
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { cities_short_list } from '@/constants/index';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import DescriptionField from '@/components/forms/DescriptionField';
-import LocationTypeSelector from '@/components/forms/LocationTypeSelector';
-import CitySelector from '@/components/forms/CitySelector';
-import FromToSelector from '@/components/forms/FromToSelector';
-import AvailabilitySelector from '@/components/forms/AvailabilitySelector';
-import CategorySelector from '@/components/forms/CategorySelector';
-
-const updateRequest = ({ params }) => {
+import { weekDays } from '@/constants/index';
+const UpdateRequestForm = ({ params }) => {
   const type = 'request';
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -106,26 +105,89 @@ const updateRequest = ({ params }) => {
     }
   }, [params.id, session?.user.email]);
 
+  const handleWeekDayChange = (day, isChecked) => {
+    if (isChecked) {
+      setAvailability([...availability, day]);
+    } else {
+      setAvailability(availability.filter((a) => a != day));
+    }
+  };
+
+  const handleSelectAllDays = () => {
+    if (availability.length < weekDays.length) {
+      setAvailability(weekDays);
+      setTask({ ...task, ableDays: [...weekDays] });
+    } else {
+      setAvailability([]);
+      setTask({ ...task, ableDays: [] });
+    }
+  };
+
+  const findLatLng = (property) => {
+    const result = cities_short_list.filter((city) => city.city === property);
+    const lat = result[0].lat;
+    const lng = result[0].lng;
+    return [lat, lng];
+  };
+  const handleCity = (value) => {
+    const [cityLat, cityLng] = findLatLng(value);
+    setGeolocations({
+      ...geoLocations,
+      cityLat: cityLat,
+      cityLng: cityLng,
+    });
+  };
+
+  const handleFrom = (value) => {
+    const [fromLat, fromLng] = findLatLng(value);
+    setGeolocations({
+      ...geoLocations,
+      fromLat: fromLat,
+      fromLng: fromLng,
+    });
+  };
+  const handleTo = (value) => {
+    const [toLat, toLng] = findLatLng(value);
+    setGeolocations({
+      ...geoLocations,
+      toLat: toLat,
+      toLng: toLng,
+    });
+  };
+
+  const handleCategoryChange = (category, isChecked) => {
+    console.log('handleCategoryChange :', category);
+    console.log('selectedCategories.length =', selectedCategories.length);
+    if (isChecked) {
+      setSelectedCategories([category]);
+    }
+    // if (isChecked) {
+    //   setSelectedCategories([...selectedCategories, category]);
+    // } else {
+    //   if (selectedCategories.length === 1) {
+    //     setSelectedCategories([]);
+    //   } else {
+    //     setSelectedCategories(selectedCategories.filter((a) => a != category));
+    //   }
+    // }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
     if (locationType === 'cityAddress') {
-      setTask((prevTask) => ({ ...prevTask, from: '', to: '' }));
-      setGeolocations((prevGeoLocations) => ({
-        ...prevGeoLocations,
+      setTask({ ...task, from: '', to: '' });
+      setGeolocations({
+        ...geoLocations,
         fromLat: '',
         fromLng: '',
         toLat: '',
         toLng: '',
-      }));
+      });
     } else {
-      setTask((prevTask) => ({ ...prevTask, city: '' }));
-      setGeolocations((prevGeoLocations) => ({
-        ...prevGeoLocations,
-        cityLat: '',
-        cityLng: '',
-      }));
+      setTask({ ...task, city: '' });
+      setGeolocations({ ...geoLocations, cityLat: '', cityLng: '' });
     }
 
     // update start
@@ -201,62 +263,36 @@ const updateRequest = ({ params }) => {
   };
 
   return (
-    <div>
-      {session?.user.email ? (
-        <form className="p-8" onSubmit={handleSubmit}>
-          <DescriptionField task={task} setTask={setTask}></DescriptionField>
-
-          <LocationTypeSelector
-            locationType={locationType}
-            setLocationType={setLocationType}
-          ></LocationTypeSelector>
-          {locationType === 'cityAddress' ? (
-            <CitySelector
-              task={task}
-              setTask={setTask}
-              geoLocations={geoLocations}
-              setGeolocations={setGeolocations}
-              cities_short_list={cities_short_list}
-            ></CitySelector>
-          ) : (
-            <FromToSelector
-              cities_short_list={cities_short_list}
-              task={task}
-              setTask={setTask}
-              geoLocations={geoLocations}
-              setGeolocations={setGeolocations}
-            ></FromToSelector>
-          )}
-
-          <AvailabilitySelector
-            task={task}
-            setTask={setTask}
-            availability={availability}
-            setAvailability={setAvailability}
-          ></AvailabilitySelector>
-
-          <CategorySelector
-            categories={categories}
-            selectedCategories={selectedCategories}
-            setSelectedCategories={setSelectedCategories}
-            categoriesHebrew={categoriesHebrew}
-          ></CategorySelector>
-
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              disabled={submitting}
-              className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 active:bg-blue-800"
-            >
-              {submitting ? `updating request` : 'update'}
-            </button>
-          </div>
-        </form>
-      ) : (
-        <div> You need to login first</div>
+    <form>
+      <LocationTypeSelector
+        locationType={locationType}
+        setLocationType={setLocationType}
+      />
+      {locationType === 'cityAddress' && (
+        <CitySelector cities={cities} city={city} setCity={setCity} />
       )}
-    </div>
+      {locationType === 'fromTo' && (
+        <FromToSelector
+          cities={cities}
+          from={from}
+          setFrom={setFrom}
+          to={to}
+          setTo={setTo}
+        />
+      )}
+      <AvailabilitySelector
+        weekDays={weekDays}
+        availability={availability}
+        setAvailability={setAvailability}
+      />
+      <CategorySelector
+        categories={categories}
+        category={category}
+        setCategory={setCategory}
+      />
+      {/* ... other form fields and submit button */}
+    </form>
   );
 };
 
-export default updateRequest;
+export default UpdateRequestForm;
