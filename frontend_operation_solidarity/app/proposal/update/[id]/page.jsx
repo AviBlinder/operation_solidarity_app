@@ -10,6 +10,7 @@ import CitySelector from '@/components/forms/CitySelector';
 import FromToSelector from '@/components/forms/FromToSelector';
 import AvailabilitySelector from '@/components/forms/AvailabilitySelector';
 import CategorySelector from '@/components/forms/CategorySelector';
+import StatusSelector from '@/components/forms/StatusSelector';
 
 const updateProposal = ({ params }) => {
   const type = 'propsal';
@@ -246,6 +247,7 @@ const updateProposal = ({ params }) => {
             categoriesHebrew={categoriesHebrew}
           ></CategorySelector>
 
+          <StatusSelector task={task} setTask={setTask} />
           <div className="flex justify-end">
             <button
               type="submit"

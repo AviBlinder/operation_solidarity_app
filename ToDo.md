@@ -1,15 +1,22 @@
 ########################################################################################
 ToDo:
 
-Wednesday
+Tuesday:
 
 1. Re-style navbar
 2. Add <Suspense fallback="loader...">
 3. Style FORM pages
-4. Style <TaskDetail>
-5. Create 'tasks/[id]' view details page
 
-Thursday: 7. Create User form/Update Preferences Form 8. Landing Page with Hero component 9. Create Userpool + google identity ???
+Wednesday
+
+1. Style <TaskDetail>
+2. Create 'tasks/[id]' view details page
+
+Thursday:
+
+1. Create User form/Update Preferences Form
+2. Landing Page with Hero component
+3. Create Userpool + google identity ???
 
 Weekend:
 
