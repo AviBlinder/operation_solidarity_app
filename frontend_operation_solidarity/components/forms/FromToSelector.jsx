@@ -32,61 +32,63 @@ const FromToSelector = ({
   };
 
   return (
-    <div className="grid grid-cols-2 gap-4 mb-4">
-      <div>
-        <label
-          className="block text-sm font-medium text-primary-800"
-          htmlFor="from"
-        >
-          From
-        </label>
-        <select
-          id="from"
-          className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-          value={task.from}
-          onChange={(e) => {
-            setTask({ ...task, from: e.target.value });
-            handleFrom(e.target.value);
-          }}
-          required
-        >
-          <option value="" disabled>
-            Choose a city
-          </option>
-          {cities_short_list.map((city, index) => (
-            <option key={index} value={city.cityHebrew}>
-              {city.cityHebrew}
+    <div className="flex flex-col">
+      <div className="flex flex-col">
+        <div>
+          <label
+            className="block text-sm font-medium text-primary-800"
+            htmlFor="from"
+          >
+            From
+          </label>
+          <select
+            id="from"
+            className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
+            value={task.from}
+            onChange={(e) => {
+              setTask({ ...task, from: e.target.value });
+              handleFrom(e.target.value);
+            }}
+            required
+          >
+            <option value="" disabled>
+              Choose a city
             </option>
-          ))}
-        </select>
-      </div>
+            {cities_short_list.map((city, index) => (
+              <option key={index} value={city.cityHebrew}>
+                {city.cityHebrew}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <div>
-        <label
-          className="block text-sm font-medium text-primary-800"
-          htmlFor="to"
-        >
-          To
-        </label>
-        <select
-          id="to"
-          className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-          value={task.to}
-          onChange={(e) => {
-            setTask({ ...task, to: e.target.value });
-            handleTo(e.target.value);
-          }}
-          required
-        >
-          <option value="" disabled>
-            Choose a city
-          </option>
-          {cities_short_list.map((city, index) => (
-            <option key={index} value={city.cityHebrew}>
-              {city.cityHebrew}
+        <div className="mt-2">
+          <label
+            className="block text-sm font-medium text-primary-800"
+            htmlFor="to"
+          >
+            To
+          </label>
+          <select
+            id="to"
+            className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
+            value={task.to}
+            onChange={(e) => {
+              setTask({ ...task, to: e.target.value });
+              handleTo(e.target.value);
+            }}
+            required
+          >
+            <option value="" disabled>
+              Choose a city
             </option>
-          ))}
-        </select>
+            {cities_short_list.map((city, index) => (
+              <option key={index} value={city.cityHebrew}>
+                {city.cityHebrew}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     </div>
   );

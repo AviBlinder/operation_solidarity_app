@@ -25,7 +25,7 @@ const CitySelector = ({
   };
 
   return (
-    <div className="grid grid-cols-2 gap-4 mb-4">
+    <div className="flex flex-col">
       <div>
         <label
           className="block text-sm font-medium text-primary-800"

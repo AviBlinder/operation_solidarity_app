@@ -2,12 +2,11 @@
 
 function ContactDetails({ contact, setContact }) {
   return (
-    // <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
     <div className="flex flex-col">
       <div>
         <label
           htmlFor="phone"
-          className="block mt-2 text-sm font-medium text-primary-800"
+          className="block  text-sm font-medium text-primary-800"
         >
           Phone Number
         </label>

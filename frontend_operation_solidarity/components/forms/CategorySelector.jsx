@@ -11,7 +11,7 @@ const CategorySelector = ({
   };
 
   return (
-    <div className="mb-4">
+    <div className="flex flex-col">
       <label
         className="block text-sm font-medium text-primary-800"
         htmlFor="category"

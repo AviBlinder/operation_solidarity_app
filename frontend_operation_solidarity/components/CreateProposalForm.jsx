@@ -57,60 +57,88 @@ function CreateProposalForm({
   return (
     <div>
       {session?.user.email ? (
-        <form className="p-8" onSubmit={handleSubmit}>
-          <DescriptionField
-            type={type}
-            task={task}
-            setTask={setTask}
-          ></DescriptionField>
+        <form className="" onSubmit={handleSubmit}>
+          <div className="grid grid-cols-6 sm:grid-cols-6  rounded-lg  ">
+            <div className="mt-4 col-span-4 col-start-2 sm:col-span-6 sm:col-start-2">
+              {/* <div className="sm:col-span-3 col-span-6 "> */}
+              <div className=" ">
+                <DescriptionField
+                  type={type}
+                  task={task}
+                  setTask={setTask}
+                ></DescriptionField>
+              </div>
+            </div>
+            <div className="my-6 col-span-4 col-start-2 sm:col-span-3 sm:col-start-2 border-b border-gray-900/30 " />
 
-          <LocationTypeSelector
-            locationType={locationType}
-            setLocationType={setLocationType}
-          ></LocationTypeSelector>
+            <div className=" col-span-4 col-start-2 sm:col-span-6 sm:col-start-2">
+              <LocationTypeSelector
+                locationType={locationType}
+                setLocationType={setLocationType}
+              ></LocationTypeSelector>
+            </div>
 
-          {locationType === 'cityAddress' ? (
-            <CitySelector
-              task={task}
-              setTask={setTask}
-              geoLocations={geoLocations}
-              setGeolocations={setGeolocations}
-              cities_short_list={cities_short_list}
-            ></CitySelector>
-          ) : (
-            <FromToSelector
-              cities_short_list={cities_short_list}
-              task={task}
-              setTask={setTask}
-              geoLocations={geoLocations}
-              setGeolocations={setGeolocations}
-            ></FromToSelector>
-          )}
+            {locationType === 'cityAddress' ? (
+              <div className=" col-span-4 col-start-2 sm:col-span-2 sm:col-start-2">
+                <CitySelector
+                  task={task}
+                  setTask={setTask}
+                  geoLocations={geoLocations}
+                  setGeolocations={setGeolocations}
+                  cities_short_list={cities_short_list}
+                ></CitySelector>
+              </div>
+            ) : (
+              <div className=" col-span-4 col-start-2 sm:col-span-2 sm:col-start-2">
+                <FromToSelector
+                  cities_short_list={cities_short_list}
+                  task={task}
+                  setTask={setTask}
+                  geoLocations={geoLocations}
+                  setGeolocations={setGeolocations}
+                ></FromToSelector>
+              </div>
+            )}
 
-          <AvailabilitySelector
-            task={task}
-            setTask={setTask}
-            availability={availability}
-            setAvailability={setAvailability}
-          ></AvailabilitySelector>
+            <div className="my-6 col-span-4 col-start-2 sm:col-span-3 sm:col-start-2 border-b border-gray-900/30 ">
+              {' '}
+            </div>
+            <div className=" col-span-4 col-start-2 sm:col-span-6 sm:col-start-2">
+              <AvailabilitySelector
+                task={task}
+                setTask={setTask}
+                availability={availability}
+                setAvailability={setAvailability}
+              ></AvailabilitySelector>
+            </div>
 
-          <CategorySelector
-            categories={categories}
-            selectedCategories={selectedCategories}
-            setSelectedCategories={setSelectedCategories}
-            categoriesHebrew={categoriesHebrew}
-          ></CategorySelector>
-          <ContactDetails setContact={setContact} contact={contact} />
+            <div className="mt-4 col-span-4 col-start-2 sm:col-span-6 sm:col-start-2">
+              <CategorySelector
+                categories={categories}
+                selectedCategories={selectedCategories}
+                setSelectedCategories={setSelectedCategories}
+                categoriesHebrew={categoriesHebrew}
+              ></CategorySelector>
+            </div>
+            <div className="my-6 col-span-4 col-start-2 sm:col-span-3 sm:col-start-2 border-b border-gray-900/30 " />
 
-          <CommentsField task={task} setTask={setTask}></CommentsField>
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              disabled={submitting}
-              className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 active:bg-blue-800"
-            >
-              {submitting ? `submitting request` : 'submit'}
-            </button>
+            <div className="col-span-4 col-start-2 sm:col-span-1 sm:col-start-2">
+              <ContactDetails setContact={setContact} contact={contact} />
+            </div>
+            <div className="col-span-4 col-start-2 sm:col-span-3 sm:col-start-2">
+              <CommentsField task={task} setTask={setTask}></CommentsField>
+            </div>
+            <div className="mt-4 col-span-4 col-start-2 sm:col-span-6 sm:col-start-2">
+              <div className="flex justify-start">
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className="btn_secondary p-2"
+                >
+                  {submitting ? `submitting request` : 'submit'}
+                </button>
+              </div>
+            </div>
           </div>
         </form>
       ) : (
