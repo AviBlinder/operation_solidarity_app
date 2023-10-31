@@ -1,16 +1,18 @@
 ########################################################################################
-ToDo:
 
-Tuesday:
+## ToDo:
+
+### Tuesday:
 
 1. Re-style navbar
 2. Add <Suspense fallback="loader...">
 3. Style FORM pages
+4. Add tab to distinguish between requests and proposals?
 
-Wednesday
+### Wednesday
 
-1. Style <TaskDetail>
-2. Create 'tasks/[id]' view details page
+5. Style <TaskDetail>
+6. Create 'tasks/[id]' view details page
 
 Thursday:
 
@@ -39,9 +41,6 @@ Routes:
 - Multi-language support!!
 
 ---
-
-inline filter/sort layout:
-https://tailwindui.com/components/ecommerce/components/category-filters
 
 reactive navbar:
 https://tailwindui.com/components/application-ui/navigation/navbars#component-aaed25b299f2015d2c4276b98d463cee
