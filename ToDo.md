@@ -1,14 +1,13 @@
 ########################################################################################
 ToDo:
 
-1. Update request/proposal --> only if session?.user.email = task.email
-2. add filters functionality and then apply new template
-3. update status => directly on the details page (also)
+1. add filters functionality and then apply new template
+2. update status => directly on the details page (also)
 
-4. Create 'tasks/[id]' view details page
-5. Create User form/Update Preferences Form 4. Landing Page with Hero component 5. Create Userpool + google identity
+3. Create 'tasks/[id]' view details page
+4. Create User form/Update Preferences Form 4. Landing Page with Hero component 5. Create Userpool + google identity
 
-6. Fix /listTasks to match 2 new GSIs
+5. Fix /listTasks to match 2 new GSIs
 
 ## // for a 'volunteer': create page for listing all request and add filter and message capabilities
 

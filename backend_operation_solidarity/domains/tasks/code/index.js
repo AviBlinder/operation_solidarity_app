@@ -85,8 +85,6 @@ exports.listTasksHandler = async (event) => {
     // Handling the records retrieval
     let result = null;
 
-    // result = await dynamoDb.scan(params).promise();
-    // return { statusCode: 200, body: JSON.stringify(result.Items) };
     if (queryType == 'email') {
       result = await dynamoDb.query(params).promise();
       // check 'query' result
@@ -99,6 +97,15 @@ exports.listTasksHandler = async (event) => {
         };
       }
     } else if (queryType == 'all') {
+      // Project all attributes but 'comments'
+      params.ProjectionExpression =
+        'taskId, email, userId, taskType, userName, emailtaskType, entryDate, description, category, city, address, #from, #to, availability, updateDate, contact, #status';
+      params.ExpressionAttributeNames = {
+        '#from': 'from',
+        '#to': 'to',
+        '#status': 'status',
+      };
+
       result = await dynamoDb.scan(params).promise();
       return { statusCode: 200, body: JSON.stringify(result.Items) };
     }
