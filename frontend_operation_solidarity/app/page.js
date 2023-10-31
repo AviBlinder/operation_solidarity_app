@@ -1,10 +1,12 @@
 'use client';
-import Select from 'react-select';
 
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
-import TaskCard from '@/components/TaskCard';
+import Header from '@/components/Header';
+import TaskList from '@/components/TaskList';
+import FilterBar from '@/components/FilterBar';
+
 import { weekDays } from '@/constants/index';
 import { cities_short_list } from '@/constants/index';
 
@@ -14,7 +16,7 @@ export default function Home() {
   const [categoriesHebrew, setCategoriesHebrew] = useState([]);
 
   const weekDaysHebrew = weekDays.hebrew;
-  const weekDaysEnglish = weekDays.english;
+  // const weekDaysEnglish = weekDays.english;
   const weekDaysOptions = weekDaysHebrew.map((day) => ({
     value: day,
     label: day,
@@ -46,18 +48,6 @@ export default function Home() {
   const handleAvailabilityFilterChange = (selectedOptions) => {
     const values = selectedOptions.map((option) => option.value);
     setAvailabilityFilter(values);
-
-    // const options = event.target.options;
-    // const values = selectedOptions.map((option) => option.value);
-
-    // const value = [];
-    // for (let i = 0, l = options.length; i < l; i += 1) {
-    //   if (options[i].selected) {
-    //     value.push(options[i].value);
-    //   }
-    // }
-
-    // setAvailabilityFilter(values);
   };
 
   const handleCityFilterChange = (event) => {
@@ -161,87 +151,27 @@ export default function Home() {
   return (
     <main>
       <div>
-        <div className="text-4xl">Operation Solidarity</div>
-        <div className="flex flex-col">
-          <div>
-            <div className="mb-4">
-              <button
-                onClick={handleResetFilters}
-                className="m-2 p-1 bg-secondary-500 text-white rounded"
-              >
-                Reset Filters
-              </button>
-              <label htmlFor="category-choice">
-                Category:
-                <select
-                  id="category-choice"
-                  value={categoryFilter}
-                  onChange={handleCategoryFilterChange}
-                  className="ml-2"
-                >
-                  <option value="">All Categories</option>
-                  {categories.map((category, index) => (
-                    <option key={index} value={category}>
-                      {category}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              {/* Availability Filter  */}
-              <label className="ml-4" htmlFor="availability-choice">
-                Availability:
-                <Select
-                  id="availability-choice"
-                  value={availabilityFilter.map((value) => ({
-                    value,
-                    label: value,
-                  }))}
-                  onChange={handleAvailabilityFilterChange}
-                  options={weekDaysOptions}
-                  isMulti
-                  className="ml-2 w-64"
-                  classNamePrefix="react-select"
-                />
-              </label>
-              {/* citiesHebrew */}
-              {/* value={cityFilter}
-              onChange={handleCityFilterChange} */}
-              <label htmlFor="city-choice">
-                City:
-                <select
-                  id="city-choice"
-                  value={cityFilter}
-                  onChange={handleCityFilterChange}
-                  className="ml-2"
-                >
-                  <option value="">All Cities</option>
-                  {citiesHebrew.map((city, index) => (
-                    <option key={index} value={city}>
-                      {city}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-          </div>
+        <Header />
+        <div className="flex">
+          <FilterBar
+            categories={categories}
+            citiesHebrew={citiesHebrew}
+            weekDaysOptions={weekDaysOptions}
+            handleResetFilters={handleResetFilters}
+            handleCategoryFilterChange={handleCategoryFilterChange}
+            categoryFilter={categoryFilter}
+            handleAvailabilityFilterChange={handleAvailabilityFilterChange}
+            availabilityFilter={availabilityFilter}
+            handleCityFilterChange={handleCityFilterChange}
+            cityFilter={cityFilter}
+          />
+
           <div className="flex justify-between mb-4">
             <div>{/* Sorting and Filtering UI Elements */}</div>
           </div>
-
-          <ul
-            role="list"
-            className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
-          >
-            {filteredTasks.length > 0 &&
-              filteredTasks.map((task, index) => (
-                <li
-                  key={index}
-                  className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow"
-                >
-                  <TaskCard task={task}></TaskCard>
-                </li>
-              ))}
-          </ul>
+        </div>
+        <div className="flex flex-row">
+          <TaskList tasks={filteredTasks} />
         </div>
       </div>
     </main>

@@ -7,11 +7,11 @@ const TaskCard = ({ task }) => {
   const { data: session } = useSession();
 
   return (
-    <>
-      <div>
-        <div className="flex flex-col w-full items-center justify-between space-x-6 p-6">
-          <div className="flex flex-row truncate">
-            <div className="flex   items-center space-x-3">
+    <div className="bg-primary-100 mx-2 p-2 rounded-xl">
+      <div className="">
+        <div className=" flex flex-col w-full items-center justify-between space-x-6 p-6">
+          <div className="flex truncate ">
+            <div className="flex  flex-row items-center space-x-3">
               <div>
                 {' '}
                 {session?.user.email === task.email &&
@@ -85,7 +85,7 @@ const TaskCard = ({ task }) => {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
