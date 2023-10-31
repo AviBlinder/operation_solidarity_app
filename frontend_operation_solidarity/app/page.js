@@ -22,9 +22,9 @@ export default function Home() {
       console.log('data: ', data);
       setFilteredTasks(data);
     };
-    if (session?.user.email) {
-      fetchTasks();
-    }
+    // if (session?.user.email) {
+    fetchTasks();
+    // }
   }, [session]);
 
   useEffect(() => {

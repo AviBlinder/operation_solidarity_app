@@ -1,6 +1,7 @@
 import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { FaPencilAlt } from 'react-icons/fa';
 
 const TaskCard = ({ task }) => {
   const { data: session } = useSession();
@@ -9,27 +10,31 @@ const TaskCard = ({ task }) => {
     <>
       <div>
         <div className="flex flex-col w-full items-center justify-between space-x-6 p-6">
-          <div className="flex-1 truncate">
+          <div className="flex flex-row truncate">
             <div className="flex   items-center space-x-3">
               <div>
                 {' '}
-                {session?.user.email === task.email ? (
-                  task.taskType == 'request' ? (
+                {session?.user.email === task.email &&
+                  (task.taskType == 'request' ? (
                     <Link
                       href={`/request/update/${task.taskId}?entryDate=${task.entryDate}`}
                     >
-                      update r
+                      {' '}
+                      <FaPencilAlt
+                        size={20}
+                        className="text-primary-500 mr-6"
+                      ></FaPencilAlt>
                     </Link>
                   ) : (
                     <Link
                       href={`/proposal/update/${task.taskId}?entryDate=${task.entryDate}`}
                     >
-                      update p
+                      <FaPencilAlt
+                        size={20}
+                        className="text-primary-500 mr-6"
+                      ></FaPencilAlt>
                     </Link>
-                  )
-                ) : (
-                  <h1>not you {task.email}</h1>
-                )}
+                  ))}
               </div>
             </div>
             <div className="inline-flex flex-shrink-0 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
