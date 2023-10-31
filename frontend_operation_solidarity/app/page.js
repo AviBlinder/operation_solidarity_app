@@ -83,6 +83,8 @@ export default function Home() {
     // Fetch the tasks from your API or server here
     const fetchTasks = async () => {
       const response = await fetch(`/api/tasks/`);
+      // `/api/tasks?userEmail=${session?.user.email}`;
+
       const data = await response.json();
       setTasks(data);
       console.log('data: ', data);
@@ -151,8 +153,8 @@ export default function Home() {
   return (
     <main>
       <div>
-        <Header />
-        <div className="flex">
+        <Header title="Operation Solidarity" />
+        <div className="flex flex-row w-full ">
           <FilterBar
             categories={categories}
             citiesHebrew={citiesHebrew}
@@ -165,10 +167,6 @@ export default function Home() {
             handleCityFilterChange={handleCityFilterChange}
             cityFilter={cityFilter}
           />
-
-          <div className="flex justify-between mb-4">
-            <div>{/* Sorting and Filtering UI Elements */}</div>
-          </div>
         </div>
         <div className="flex flex-row">
           <TaskList tasks={filteredTasks} />

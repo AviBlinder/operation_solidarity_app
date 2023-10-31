@@ -1,3 +1,3 @@
-export default function Header() {
-  return <div className="text-4xl">Operation Solidarity</div>;
+export default function Header({ title }) {
+  return <div className="text-4xl capitalize">{title}</div>;
 }
