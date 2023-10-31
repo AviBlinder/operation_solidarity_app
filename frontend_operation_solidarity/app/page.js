@@ -1,18 +1,92 @@
 'use client';
+import Select from 'react-select';
+
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 
 import TaskCard from '@/components/TaskCard';
+import { weekDays } from '@/constants/index';
 
 export default function Home() {
   const { data: session } = useSession();
+  const [categories, setCategories] = useState([]);
+  const [categoriesHebrew, setCategoriesHebrew] = useState([]);
+
+  const weekDaysHebrew = weekDays.hebrew;
+  const weekDaysEnglish = weekDays.english;
+  const weekDaysOptions = weekDaysHebrew.map((day) => ({
+    value: day,
+    label: day,
+  }));
 
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
+
+  const [showAll, setShowAll] = useState(true);
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [availability, setAvailability] = useState([]);
+  const [availabilityFilter, setAvailabilityFilter] = useState([]);
+  const [cityFilter, setCityFilter] = useState('');
+  const [locationFromFilter, setLocationFromFilter] = useState('');
   const [filter, setFilter] = useState('');
   const [sortField, setSortField] = useState('entryDate');
   const [sortOrder, setSortOrder] = useState('desc');
 
+  const handleCategoryFilterChange = (event) => {
+    if (event.target.value === 'all') {
+      setShowAll(true);
+    } else {
+      setShowAll(false);
+      setCategoryFilter(event.target.value);
+    }
+  };
+
+  const handleAvailabilityFilterChange = (selectedOptions) => {
+    const values = selectedOptions.map((option) => option.value);
+    setAvailabilityFilter(values);
+
+    // const options = event.target.options;
+    // const values = selectedOptions.map((option) => option.value);
+
+    // const value = [];
+    // for (let i = 0, l = options.length; i < l; i += 1) {
+    //   if (options[i].selected) {
+    //     value.push(options[i].value);
+    //   }
+    // }
+
+    // setAvailabilityFilter(values);
+  };
+
+  const handleCityFilterChange = (event) => {
+    setCityFilter(event.target.value);
+  };
+
+  const handleLocationFromFilterChange = (event) => {
+    setLocationFromFilter(event.target.value);
+  };
+
+  // load Categories
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const response = await fetch(`/api/reference-data/categories`, {
+        next: { revalidate: 3600 },
+      });
+      const allCategories = await response.json();
+      const categoriesNames = allCategories.map((cat) => cat.itemName.S);
+      const categoriesHebrewNames = allCategories.map(
+        (cat) => cat.itemNameHebrew.S
+      );
+
+      setCategories(categoriesNames);
+      setCategoriesHebrew(categoriesHebrewNames);
+      setAvailability(categoriesHebrewNames);
+    };
+
+    if (categories.length === 0) {
+      fetchCategories();
+    }
+  }, []);
   useEffect(() => {
     // Fetch the tasks from your API or server here
     const fetchTasks = async () => {
@@ -30,50 +104,115 @@ export default function Home() {
   useEffect(() => {
     let result = [...tasks];
 
-    if (filter) {
+    // Existing filter and sort logic
+
+    if (categoryFilter) {
+      result = result.filter((task) => task.category.includes(categoryFilter));
+    }
+
+    if (availabilityFilter.length > 0) {
+      // result = result.filter((task) =>
+      //   task.availability.includes(availabilityFilter)
+      // );
       result = result.filter((task) =>
-        Object.values(task).some((value) =>
-          value.toString().toLowerCase().includes(filter.toLowerCase())
+        task.availability.some((availability) =>
+          availabilityFilter.includes(availability)
         )
       );
     }
 
-    result.sort((a, b) => {
-      let valueA = a[sortField];
-      let valueB = b[sortField];
+    if (cityFilter) {
+      result = result.filter(
+        (task) =>
+          task.city && task.city.city.toLowerCase() === cityFilter.toLowerCase()
+      );
+    }
 
-      if (typeof valueA === 'string') {
-        valueA = valueA.toLowerCase();
-        valueB = valueB.toLowerCase();
-      }
-
-      if (sortOrder === 'asc') {
-        return valueA > valueB ? 1 : -1;
-      } else {
-        return valueA < valueB ? 1 : -1;
-      }
-    });
+    if (locationFromFilter) {
+      result = result.filter(
+        (task) =>
+          task.from &&
+          task.from.cityFrom.toLowerCase() === locationFromFilter.toLowerCase()
+      );
+    }
 
     setFilteredTasks(result);
-  }, [filter, sortField, sortOrder, tasks]);
-
-  const handleFilterChange = (event) => {
-    setFilter(event.target.value);
-  };
-
-  const handleSortFieldChange = (event) => {
-    setSortField(event.target.value);
-  };
-
-  const handleSortOrderChange = (event) => {
-    setSortOrder(event.target.value);
+  }, [
+    filter,
+    sortField,
+    sortOrder,
+    tasks,
+    categoryFilter,
+    availabilityFilter,
+    cityFilter,
+    locationFromFilter,
+    showAll,
+  ]);
+  const handleResetFilters = () => {
+    setCategoryFilter('');
+    setAvailabilityFilter([]);
+    setCityFilter('');
+    setLocationFromFilter('');
+    setFilter('');
   };
 
   return (
     <main>
       <div>
         <div className="text-4xl">Operation Solidarity</div>
-        <div>
+        <div className="flex flex-col">
+          <div>
+            <div className="mb-4">
+              <button
+                onClick={handleResetFilters}
+                className="m-2 p-1 bg-secondary-500 text-white rounded"
+              >
+                Reset Filters
+              </button>
+
+              <label>
+                Category:
+                <select
+                  value={categoryFilter}
+                  onChange={handleCategoryFilterChange}
+                  className="ml-2"
+                >
+                  <option value="">All Categories</option>
+                  {categories.map((category, index) => (
+                    <option key={index} value={category}>
+                      {category}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              {/* Availability Filter  */}
+              <label className="ml-4">
+                Availability:
+                <Select
+                  id="availabilityFilter"
+                  value={availabilityFilter.map((value) => ({
+                    value,
+                    label: value,
+                  }))}
+                  onChange={handleAvailabilityFilterChange}
+                  options={weekDaysOptions}
+                  isMulti
+                  className="ml-2 w-64"
+                  classNamePrefix="react-select"
+                />
+              </label>
+
+              <label className="ml-4">
+                City:
+                <input
+                  type="text"
+                  value={cityFilter}
+                  onChange={handleCityFilterChange}
+                  className="ml-2"
+                />
+              </label>
+            </div>
+          </div>
           <div className="flex justify-between mb-4">
             <div>{/* Sorting and Filtering UI Elements */}</div>
           </div>
