@@ -13,13 +13,10 @@ export const GET = async (request) => {
 
     if (userEmail) {
       const res = await fetch(`${baseURL}/${env}/tasks?email=${userEmail}`);
-      console.log('res 1=', res);
-
       const tasks = await res.json();
       return new Response(JSON.stringify(tasks), { status: 200 });
     } else {
       const res = await fetch(`${baseURL}/${env}/tasks`);
-      console.log('res 2=', res);
       const tasks = await res.json();
       return new Response(JSON.stringify(tasks), { status: 200 });
 

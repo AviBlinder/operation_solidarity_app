@@ -203,7 +203,7 @@ const updateRequest = ({ params }) => {
 
   return (
     <div>
-      {session?.user.email ? (
+      {session?.user.email && session?.user.email === task.email ? (
         <form className="p-8" onSubmit={handleSubmit}>
           <DescriptionField
             type={type}

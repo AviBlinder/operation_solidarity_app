@@ -1,14 +1,27 @@
 ########################################################################################
 ToDo:
-test latest changes:
 
-//tasks GSI 2:
-email#: HASH --> email#taskType
-createDste: SORTKEY1
+1. Update request/proposal --> only if session?.user.email = task.email
+2. add filters functionality and then apply new template
+3. update status => directly on the details page (also)
 
-//tasks PK + SORTKEY2:
-taskId
-status
+4. Create 'tasks/[id]' view details page
+5. Create User form/Update Preferences Form 4. Landing Page with Hero component 5. Create Userpool + google identity
+
+6. Fix /listTasks to match 2 new GSIs
+
+## // for a 'volunteer': create page for listing all request and add filter and message capabilities
+
+Routes:
+/tasks/ --> sort , filter by city/distance range/availability/ and 'link to update'
+/tasks/[id]
+
+/users/
+/users/[id]/update-profile
+
+- find me a match -> based on User's Volunteering Profile
+- Find styled components + fix reactivity issues
+- Multi-language support!!
 
 ---
 
@@ -27,28 +40,6 @@ my activity -> requests/proposals tabs
 
 tabs for "my activity" page:
 https://tailwindui.com/components/application-ui/navigation/tabs#component-07e889de48dabb9e22d20353d7c02d16
-
----
-
-1. Update request/proposal --> only if session?.user.email = task.email
-2. add filters functionality and then apply new template
-3. update status => directly on the details page (also)
-
-4. Create 'tasks/[id]' view details page
-5. Create User form/Update Preferences Form 4. Landing Page with Hero component 5. Create Userpool + google identity
-
-## // for a 'volunteer': create page for listing all request and add filter and message capabilities
-
-Routes:
-/tasks/ --> sort , filter by city/distance range/availability/ and 'link to update'
-/tasks/[id]
-
-/users/
-/users/[id]/update-profile
-
-- find me a match -> based on User's Volunteering Profile
-- Find styled components + fix reactivity issues
-- Multi-language support!!
 
 ---
 
