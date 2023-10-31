@@ -1,6 +1,9 @@
 'use client';
+import { Dialog, Transition } from '@headlessui/react';
+import { XMarkIcon } from '@heroicons/react/24/outline';
+import { FunnelIcon } from '@heroicons/react/20/solid';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { useSession } from 'next-auth/react';
 
 import Header from '@/components/Header';
@@ -14,6 +17,7 @@ export default function Home() {
   const { data: session } = useSession();
   const [categories, setCategories] = useState([]);
   const [categoriesHebrew, setCategoriesHebrew] = useState([]);
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const weekDaysHebrew = weekDays.hebrew;
   // const weekDaysEnglish = weekDays.english;
@@ -33,8 +37,6 @@ export default function Home() {
   const [cityFilter, setCityFilter] = useState('');
   const [locationFromFilter, setLocationFromFilter] = useState('');
   const [filter, setFilter] = useState('');
-  const [sortField, setSortField] = useState('entryDate');
-  const [sortOrder, setSortOrder] = useState('desc');
 
   const handleCategoryFilterChange = (event) => {
     if (event.target.value === 'all') {
@@ -80,7 +82,6 @@ export default function Home() {
     }
   }, []);
   useEffect(() => {
-    // Fetch the tasks from your API or server here
     const fetchTasks = async () => {
       const response = await fetch(`/api/tasks/`);
       // `/api/tasks?userEmail=${session?.user.email}`;
@@ -105,9 +106,6 @@ export default function Home() {
     }
 
     if (availabilityFilter.length > 0) {
-      // result = result.filter((task) =>
-      //   task.availability.includes(availabilityFilter)
-      // );
       result = result.filter((task) =>
         task.availability.some((availability) =>
           availabilityFilter.includes(availability)
@@ -133,8 +131,6 @@ export default function Home() {
     setFilteredTasks(result);
   }, [
     filter,
-    sortField,
-    sortOrder,
     tasks,
     categoryFilter,
     availabilityFilter,
@@ -151,27 +147,119 @@ export default function Home() {
   };
 
   return (
-    <main>
+    <div className="bg-white">
       <div>
-        <Header title="Operation Solidarity" />
-        <div className="flex flex-row w-full ">
-          <FilterBar
-            categories={categories}
-            citiesHebrew={citiesHebrew}
-            weekDaysOptions={weekDaysOptions}
-            handleResetFilters={handleResetFilters}
-            handleCategoryFilterChange={handleCategoryFilterChange}
-            categoryFilter={categoryFilter}
-            handleAvailabilityFilterChange={handleAvailabilityFilterChange}
-            availabilityFilter={availabilityFilter}
-            handleCityFilterChange={handleCityFilterChange}
-            cityFilter={cityFilter}
-          />
-        </div>
-        <div className="flex flex-row">
-          <TaskList tasks={filteredTasks} />
-        </div>
+        {/* Mobile filter dialog */}
+        <Transition.Root show={mobileFiltersOpen} as={Fragment}>
+          <Dialog
+            as="div"
+            className="relative z-40 lg:hidden"
+            onClose={setMobileFiltersOpen}
+          >
+            <Transition.Child
+              as={Fragment}
+              enter="transition-opacity ease-linear duration-300"
+              enterFrom="opacity-0"
+              enterTo="opacity-100"
+              leave="transition-opacity ease-linear duration-300"
+              leaveFrom="opacity-100"
+              leaveTo="opacity-0"
+            >
+              <div className="fixed inset-0 bg-black bg-opacity-25" />
+            </Transition.Child>
+
+            <div className="fixed inset-0 z-40 flex">
+              <Transition.Child
+                as={Fragment}
+                enter="transition ease-in-out duration-300 transform"
+                enterFrom="translate-x-full"
+                enterTo="translate-x-0"
+                leave="transition ease-in-out duration-300 transform"
+                leaveFrom="translate-x-0"
+                leaveTo="translate-x-full"
+              >
+                <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
+                  <div className="flex items-center justify-between px-4">
+                    <h2 className="text-lg font-medium text-gray-900">
+                      Filters
+                    </h2>
+                    <button
+                      type="button"
+                      className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
+                      onClick={() => setMobileFiltersOpen(false)}
+                    >
+                      <span className="sr-only">Close menu</span>
+                      <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                    </button>
+                  </div>
+                  <div className="flex flex-col">
+                    <FilterBar
+                      mobileFiltersOpen={mobileFiltersOpen}
+                      categories={categories}
+                      citiesHebrew={citiesHebrew}
+                      weekDaysOptions={weekDaysOptions}
+                      handleResetFilters={handleResetFilters}
+                      handleCategoryFilterChange={handleCategoryFilterChange}
+                      categoryFilter={categoryFilter}
+                      handleAvailabilityFilterChange={
+                        handleAvailabilityFilterChange
+                      }
+                      availabilityFilter={availabilityFilter}
+                      handleCityFilterChange={handleCityFilterChange}
+                      cityFilter={cityFilter}
+                    />
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </Dialog>
+        </Transition.Root>
+
+        <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
+            <Header title="Operation Solidarity" />
+            <div className="flex items-center">
+              <button
+                type="button"
+                className="-m-2 ml-4 p-2 text-gray-400 hover:text-gray-500 sm:ml-6 lg:hidden"
+                onClick={() => setMobileFiltersOpen(true)}
+              >
+                <span className="sr-only">Filters</span>
+                <FunnelIcon className="h-5 w-5" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+
+          <section aria-labelledby="products-heading" className="pb-24 pt-6">
+            <h2 id="products-heading" className="sr-only">
+              Tasks
+            </h2>
+
+            <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
+              <FilterBar
+                mobileFiltersOpen={!mobileFiltersOpen}
+                categories={categories}
+                citiesHebrew={citiesHebrew}
+                weekDaysOptions={weekDaysOptions}
+                handleResetFilters={handleResetFilters}
+                handleCategoryFilterChange={handleCategoryFilterChange}
+                categoryFilter={categoryFilter}
+                handleAvailabilityFilterChange={handleAvailabilityFilterChange}
+                availabilityFilter={availabilityFilter}
+                handleCityFilterChange={handleCityFilterChange}
+                cityFilter={cityFilter}
+              />
+
+              <div className="lg:col-span-3">
+                {' '}
+                <div className="flex flex-row">
+                  <TaskList tasks={filteredTasks} />{' '}
+                </div>
+              </div>
+            </div>
+          </section>
+        </main>
       </div>
-    </main>
+    </div>
   );
 }

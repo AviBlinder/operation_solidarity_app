@@ -3,13 +3,14 @@ import Select from 'react-select';
 const customStyles = {
   control: (provided) => ({
     ...provided,
-    height: '45px', // Set your desired height
+    height: '45px',
     minHeight: '45px',
   }),
   valueContainer: (provided) => ({
     ...provided,
     height: '40px',
     padding: '0 6px',
+    fontWeight: 'bold',
   }),
   input: (provided) => ({
     ...provided,
@@ -21,6 +22,7 @@ const customStyles = {
   }),
 };
 const FilterBar = ({
+  mobileFiltersOpen,
   categories,
   citiesHebrew,
   weekDaysOptions,
@@ -33,20 +35,24 @@ const FilterBar = ({
   cityFilter,
 }) => {
   return (
-    <div className="mb-4 flex flex-row">
+    <div
+      className={`${
+        mobileFiltersOpen ? 'mt-2  flex flex-col' : 'mb-4 flex flex-row'
+      }`}
+    >
+      {' '}
       <button
         onClick={handleResetFilters}
-        className="m-2 p-1 bg-secondary-500 text-white rounded"
+        className="m-2 p-1 bg-secondary-500 text-white rounded w-[90%]"
       >
         Reset Filters
       </button>
       <label htmlFor="category-choice" className="mt-2 ">
         {/* Category: */}
         <select
-          // placeholder={searchCityPlaceholder}
-          defaultValue={{ label: 'Select Dept', value: 0 }}
-          className="ml-2 w-52"
-          classNamePrefix="react-select"
+          className={`${
+            mobileFiltersOpen ? 'mt-2  w-[90%] my-10 mx-2' : 'ml-2 w-52'
+          }`}
           id="category-choice"
           value={categoryFilter}
           onChange={handleCategoryFilterChange}
@@ -65,7 +71,9 @@ const FilterBar = ({
           id="city-choice"
           value={cityFilter}
           onChange={handleCityFilterChange}
-          className="ml-2"
+          className={`${
+            mobileFiltersOpen ? 'mt-2  w-[90%] my-10 mx-2' : 'ml-2 w-52'
+          }`}
         >
           <option value="">All Cities</option>
           {citiesHebrew.map((city, index) => (
@@ -76,7 +84,10 @@ const FilterBar = ({
         </select>
       </label>
       {/* Availability Filter  */}
-      <label className="ml-4 mt-2 py-1" htmlFor="availability-choice">
+      <label
+        className={`${mobileFiltersOpen ? 'mt-2 py-1' : '"ml-4 mt-2 py-1'}`}
+        htmlFor="availability-choice"
+      >
         {/* Availability: */}
         <Select
           styles={customStyles}
@@ -92,7 +103,9 @@ const FilterBar = ({
           onChange={handleAvailabilityFilterChange}
           options={weekDaysOptions}
           isMulti
-          className="ml-2 w-64 -mt-1"
+          className={`${
+            mobileFiltersOpen ? 'mt-2  w-[90%] my-10 mx-2' : 'ml-2 w-64 -mt-1'
+          }`}
           classNamePrefix="react-select"
         />
       </label>
