@@ -1,13 +1,15 @@
 ########################################################################################
 ToDo:
 
-1. add filters functionality and then apply new template
-2. update status => directly on the details page (also)
-3. Style <TaskDetail>
+1. update status => directly on the details page (also)
+2. Style <TaskDetail>
+3. Re-style navbar
 4. Create 'tasks/[id]' view details page
-5. Create User form/Update Preferences Form 4. Landing Page with Hero component 5. Create Userpool + google identity
+5. Create User form/Update Preferences Form
+6. Landing Page with Hero component
+7. Create Userpool + google identity
 
-6. Fix /listTasks to match 2 new GSIs
+8. Fix /listTasks to match 2 new GSIs
 
 ## // for a 'volunteer': create page for listing all request and add filter and message capabilities
 

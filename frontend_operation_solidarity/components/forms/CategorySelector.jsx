@@ -20,21 +20,28 @@ const CategorySelector = ({
       </label>
 
       <div>
-        {categoriesHebrew.map((categoryHebrew, index) => (
-          <label key={index} className="inline-flex items-center mr-4">
-            <input
-              // type="checkbox"
-              type="radio"
-              className="form-checkbox"
-              value={categoryHebrew}
-              checked={selectedCategories?.includes(categories[index])}
-              onChange={(event) =>
-                handleCategoryChange(categories[index], event.target.checked)
-              }
-            />
-            <span className="ml-2">{categoryHebrew}</span>
-          </label>
-        ))}
+        <fieldset>
+          {categoriesHebrew.map((categoryHebrew, index) => (
+            <label
+              key={index}
+              htmlFor={`category-radio-${index}`}
+              className="inline-flex items-center mr-4"
+            >
+              <input
+                // type="checkbox"
+                id={`category-radio-${index}`}
+                type="radio"
+                // className="form-checkbox"
+                value={categoryHebrew}
+                checked={selectedCategories?.includes(categories[index])}
+                onChange={(event) =>
+                  handleCategoryChange(categories[index], event.target.checked)
+                }
+              />
+              <span className="ml-2">{categoryHebrew}</span>
+            </label>
+          ))}
+        </fieldset>
       </div>
     </div>
   );
