@@ -5,7 +5,7 @@ import FromToSelector from './FromToSelector';
 import AvailabilitySelector from './AvailabilitySelector';
 import CategorySelector from './CategorySelector';
 import CommentsField from './CommentsField';
-
+import StatusSelector from './StatusSelector';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { cities_short_list } from '@/constants/index';

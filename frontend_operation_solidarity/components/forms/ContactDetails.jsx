@@ -2,7 +2,8 @@
 
 function ContactDetails({ contact, setContact }) {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+    // <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+    <div className="flex flex-col">
       <div>
         <label
           htmlFor="phone"
@@ -23,8 +24,6 @@ function ContactDetails({ contact, setContact }) {
           onChange={(e) => setContact({ ...contact, phone: e.target.value })}
         />
       </div>
-      <div className="md:hidden"> </div>
-      <div className="md:hidden"> </div>
     </div>
   );
 }

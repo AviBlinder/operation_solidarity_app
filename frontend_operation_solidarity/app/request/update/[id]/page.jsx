@@ -11,7 +11,7 @@ import CitySelector from '@/components/forms/CitySelector';
 import FromToSelector from '@/components/forms/FromToSelector';
 import AvailabilitySelector from '@/components/forms/AvailabilitySelector';
 import CategorySelector from '@/components/forms/CategorySelector';
-
+import StatusSelector from '@/components/forms/StatusSelector';
 const updateRequest = ({ params }) => {
   const type = 'request';
   const router = useRouter();
@@ -246,6 +246,8 @@ const updateRequest = ({ params }) => {
             setSelectedCategories={setSelectedCategories}
             categoriesHebrew={categoriesHebrew}
           ></CategorySelector>
+
+          <StatusSelector task={task} setTask={setTask} />
 
           <div className="flex justify-end">
             <button
