@@ -6,6 +6,7 @@ import { useSession } from 'next-auth/react';
 
 import TaskCard from '@/components/TaskCard';
 import { weekDays } from '@/constants/index';
+import { cities_short_list } from '@/constants/index';
 
 export default function Home() {
   const { data: session } = useSession();
@@ -19,6 +20,7 @@ export default function Home() {
     label: day,
   }));
 
+  const citiesHebrew = cities_short_list.map((city) => city.cityHebrew);
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
 
@@ -169,10 +171,10 @@ export default function Home() {
               >
                 Reset Filters
               </button>
-
-              <label>
+              <label htmlFor="category-choice">
                 Category:
                 <select
+                  id="category-choice"
                   value={categoryFilter}
                   onChange={handleCategoryFilterChange}
                   className="ml-2"
@@ -186,10 +188,10 @@ export default function Home() {
                 </select>
               </label>
               {/* Availability Filter  */}
-              <label className="ml-4">
+              <label className="ml-4" htmlFor="availability-choice">
                 Availability:
                 <Select
-                  id="availabilityFilter"
+                  id="availability-choice"
                   value={availabilityFilter.map((value) => ({
                     value,
                     label: value,
@@ -201,15 +203,24 @@ export default function Home() {
                   classNamePrefix="react-select"
                 />
               </label>
-
-              <label className="ml-4">
+              {/* citiesHebrew */}
+              {/* value={cityFilter}
+              onChange={handleCityFilterChange} */}
+              <label htmlFor="city-choice">
                 City:
-                <input
-                  type="text"
+                <select
+                  id="city-choice"
                   value={cityFilter}
                   onChange={handleCityFilterChange}
                   className="ml-2"
-                />
+                >
+                  <option value="">All Cities</option>
+                  {citiesHebrew.map((city, index) => (
+                    <option key={index} value={city}>
+                      {city}
+                    </option>
+                  ))}
+                </select>
               </label>
             </div>
           </div>
