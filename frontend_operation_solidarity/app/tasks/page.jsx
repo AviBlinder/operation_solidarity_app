@@ -3,7 +3,7 @@ import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { FunnelIcon } from '@heroicons/react/20/solid';
 
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect, Fragment, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 
 import Header from '@/components/Header';
@@ -252,10 +252,11 @@ export default function Home() {
               />
 
               <div className="lg:col-span-3">
-                {' '}
-                <div className="flex flex-row">
-                  <TaskList tasks={filteredTasks} />{' '}
-                </div>
+                <Suspense fallback={<div>Loading...</div>}>
+                  <div className="flex flex-row">
+                    <TaskList tasks={filteredTasks} />{' '}
+                  </div>
+                </Suspense>
               </div>
             </div>
           </section>

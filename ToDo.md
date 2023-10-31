@@ -4,10 +4,8 @@
 
 ### Tuesday:
 
-1. Re-style navbar
-2. Add <Suspense fallback="loader...">
-3. Style FORM pages
-4. Add tab to distinguish between requests and proposals?
+1. Style FORM pages
+2. Add tab to distinguish between requests and proposals?
 
 ### Wednesday
 
@@ -41,9 +39,6 @@ Routes:
 - Multi-language support!!
 
 ---
-
-reactive navbar:
-https://tailwindui.com/components/application-ui/navigation/navbars#component-aaed25b299f2015d2c4276b98d463cee
 
 add to menu:
 requests

@@ -7,7 +7,7 @@ const Logo = () => (
       alt="logo"
       width="80"
       height="80"
-      className="object-contain"
+      className="object-contain mt-5"
     />
   </Link>
 );

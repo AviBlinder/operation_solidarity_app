@@ -32,7 +32,7 @@ const Nav = () => {
   return (
     <nav className="flex-between w-full mb-16 pt-3">
       <Logo />
-      <p className="sm:hidden md:flex text-2xl text-supporting1-800 tracking-tighter font-bold text-center justify-center px-20 py-4">
+      <p className="xs:hidden sm:flex sm:text-xl text-2xl text-supporting1-800 tracking-tighter font-bold text-center justify-center px-20 py-4">
         Operation Solidarity
       </p>
       <DesktopNav

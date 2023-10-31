@@ -12,9 +12,9 @@ const UserProfile = ({
     <div className="relative">
       <Image
         src={session?.user.image}
-        width={50}
-        height={50}
-        className="rounded-full"
+        width={60}
+        height={60}
+        className=" rounded-full"
         alt="tasks"
         onClick={() => setToggleDropdown((prev) => !prev)}
       />

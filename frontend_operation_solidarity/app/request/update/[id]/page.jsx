@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { cities_short_list } from '@/constants/index';
 import { useSession } from 'next-auth/react';
@@ -202,67 +202,69 @@ const updateRequest = ({ params }) => {
   };
 
   return (
-    <div>
-      {session?.user.email && session?.user.email === task.email ? (
-        <form className="p-8" onSubmit={handleSubmit}>
-          <DescriptionField
-            type={type}
-            task={task}
-            setTask={setTask}
-          ></DescriptionField>
-
-          <LocationTypeSelector
-            locationType={locationType}
-            setLocationType={setLocationType}
-          ></LocationTypeSelector>
-          {locationType === 'cityAddress' ? (
-            <CitySelector
+    <Suspense fallback={<div>Loading...</div>}>
+      <div>
+        {session?.user.email && session?.user.email === task.email ? (
+          <form className="p-8" onSubmit={handleSubmit}>
+            <DescriptionField
+              type={type}
               task={task}
               setTask={setTask}
-              geoLocations={geoLocations}
-              setGeolocations={setGeolocations}
-              cities_short_list={cities_short_list}
-            ></CitySelector>
-          ) : (
-            <FromToSelector
-              cities_short_list={cities_short_list}
+            ></DescriptionField>
+
+            <LocationTypeSelector
+              locationType={locationType}
+              setLocationType={setLocationType}
+            ></LocationTypeSelector>
+            {locationType === 'cityAddress' ? (
+              <CitySelector
+                task={task}
+                setTask={setTask}
+                geoLocations={geoLocations}
+                setGeolocations={setGeolocations}
+                cities_short_list={cities_short_list}
+              ></CitySelector>
+            ) : (
+              <FromToSelector
+                cities_short_list={cities_short_list}
+                task={task}
+                setTask={setTask}
+                geoLocations={geoLocations}
+                setGeolocations={setGeolocations}
+              ></FromToSelector>
+            )}
+
+            <AvailabilitySelector
               task={task}
               setTask={setTask}
-              geoLocations={geoLocations}
-              setGeolocations={setGeolocations}
-            ></FromToSelector>
-          )}
+              availability={availability}
+              setAvailability={setAvailability}
+            ></AvailabilitySelector>
 
-          <AvailabilitySelector
-            task={task}
-            setTask={setTask}
-            availability={availability}
-            setAvailability={setAvailability}
-          ></AvailabilitySelector>
+            <CategorySelector
+              categories={categories}
+              selectedCategories={selectedCategories}
+              setSelectedCategories={setSelectedCategories}
+              categoriesHebrew={categoriesHebrew}
+            ></CategorySelector>
 
-          <CategorySelector
-            categories={categories}
-            selectedCategories={selectedCategories}
-            setSelectedCategories={setSelectedCategories}
-            categoriesHebrew={categoriesHebrew}
-          ></CategorySelector>
+            <StatusSelector task={task} setTask={setTask} />
 
-          <StatusSelector task={task} setTask={setTask} />
-
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              disabled={submitting}
-              className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 active:bg-blue-800"
-            >
-              {submitting ? `updating request` : 'update'}
-            </button>
-          </div>
-        </form>
-      ) : (
-        <div> You need to login first</div>
-      )}
-    </div>
+            <div className="flex justify-end">
+              <button
+                type="submit"
+                disabled={submitting}
+                className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 active:bg-blue-800"
+              >
+                {submitting ? `updating request` : 'update'}
+              </button>
+            </div>
+          </form>
+        ) : (
+          <div> You need to login first</div>
+        )}
+      </div>
+    </Suspense>
   );
 };
 
