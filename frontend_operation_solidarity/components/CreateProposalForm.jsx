@@ -21,39 +21,17 @@ function CreateProposalForm({
   setAvailability,
   geoLocations,
   setGeolocations,
-  selectedCategories,
-  setSelectedCategories,
   contact,
   setContact,
   submitting,
   handleSubmit,
 }) {
   const { data: session } = useSession();
+
   const [categories, setCategories] = useState([]);
   const [categoriesHebrew, setCategoriesHebrew] = useState([]);
+
   const [locationType, setLocationType] = useState('cityAddress');
-  // load Categories
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await fetch(`/api/reference-data/categories`, {
-        next: { revalidate: 3600 },
-      });
-      const allCategories = await response.json();
-      const categoriesNames = allCategories.map((cat) => cat.itemName.S);
-      const categoriesHebrewNames = allCategories.map(
-        (cat) => cat.itemNameHebrew.S
-      );
-
-      setCategories(categoriesNames);
-      setCategoriesHebrew(categoriesHebrewNames);
-    };
-
-    if (categories.length === 0) {
-      fetchCategories();
-    }
-  }, []);
-  //
-
   return (
     <div>
       {session?.user.email ? (
@@ -66,14 +44,12 @@ function CreateProposalForm({
                 setTask={setTask}
               ></DescriptionField>
             </div>
-
             <div className=" form_span_6">
               <LocationTypeSelector
                 locationType={locationType}
                 setLocationType={setLocationType}
               ></LocationTypeSelector>
             </div>
-
             {locationType === 'cityAddress' ? (
               <div className=" col-span-4 col-start-2 sm:col-span-2 sm:col-start-2">
                 <CitySelector
@@ -95,7 +71,6 @@ function CreateProposalForm({
                 ></FromToSelector>
               </div>
             )}
-
             <div className="form_fields_division"> </div>
             <div className=" form_span_6">
               <AvailabilitySelector
@@ -105,17 +80,13 @@ function CreateProposalForm({
                 setAvailability={setAvailability}
               ></AvailabilitySelector>
             </div>
-
             <div className="form_span_3">
               <CategorySelector
-                categories={categories}
-                selectedCategories={selectedCategories}
-                setSelectedCategories={setSelectedCategories}
-                categoriesHebrew={categoriesHebrew}
+                task={task}
+                setTask={setTask}
               ></CategorySelector>
             </div>
             <div className="form_fields_division" />
-
             <div className="col-span-4 col-start-2 sm:col-span-1 sm:col-start-2">
               <ContactDetails setContact={setContact} contact={contact} />
             </div>

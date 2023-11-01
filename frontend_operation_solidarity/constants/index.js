@@ -1,8 +1,8 @@
 import locations from './israel_cities_names_and__geometric_data.json' assert { type: 'json' };
 import cities_short_list from './cities_short_listl.json' assert { type: 'json' };
-import { weekDays, statuses } from './generalData';
+import { weekDays, statuses, categories } from './generalData';
 
-export { cities_short_list, weekDays, statuses };
+export { cities_short_list, weekDays, statuses, categories };
 
 export const getLocations = (name) => {
   const location = locations.find(

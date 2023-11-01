@@ -4,11 +4,14 @@
 
 ### Wednesday:
 
-1. add styling to other forms
-2. Add tab to distinguish between requests and proposals?
-3. Style <TaskDetail>
-4. Create 'tasks/[id]' view details page, including comments
-5. Hebrew font??
+issues:
+categories management -> similar to statuses!
+initial load
+
+1. Add tab to distinguish between requests and proposals?
+2. Style <TaskDetail>
+3. Create 'tasks/[id]' view details page, including comments
+4. Hebrew font??
 
 ### Thursday:
 

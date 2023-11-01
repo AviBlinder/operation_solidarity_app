@@ -10,7 +10,6 @@ import Loading from './loading';
 
 const CreateProposal = () => {
   const { data: session } = useSession();
-  const [selectedCategories, setSelectedCategories] = useState([]);
   const [availability, setAvailability] = useState([]);
   const [contact, setContact] = useState({ phone: '' });
 
@@ -24,6 +23,7 @@ const CreateProposal = () => {
   });
   const [task, setTask] = useState({
     description: '',
+    comments: '',
     category: '',
     city: '',
     address: '',
@@ -38,7 +38,6 @@ const CreateProposal = () => {
   const createRequest = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
     try {
       const response = await fetch('/api/tasks/new', {
         method: 'POST',
@@ -47,9 +46,10 @@ const CreateProposal = () => {
           userId: session?.user.userId,
           userName: session?.user.name,
           description: task.description,
+          comments: task.comments ? task.comments : null,
           contact: contact?.phone ? contact : null,
           taskType: 'proposal',
-          category: selectedCategories,
+          category: task.category,
           city: task.city
             ? {
                 city: task.city,
@@ -72,7 +72,6 @@ const CreateProposal = () => {
                 lng: geoLocations.toLng ? geoLocations.toLng : null,
               }
             : null,
-
           status: 'new',
           availability: availability,
           entryDate: new Date(),
@@ -80,7 +79,6 @@ const CreateProposal = () => {
       });
       if (response.ok) {
         setAvailability([]);
-        setSelectedCategories([]);
         setContact({ phone: '' });
         setGeolocations({
           cityLat: '',
@@ -92,6 +90,7 @@ const CreateProposal = () => {
         });
         setTask({
           description: '',
+          comments: '',
           category: '',
           city: '',
           address: '',
@@ -126,8 +125,6 @@ const CreateProposal = () => {
           setAvailability={setAvailability}
           geoLocations={geoLocations}
           setGeolocations={setGeolocations}
-          selectedCategories={selectedCategories}
-          setSelectedCategories={setSelectedCategories}
           contact={contact}
           setContact={setContact}
           submitting={submitting}

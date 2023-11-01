@@ -1,37 +1,56 @@
-import React from 'react';
+import { RadioGroup } from '@headlessui/react';
 import { statuses } from '@/constants/index';
 
 function StatusSelector({ task, setTask }) {
-  const handleStatusChange = (e) => {
-    setTask({ ...task, status: e.target.value });
-  };
+  const languageEnglish = 'english';
+  const languageHebrew = 'hebrew';
+  function classNames(...classes) {
+    return classes.filter(Boolean).join(' ');
+  }
 
   return (
-    <div className="flex flex-col">
-      <label
-        htmlFor="status"
-        className="block mt-2 text-sm font-medium text-primary-800"
-      >
-        Status
-      </label>
-
-      <div className="mt-1">
-        <select
-          id="status"
+    <div className="flex flex-col ">
+      <div>
+        <h2 className="text-sm font-medium text-primary-800">
+          Select a Status {task.status}
+        </h2>
+      </div>
+      <div className="flex flex-row">
+        <RadioGroup
           name="status"
-          className="mt-1 block w-full py-1 px-3 border border-gray-300 bg-white rounded-md shadow-xs focus:outline-none focus:ring-sky-500 focus:border-sky-500 sm:text-sm"
-          value={task?.status}
-          onChange={handleStatusChange}
+          className={''}
+          value={task?.status.toLowerCase()}
+          onChange={(value) => setTask({ ...task, status: value })}
         >
-          <option value="" disabled>
-            Select a status
-          </option>
-          {statuses.hebrew.map((status, index) => (
-            <option key={index} value={status}>
-              {status}
-            </option>
-          ))}
-        </select>
+          <div className="flex flex-row flex-wrap ">
+            {statuses[languageEnglish].map((status, index) => (
+              <RadioGroup.Option
+                key={index}
+                value={status.toLowerCase()}
+                className={({ active, checked }) =>
+                  classNames(
+                    active
+                      ? 'ring-2 ring-secondary-600 ring-offset-2 mx-2'
+                      : 'mx-2',
+                    checked
+                      ? 'bg-secondary-500 text-white hover:bg-secondary-500'
+                      : 'ring-1 ring-inset ring-gray-300 bg-white text-gray-900 hover:bg-gray-50',
+                    'flex items-center justify-center rounded-md py-3 px-3 text-sm font-semibold uppercase '
+                  )
+                }
+              >
+                <RadioGroup.Label>
+                  <RadioGroup.Description
+                    as="span"
+                    className={`capitalize block text-sm`}
+                  >
+                    {statuses[languageHebrew][index].toLowerCase()}
+                  </RadioGroup.Description>
+                </RadioGroup.Label>
+              </RadioGroup.Option>
+            ))}
+          </div>
+        </RadioGroup>
       </div>
     </div>
   );

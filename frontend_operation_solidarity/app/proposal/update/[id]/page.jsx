@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { cities_short_list } from '@/constants/index';
 import { useSession } from 'next-auth/react';
@@ -43,31 +43,8 @@ const updateProposal = ({ params }) => {
 
   const { data: session } = useSession();
 
-  const [categories, setCategories] = useState([]);
-  const [categoriesHebrew, setCategoriesHebrew] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-
   const [locationType, setLocationType] = useState('');
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await fetch(`/api/reference-data/categories`, {
-        next: { revalidate: 3600 },
-      });
-      const allCategories = await response.json();
-      const categoriesNames = allCategories.map((cat) => cat.itemName.S);
-      const categoriesHebrewNames = allCategories.map(
-        (cat) => cat.itemNameHebrew.S
-      );
-
-      setCategories(categoriesNames);
-      setCategoriesHebrew(categoriesHebrewNames);
-    };
-
-    if (categories.length === 0) {
-      fetchCategories();
-    }
-  }, []);
   useEffect(() => {
     const fetchTask = async () => {
       const response = await fetch(
@@ -82,11 +59,11 @@ const updateProposal = ({ params }) => {
         entryDate: entryDate,
         userName: data.userName,
         taskType: data.taskType,
+        category: data.category,
         city: data.city?.city ? data.city.city : '',
         from: data.from?.cityFrom ? data.from.cityFrom : '',
         to: data.to?.cityTo ? data.to.cityTo : '',
       });
-      setSelectedCategories([...selectedCategories, ...data.category]);
       setAvailability([...availability, ...data.availability]);
       setGeolocations({
         ...geoLocations,
@@ -138,7 +115,7 @@ const updateProposal = ({ params }) => {
           body: JSON.stringify({
             //
             description: task.description,
-            category: selectedCategories,
+            category: task.category,
             city: task.city
               ? {
                   city: task.city,
@@ -161,7 +138,7 @@ const updateProposal = ({ params }) => {
                   lng: geoLocations.toLng ? geoLocations.toLng : null,
                 }
               : null,
-            // status: 'new',
+            status: task.status,
             availability: availability,
             updateDate: new Date(),
           }),
@@ -202,81 +179,81 @@ const updateProposal = ({ params }) => {
   };
 
   return (
-    <div>
-      {session?.user.email && session?.user.email === task.email ? (
-        <form className="bg-gray-100/50" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-6 sm:grid-cols-6">
-            <div className="mt-4 form_span_6">
-              <DescriptionField
-                type={type}
-                task={task}
-                setTask={setTask}
-              ></DescriptionField>
-            </div>
-            <div className=" form_span_6">
-              <LocationTypeSelector
-                locationType={locationType}
-                setLocationType={setLocationType}
-              ></LocationTypeSelector>
-            </div>
-            {locationType === 'cityAddress' ? (
-              <div className=" col-span-4 col-start-2 sm:col-span-2 sm:col-start-2">
-                <CitySelector
+    <Suspense fallback={<div>Loading...</div>}>
+      <div>
+        {session?.user.email && session?.user.email === task.email ? (
+          <form className="bg-gray-100/50" onSubmit={handleSubmit}>
+            <div className="grid grid-cols-6 sm:grid-cols-6">
+              <div className="mt-4 form_span_6">
+                <DescriptionField
+                  type={type}
                   task={task}
                   setTask={setTask}
-                  geoLocations={geoLocations}
-                  setGeolocations={setGeolocations}
-                  cities_short_list={cities_short_list}
-                ></CitySelector>
+                ></DescriptionField>
               </div>
-            ) : (
-              <div className=" col-span-4 col-start-2 sm:col-span-2 sm:col-start-2">
-                <FromToSelector
-                  cities_short_list={cities_short_list}
+              <div className=" form_span_6">
+                <LocationTypeSelector
+                  locationType={locationType}
+                  setLocationType={setLocationType}
+                ></LocationTypeSelector>
+              </div>
+              {locationType === 'cityAddress' ? (
+                <div className=" col-span-4 col-start-2 sm:col-span-2 sm:col-start-2">
+                  <CitySelector
+                    task={task}
+                    setTask={setTask}
+                    geoLocations={geoLocations}
+                    setGeolocations={setGeolocations}
+                    cities_short_list={cities_short_list}
+                  ></CitySelector>
+                </div>
+              ) : (
+                <div className=" col-span-4 col-start-2 sm:col-span-2 sm:col-start-2">
+                  <FromToSelector
+                    cities_short_list={cities_short_list}
+                    task={task}
+                    setTask={setTask}
+                    geoLocations={geoLocations}
+                    setGeolocations={setGeolocations}
+                  ></FromToSelector>
+                </div>
+              )}
+              <div className="form_fields_division"> </div>
+              <div className=" form_span_6">
+                <AvailabilitySelector
                   task={task}
                   setTask={setTask}
-                  geoLocations={geoLocations}
-                  setGeolocations={setGeolocations}
-                ></FromToSelector>
+                  availability={availability}
+                  setAvailability={setAvailability}
+                ></AvailabilitySelector>
               </div>
-            )}
-            <div className="form_fields_division"> </div>
-            <div className=" form_span_6">
-              <AvailabilitySelector
-                task={task}
-                setTask={setTask}
-                availability={availability}
-                setAvailability={setAvailability}
-              ></AvailabilitySelector>
-            </div>
-            <div className="form_span_3">
-              <CategorySelector
-                categories={categories}
-                selectedCategories={selectedCategories}
-                setSelectedCategories={setSelectedCategories}
-                categoriesHebrew={categoriesHebrew}
-              ></CategorySelector>
-            </div>
-            <div className="form_span_1 ">
-              <StatusSelector task={task} setTask={setTask} />
-            </div>
-            <div className="mt-4 form_span_6">
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 active:bg-blue-800"
-                >
-                  {submitting ? `updating request` : 'update'}
-                </button>
+              <div className="form_span_3">
+                <CategorySelector
+                  task={task}
+                  setTask={setTask}
+                ></CategorySelector>
+              </div>
+              <div className="form_span_6">
+                <StatusSelector task={task} setTask={setTask} />
+              </div>
+              <div className="mt-4 form_span_6">
+                <div className="flex justify-end">
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 active:bg-blue-800"
+                  >
+                    {submitting ? `updating request` : 'update'}
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-        </form>
-      ) : (
-        <div> You need to login first</div>
-      )}
-    </div>
+          </form>
+        ) : (
+          <div> You need to login first</div>
+        )}
+      </div>
+    </Suspense>
   );
 };
 

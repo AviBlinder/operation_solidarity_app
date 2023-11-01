@@ -1,5 +1,4 @@
 'use client';
-
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { cities_short_list } from '@/constants/index';
@@ -43,31 +42,8 @@ const updateRequest = ({ params }) => {
 
   const { data: session } = useSession();
 
-  const [categories, setCategories] = useState([]);
-  const [categoriesHebrew, setCategoriesHebrew] = useState([]);
-  const [selectedCategories, setSelectedCategories] = useState([]);
-
   const [locationType, setLocationType] = useState('');
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await fetch(`/api/reference-data/categories`, {
-        next: { revalidate: 3600 },
-      });
-      const allCategories = await response.json();
-      const categoriesNames = allCategories.map((cat) => cat.itemName.S);
-      const categoriesHebrewNames = allCategories.map(
-        (cat) => cat.itemNameHebrew.S
-      );
-
-      setCategories(categoriesNames);
-      setCategoriesHebrew(categoriesHebrewNames);
-    };
-
-    if (categories.length === 0) {
-      fetchCategories();
-    }
-  }, []);
   useEffect(() => {
     const fetchTask = async () => {
       const response = await fetch(
@@ -82,11 +58,11 @@ const updateRequest = ({ params }) => {
         entryDate: entryDate,
         userName: data.userName,
         taskType: data.taskType,
+        category: data.category,
         city: data.city?.city ? data.city.city : '',
         from: data.from?.cityFrom ? data.from.cityFrom : '',
         to: data.to?.cityTo ? data.to.cityTo : '',
       });
-      setSelectedCategories([...selectedCategories, ...data.category]);
       setAvailability([...availability, ...data.availability]);
       setGeolocations({
         ...geoLocations,
@@ -138,7 +114,7 @@ const updateRequest = ({ params }) => {
           body: JSON.stringify({
             //
             description: task.description,
-            category: selectedCategories,
+            category: task.category,
             city: task.city
               ? {
                   city: task.city,
@@ -161,7 +137,7 @@ const updateRequest = ({ params }) => {
                   lng: geoLocations.toLng ? geoLocations.toLng : null,
                 }
               : null,
-            // status: 'new',
+            status: task.status,
             availability: availability,
             updateDate: new Date(),
           }),
@@ -252,13 +228,11 @@ const updateRequest = ({ params }) => {
               </div>
               <div className="form_span_3">
                 <CategorySelector
-                  categories={categories}
-                  selectedCategories={selectedCategories}
-                  setSelectedCategories={setSelectedCategories}
-                  categoriesHebrew={categoriesHebrew}
+                  task={task}
+                  setTask={setTask}
                 ></CategorySelector>
               </div>
-              <div className="form_span_1 ">
+              <div className="form_span_6">
                 <StatusSelector task={task} setTask={setTask} />
               </div>
               <div className="mt-4 form_span_6">

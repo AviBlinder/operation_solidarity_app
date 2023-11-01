@@ -21,8 +21,6 @@ function CreateRequestForm({
   setAvailability,
   geoLocations,
   setGeolocations,
-  selectedCategories,
-  setSelectedCategories,
   contact,
   setContact,
   submitting,
@@ -34,27 +32,6 @@ function CreateRequestForm({
   const [categoriesHebrew, setCategoriesHebrew] = useState([]);
 
   const [locationType, setLocationType] = useState('cityAddress');
-  // load Categories
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await fetch(`/api/reference-data/categories`, {
-        next: { revalidate: 3600 },
-      });
-      const allCategories = await response.json();
-      const categoriesNames = allCategories.map((cat) => cat.itemName.S);
-      const categoriesHebrewNames = allCategories.map(
-        (cat) => cat.itemNameHebrew.S
-      );
-
-      setCategories(categoriesNames);
-      setCategoriesHebrew(categoriesHebrewNames);
-    };
-
-    if (categories.length === 0) {
-      fetchCategories();
-    }
-  }, []);
-
   return (
     <div>
       {session?.user.email ? (
@@ -105,10 +82,8 @@ function CreateRequestForm({
             </div>
             <div className="form_span_3">
               <CategorySelector
-                categories={categories}
-                selectedCategories={selectedCategories}
-                setSelectedCategories={setSelectedCategories}
-                categoriesHebrew={categoriesHebrew}
+                task={task}
+                setTask={setTask}
               ></CategorySelector>
             </div>
             <div className="form_fields_division" />
@@ -119,11 +94,11 @@ function CreateRequestForm({
               <CommentsField task={task} setTask={setTask}></CommentsField>
             </div>
             <div className="mt-4 form_span_6">
-              <div className="flex justify-end">
+              <div className="flex justify-start">
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-700 focus:outline-none focus:border-blue-700 focus:ring focus:ring-blue-200 active:bg-blue-800"
+                  className="btn_secondary p-2"
                 >
                   {submitting ? `submitting request` : 'submit'}
                 </button>

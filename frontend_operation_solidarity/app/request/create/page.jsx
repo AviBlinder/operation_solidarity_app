@@ -10,7 +10,6 @@ import Loading from './loading';
 
 const CreateRequest = () => {
   const { data: session } = useSession();
-  const [selectedCategories, setSelectedCategories] = useState([]);
   const [availability, setAvailability] = useState([]);
   const [contact, setContact] = useState({ phone: '' });
 
@@ -50,7 +49,7 @@ const CreateRequest = () => {
           comments: task.comments ? task.comments : null,
           contact: contact?.phone ? contact : null,
           taskType: 'request',
-          category: selectedCategories,
+          category: task.category,
           city: task.city
             ? {
                 city: task.city,
@@ -80,7 +79,6 @@ const CreateRequest = () => {
       });
       if (response.ok) {
         setAvailability([]);
-        setSelectedCategories([]);
         setContact({ phone: '' });
         setGeolocations({
           cityLat: '',
@@ -127,8 +125,6 @@ const CreateRequest = () => {
           setAvailability={setAvailability}
           geoLocations={geoLocations}
           setGeolocations={setGeolocations}
-          selectedCategories={selectedCategories}
-          setSelectedCategories={setSelectedCategories}
           contact={contact}
           setContact={setContact}
           submitting={submitting}

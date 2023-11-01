@@ -1,17 +1,42 @@
 export const weekDays = {
   english: [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday',
+    'sunday',
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
   ],
   hebrew: ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'],
 };
 
 export const statuses = {
-  english: ['NEW', 'ACTIVE', 'INACTIVE', 'DONE'],
+  english: ['new', 'active', 'inactive', 'done'],
   hebrew: ['חדש', 'פעיל', 'לא פעיל', 'בוצע'],
+};
+
+export const categories = {
+  english: [
+    'Babysitting',
+    'Clothes',
+    'Food',
+    'General',
+    'Medical',
+    'Therapy',
+    'Moving',
+    'Shelter',
+    'Transportation',
+  ],
+  hebrew: [
+    'בייבי סיטינג',
+    'ביגוד',
+    'מזון',
+    'כללי',
+    'עזרה רפואית',
+    'עזרה נפשית',
+    'הובלה',
+    'דיור',
+    'תחבורה',
+  ],
 };

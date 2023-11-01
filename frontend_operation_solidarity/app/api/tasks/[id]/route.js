@@ -36,8 +36,16 @@ export const PUT = async (request, { params }) => {
 
   const entryDate = getStringParams(request.url, 'entryDate');
   try {
-    const { description, category, city, from, to, availability, updateDate } =
-      await request.json();
+    const {
+      description,
+      category,
+      city,
+      from,
+      to,
+      availability,
+      updateDate,
+      status,
+    } = await request.json();
     console.log('description :', description);
     const res = await fetch(`${baseURL}/${env}/tasks/${id}/${entryDate}`, {
       method: 'PUT',
@@ -48,6 +56,7 @@ export const PUT = async (request, { params }) => {
         from: from ? from : null,
         to: to ? to : null,
         availability: availability ? availability : null,
+        status: status ? status : null,
         updateDate: [updateDate],
       }),
       headers: {
