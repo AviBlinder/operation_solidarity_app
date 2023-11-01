@@ -40,9 +40,10 @@ const MyProfile = () => {
 
     if (hasConfirmed) {
       try {
-        await fetch(`/api/prompt/${post._id.toString()}`, {
-          method: 'DELETE',
-        });
+        console.log('inside DELETE api/prompt');
+        // await fetch(`/api/prompt/${post._id.toString()}`, {
+        //   method: 'DELETE',
+        // });
 
         const filteredTasks = myTasks.filter((item) => item._id !== post._id);
 
