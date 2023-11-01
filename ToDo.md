@@ -14,10 +14,7 @@ initial load
 5. ChatGPT -> emprove layout style
 6. Review Mobile app and make fixes:
    1. SignIn is button
-   2. "Operation Solidarity" filters
-   3. Add 'sign out'
-   4. <Link "/"> from title
-   5. create forms
+   2. create forms
 
 ### Thursday:
 

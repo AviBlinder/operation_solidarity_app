@@ -111,11 +111,15 @@ const CreateRequest = () => {
   };
   return (
     <div>
-      <p className=" desc text-left max-w-md">
-        <span className="blue_gradient text-2xl ml-8 text-center font-bold ">
-          Create Request Form Page
-        </span>
-      </p>
+      <div className="grid grid-cols-6 sm:grid-cols-6">
+        <div className="form_span_6">
+          <p className=" desc text-left max-w-md">
+            <span className="blue_gradient text-2xl ml-8 text-center font-bold ">
+              Create Request
+            </span>
+          </p>
+        </div>
+      </div>
       <Suspense fallback={<Loading />}>
         <CreateRequestForm
           type="request"

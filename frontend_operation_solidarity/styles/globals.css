@@ -72,6 +72,13 @@
 .btn_secondary {
   @apply rounded-full border border-gray-300 bg-secondary-500/90 sm:py-0 sm:px-0 sm:text-xs md:py-2 md:px-5 md:text-sm text-white transition-all hover:bg-secondary-600/95 hover:text-white text-center flex items-center justify-center;
 }
+.btn_submit {
+  @apply rounded-xl border border-gray-300 bg-secondary-500/90 
+  
+  py-2 px-6 ml-4
+   text-lg md:py-2 md:px-5 md:text-sm text-white
+  hover:bg-secondary-600/95 hover:text-white text-center;
+}
 
 .outline_btn {
   @apply rounded-full border border-primary-500 bg-transparent py-2 px-5 text-black transition-all hover:bg-primary-500/95 hover:text-white text-center text-sm  flex items-center justify-center;

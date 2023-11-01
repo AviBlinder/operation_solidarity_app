@@ -93,16 +93,14 @@ function CreateRequestForm({
             <div className="form_span_3">
               <CommentsField task={task} setTask={setTask}></CommentsField>
             </div>
-            <div className="mt-4 form_span_6">
-              <div className="flex justify-start">
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="btn_secondary p-2"
-                >
-                  {submitting ? `submitting request` : 'submit'}
-                </button>
-              </div>
+            <div className="mx-2 col-span-4 col-start-2 md:col-span-6 md:col-start-2">
+              <button
+                type="submit"
+                disabled={submitting}
+                className="btn_submit"
+              >
+                {submitting ? `submitting request` : 'submit'}
+              </button>
             </div>
           </div>
         </form>
