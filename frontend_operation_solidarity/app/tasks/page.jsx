@@ -218,7 +218,7 @@ export default function Home() {
             </h2>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-              <div className="hidden md:block md:flex">
+              <div className="hidden md:block bg-gray-100">
                 <FilterBar
                   mobileFiltersOpen={!mobileFiltersOpen}
                   citiesHebrew={citiesHebrew}

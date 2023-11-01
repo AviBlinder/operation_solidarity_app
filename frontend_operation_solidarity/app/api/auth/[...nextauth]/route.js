@@ -40,10 +40,22 @@ const handler = NextAuth({
       const email = session.user.email;
       try {
         const res = await fetch(`${baseURL}/${env}/users?email=${email}`);
+        if (!res.ok) {
+          console.error(
+            'Failed to fetch user data',
+            res.status,
+            res.statusText
+          );
+          // Handle the error appropriately
+          new Response('Failed to fetch user data', { status: 500 });
+        }
+
         const user = await res.json();
         session.user.userId = user.userId;
       } catch (error) {
-        return new Response('Failed to create a new prompt', { status: 500 });
+        return new Response('Failed to fetch user data - general error', {
+          status: 500,
+        });
       }
 
       //
