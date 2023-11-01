@@ -27,7 +27,8 @@ const Nav = () => {
       <Logo />
       <Link
         href="/"
-        className="text-xl md:block sm:text-xl lg:text-2xl text-supporting1-800 tracking-tighter font-bold text-center justify-center px-20 py-4"
+        className="text-lg md:block sm:text-xl lg:text-2xl text-supporting1-800
+         tracking-tighter font-bold text-center justify-center  py-4"
       >
         Operation Solidarity
       </Link>

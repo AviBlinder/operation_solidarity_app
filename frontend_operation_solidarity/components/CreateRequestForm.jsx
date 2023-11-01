@@ -93,7 +93,7 @@ function CreateRequestForm({
             <div className="form_span_3">
               <CommentsField task={task} setTask={setTask}></CommentsField>
             </div>
-            <div className="mx-2 col-span-4 col-start-2 md:col-span-6 md:col-start-2">
+            <div className="py-3 mx-2 col-span-6 col-start-1  md:col-span-6 md:col-start-2">
               <button
                 type="submit"
                 disabled={submitting}

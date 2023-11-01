@@ -75,7 +75,7 @@
 .btn_submit {
   @apply rounded-xl border border-gray-300 bg-secondary-500/90 
   
-  py-2 px-6 ml-4
+  py-2 px-24 ml-8 md:ml-2
    text-lg md:py-2 md:px-5 md:text-sm text-white
   hover:bg-secondary-600/95 hover:text-white text-center;
 }
@@ -99,6 +99,10 @@
 .form_span_6 {
   @apply col-span-4 col-start-2 sm:col-span-6 sm:col-start-2;
 }
+.form_span_6_1 {
+  @apply col-span-6 col-start-1 sm:col-span-6 sm:col-start-2;
+}
+
 .head_text {
   @apply mt-5 text-5xl font-extrabold leading-[1.15] text-black sm:text-6xl;
 }

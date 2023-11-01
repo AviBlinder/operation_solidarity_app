@@ -112,8 +112,8 @@ const CreateRequest = () => {
   return (
     <div>
       <div className="grid grid-cols-6 sm:grid-cols-6">
-        <div className="form_span_6">
-          <p className=" desc text-left max-w-md">
+        <div className="form_span_6_1">
+          <p className="text-md md:text-lg">
             <span className="blue_gradient text-2xl ml-8 text-center font-bold ">
               Create Request
             </span>
