@@ -11,20 +11,18 @@ initial load
 2. Style <TaskDetail>
 3. Create 'tasks/[id]' view details page, including comments
 4. Hebrew font??
+5. ChatGPT -> emprove layout style
 
 ### Thursday:
 
-1. Create User form/Update Preferences Form
-2. Landing Page with Hero component
-3. Create Userpool + google identity ???
-4. Debug and tests
+1. Fix /listTasks to match 2 new GSIs
+2. Create User form/Update Preferences Form
+3. Debug and tests
 
 ### Weekend:
 
 - Multi-language
 - Geo location
-
-1.  Fix /listTasks to match 2 new GSIs
 
 ## // for a 'volunteer': create page for listing all request and add filter and message capabilities
 
