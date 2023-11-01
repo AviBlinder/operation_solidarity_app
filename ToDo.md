@@ -2,25 +2,16 @@
 
 ## ToDo:
 
-### Wednesday:
-
-issues:
-initial load
+### ### Thursday:
 
 1. Add tab to distinguish between requests and proposals?
 2. Style <TaskDetail>
 3. Create 'tasks/[id]' view details page, including comments
 4. Hebrew font??
 5. ChatGPT -> emprove layout style
-6. Review Mobile app and make fixes:
-   1. SignIn is button
-   2. create forms
-
-### Thursday:
-
-1. Fix /listTasks to match 2 new GSIs
-2. Create User form/Update Preferences Form
-3. Debug and tests
+6. Fix /listTasks to match 2 new GSIs
+7. Create User form/Update Preferences Form
+8. Debug and tests
 
 ### Weekend:
 

@@ -1,7 +1,7 @@
 import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { FaPencilAlt } from 'react-icons/fa';
+import { FaPencilAlt, FaEye } from 'react-icons/fa';
 
 const TaskCard = ({ task }) => {
   const { data: session } = useSession();
@@ -27,12 +27,13 @@ const TaskCard = ({ task }) => {
                     </Link>
                   ) : (
                     <Link
+                      className="text-primary-500 mr-6"
                       href={`/proposal/update/${task.taskId}?entryDate=${task.entryDate}`}
                     >
-                      <FaPencilAlt
+                      <FaEye
                         size={20}
                         className="text-primary-500 mr-6"
-                      ></FaPencilAlt>
+                      ></FaEye>
                     </Link>
                   ))}
               </div>
@@ -40,6 +41,13 @@ const TaskCard = ({ task }) => {
             <div className="inline-flex flex-shrink-0 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
               {task.taskType}
             </div>
+            <Link href={`/tasks/${task.taskId}?entryDate=${task.entryDate}`}>
+              {' '}
+              <FaPencilAlt
+                size={20}
+                className="text-primary-500 mr-6"
+              ></FaPencilAlt>
+            </Link>
           </div>
           <p className="mt-1 truncate text-sm text-gray-500">
             {task.description}
