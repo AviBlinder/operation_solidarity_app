@@ -36,7 +36,7 @@ export default function Home() {
   const [cityFilter, setCityFilter] = useState('');
   const [locationFromFilter, setLocationFromFilter] = useState('');
   const [filter, setFilter] = useState('');
-
+  const [emptyDB, setEmptyDB] = useState(false);
   const handleCategoryFilterChange = (event) => {
     if (event.target.value === 'all') {
       setCategoryFilter('');
@@ -67,6 +67,8 @@ export default function Home() {
       );
 
       const data = await response.json();
+      data.length === 0 ? setEmptyDB(true) : setEmptyDB(false);
+
       setTasks(data);
       console.log('data: ', data);
       setFilteredTasks(data);
@@ -127,6 +129,14 @@ export default function Home() {
     setLocationFromFilter('');
     setFilter('');
   };
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <div className="bg-white">
@@ -238,7 +248,11 @@ export default function Home() {
               <div className="lg:col-span-3">
                 <Suspense fallback={<div>Loading...</div>}>
                   <div className="flex flex-row">
-                    <TaskList tasks={filteredTasks} />{' '}
+                    {emptyDB ? (
+                      <div> No tasks...</div>
+                    ) : (
+                      <TaskList tasks={filteredTasks} />
+                    )}
                   </div>
                 </Suspense>
               </div>

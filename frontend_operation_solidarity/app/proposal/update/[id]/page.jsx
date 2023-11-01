@@ -178,6 +178,15 @@ const updateProposal = ({ params }) => {
     setIsSubmitting(false);
   };
 
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
+
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div>
