@@ -7,21 +7,22 @@
 1. add styling to other forms
 2. Add tab to distinguish between requests and proposals?
 3. Style <TaskDetail>
-4. Create 'tasks/[id]' view details page
+4. Create 'tasks/[id]' view details page, including comments
 5. Hebrew font??
 
-Thursday:
+### Thursday:
 
 1. Create User form/Update Preferences Form
 2. Landing Page with Hero component
 3. Create Userpool + google identity ???
+4. Debug and tests
 
-Weekend:
+### Weekend:
 
 - Multi-language
 - Geo location
 
-10. Fix /listTasks to match 2 new GSIs
+1.  Fix /listTasks to match 2 new GSIs
 
 ## // for a 'volunteer': create page for listing all request and add filter and message capabilities
 

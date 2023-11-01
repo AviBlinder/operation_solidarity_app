@@ -81,6 +81,10 @@
   @apply my-6 col-span-4 col-start-2 sm:col-span-3 sm:col-start-2 border-b border-gray-900/30;
 }
 
+.form_span_1 {
+  @apply col-span-2 col-start-2 sm:col-span-1 sm:col-start-2;
+}
+
 .form_span_3 {
   @apply col-span-4 col-start-2 sm:col-span-3 sm:col-start-2;
 }

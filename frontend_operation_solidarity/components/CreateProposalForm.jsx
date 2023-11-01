@@ -66,7 +66,6 @@ function CreateProposalForm({
                 setTask={setTask}
               ></DescriptionField>
             </div>
-            <div className="mt-2 form_span_3" />
 
             <div className=" form_span_6">
               <LocationTypeSelector
