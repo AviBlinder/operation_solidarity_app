@@ -22,8 +22,8 @@ const customStyles = {
   }),
 };
 const FilterBar = ({
-  mobileFiltersOpen,
   categories,
+  mobileFiltersOpen,
   citiesHebrew,
   weekDaysOptions,
   handleResetFilters,
@@ -34,6 +34,9 @@ const FilterBar = ({
   handleCityFilterChange,
   cityFilter,
 }) => {
+  const languageEnglish = 'english';
+  const languageHebrew = 'hebrew';
+
   return (
     <div
       className={`${
@@ -57,10 +60,10 @@ const FilterBar = ({
           value={categoryFilter}
           onChange={handleCategoryFilterChange}
         >
-          <option value="">All Categories</option>
-          {categories.map((category, index) => (
+          <option value="all">כל הקטגוריות</option>
+          {categories[languageEnglish].map((category, index) => (
             <option key={index} value={category}>
-              {category}
+              {categories[languageHebrew][index]}
             </option>
           ))}
         </select>
@@ -68,14 +71,14 @@ const FilterBar = ({
       <label htmlFor="city-choice" className="mt-2 rounded">
         {/* City: */}
         <select
-          id="city-choice"
-          value={cityFilter}
-          onChange={handleCityFilterChange}
           className={`${
             mobileFiltersOpen ? 'mt-2  w-[90%] my-10 mx-2' : 'ml-2 w-52'
           }`}
+          id="city-choice"
+          value={cityFilter}
+          onChange={handleCityFilterChange}
         >
-          <option value="">All Cities</option>
+          <option value="all">כל הערים</option>
           {citiesHebrew.map((city, index) => (
             <option key={index} value={city}>
               {city}
@@ -91,10 +94,10 @@ const FilterBar = ({
         {/* Availability: */}
         <Select
           styles={customStyles}
-          placeholder="select days "
+          placeholder="בחירת יום"
           name="availability-choice"
           aria-label="availability-choice"
-          aria-placeholder="select days"
+          aria-placeholder="בחירת יום"
           id="availability-choice"
           value={availabilityFilter.map((value) => ({
             value,

@@ -5,7 +5,6 @@
 ### Wednesday:
 
 issues:
-categories management -> similar to statuses!
 initial load
 
 1. Add tab to distinguish between requests and proposals?

@@ -2,6 +2,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { FunnelIcon } from '@heroicons/react/20/solid';
+import { categories } from '@/constants/index';
 
 import { useState, useEffect, Fragment, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
@@ -15,8 +16,6 @@ import { cities_short_list } from '@/constants/index';
 
 export default function Home() {
   const { data: session } = useSession();
-  const [categories, setCategories] = useState([]);
-  const [categoriesHebrew, setCategoriesHebrew] = useState([]);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
   const weekDaysHebrew = weekDays.hebrew;
@@ -39,7 +38,9 @@ export default function Home() {
   const [filter, setFilter] = useState('');
 
   const handleCategoryFilterChange = (event) => {
+    console.log('inside handleCategoryFilterChange ', event.target.value);
     if (event.target.value === 'all') {
+      setCategoryFilter('');
       setShowAll(true);
     } else {
       setShowAll(false);
@@ -60,27 +61,6 @@ export default function Home() {
     setLocationFromFilter(event.target.value);
   };
 
-  // load Categories
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const response = await fetch(`/api/reference-data/categories`, {
-        next: { revalidate: 3600 },
-      });
-      const allCategories = await response.json();
-      const categoriesNames = allCategories.map((cat) => cat.itemName.S);
-      const categoriesHebrewNames = allCategories.map(
-        (cat) => cat.itemNameHebrew.S
-      );
-
-      setCategories(categoriesNames);
-      setCategoriesHebrew(categoriesHebrewNames);
-      setAvailability(categoriesHebrewNames);
-    };
-
-    if (categories.length === 0) {
-      fetchCategories();
-    }
-  }, []);
   useEffect(() => {
     const fetchTasks = async () => {
       const response = await fetch(
@@ -103,7 +83,9 @@ export default function Home() {
     // Existing filter and sort logic
 
     if (categoryFilter) {
-      result = result.filter((task) => task.category.includes(categoryFilter));
+      result = result.filter((task) =>
+        task.category.includes(categoryFilter.toLocaleLowerCase())
+      );
     }
 
     if (availabilityFilter.length > 0) {
@@ -196,10 +178,10 @@ export default function Home() {
                   <div className="flex flex-col">
                     <FilterBar
                       mobileFiltersOpen={mobileFiltersOpen}
-                      categories={categories}
                       citiesHebrew={citiesHebrew}
                       weekDaysOptions={weekDaysOptions}
                       handleResetFilters={handleResetFilters}
+                      categories={categories}
                       handleCategoryFilterChange={handleCategoryFilterChange}
                       categoryFilter={categoryFilter}
                       handleAvailabilityFilterChange={
@@ -239,10 +221,10 @@ export default function Home() {
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               <FilterBar
                 mobileFiltersOpen={!mobileFiltersOpen}
-                categories={categories}
                 citiesHebrew={citiesHebrew}
                 weekDaysOptions={weekDaysOptions}
                 handleResetFilters={handleResetFilters}
+                categories={categories}
                 handleCategoryFilterChange={handleCategoryFilterChange}
                 categoryFilter={categoryFilter}
                 handleAvailabilityFilterChange={handleAvailabilityFilterChange}
