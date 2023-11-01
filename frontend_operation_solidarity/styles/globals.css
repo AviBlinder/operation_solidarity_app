@@ -77,6 +77,17 @@
   @apply rounded-full border border-primary-500 bg-transparent py-2 px-5 text-black transition-all hover:bg-primary-500/95 hover:text-white text-center text-sm  flex items-center justify-center;
 }
 
+.form_fields_division {
+  @apply my-6 col-span-4 col-start-2 sm:col-span-3 sm:col-start-2 border-b border-gray-900/30;
+}
+
+.form_span_3 {
+  @apply col-span-4 col-start-2 sm:col-span-3 sm:col-start-2;
+}
+
+.form_span_6 {
+  @apply col-span-4 col-start-2 sm:col-span-6 sm:col-start-2;
+}
 .head_text {
   @apply mt-5 text-5xl font-extrabold leading-[1.15] text-black sm:text-6xl;
 }

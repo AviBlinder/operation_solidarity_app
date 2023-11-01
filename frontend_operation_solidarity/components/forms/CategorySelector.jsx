@@ -42,7 +42,7 @@ const CategorySelector = ({
                     classNames(
                       active ? 'ring-2 ring-secondary-600 ring-offset-2 ' : '',
                       checked
-                        ? 'bg-secondary-600 text-white hover:bg-secondary-500'
+                        ? 'bg-secondary-500 text-white hover:bg-secondary-500'
                         : 'ring-1 ring-inset ring-gray-300 bg-white text-gray-900 hover:bg-gray-50',
                       'flex items-center justify-center rounded-md py-3 px-3 text-sm font-semibold uppercase '
                     )

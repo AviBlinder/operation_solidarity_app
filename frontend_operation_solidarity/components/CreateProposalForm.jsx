@@ -59,8 +59,7 @@ function CreateProposalForm({
       {session?.user.email ? (
         <form className="" onSubmit={handleSubmit}>
           <div className="grid grid-cols-6 sm:grid-cols-6  rounded-lg  ">
-            <div className="mt-4 col-span-4 col-start-2 sm:col-span-6 sm:col-start-2">
-              {/* <div className="sm:col-span-3 col-span-6 "> */}
+            <div className="mt-4 form_span_6">
               <div className=" ">
                 <DescriptionField
                   type={type}
@@ -69,9 +68,9 @@ function CreateProposalForm({
                 ></DescriptionField>
               </div>
             </div>
-            <div className="my-6 col-span-4 col-start-2 sm:col-span-3 sm:col-start-2 border-b border-gray-900/30 " />
+            <div className="mt-2 form_span_3" />
 
-            <div className=" col-span-4 col-start-2 sm:col-span-6 sm:col-start-2">
+            <div className=" form_span_6">
               <LocationTypeSelector
                 locationType={locationType}
                 setLocationType={setLocationType}
@@ -100,10 +99,8 @@ function CreateProposalForm({
               </div>
             )}
 
-            <div className="my-6 col-span-4 col-start-2 sm:col-span-3 sm:col-start-2 border-b border-gray-900/30 ">
-              {' '}
-            </div>
-            <div className=" col-span-4 col-start-2 sm:col-span-6 sm:col-start-2">
+            <div className="form_fields_division"> </div>
+            <div className=" form_span_6">
               <AvailabilitySelector
                 task={task}
                 setTask={setTask}
@@ -112,7 +109,7 @@ function CreateProposalForm({
               ></AvailabilitySelector>
             </div>
 
-            <div className="col-span-4 col-start-2 sm:col-span-3 sm:col-start-2">
+            <div className="form_span_3">
               <CategorySelector
                 categories={categories}
                 selectedCategories={selectedCategories}
@@ -120,15 +117,15 @@ function CreateProposalForm({
                 categoriesHebrew={categoriesHebrew}
               ></CategorySelector>
             </div>
-            <div className="my-6 col-span-4 col-start-2 sm:col-span-3 sm:col-start-2 border-b border-gray-900/30 " />
+            <div className="form_fields_division" />
 
             <div className="col-span-4 col-start-2 sm:col-span-1 sm:col-start-2">
               <ContactDetails setContact={setContact} contact={contact} />
             </div>
-            <div className="col-span-4 col-start-2 sm:col-span-3 sm:col-start-2">
+            <div className="form_span_3">
               <CommentsField task={task} setTask={setTask}></CommentsField>
             </div>
-            <div className="mt-4 col-span-4 col-start-2 sm:col-span-6 sm:col-start-2">
+            <div className="mt-4 form_span_6">
               <div className="flex justify-start">
                 <button
                   type="submit"
