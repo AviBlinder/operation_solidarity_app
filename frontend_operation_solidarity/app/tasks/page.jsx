@@ -38,7 +38,6 @@ export default function Home() {
   const [filter, setFilter] = useState('');
 
   const handleCategoryFilterChange = (event) => {
-    console.log('inside handleCategoryFilterChange ', event.target.value);
     if (event.target.value === 'all') {
       setCategoryFilter('');
       setShowAll(true);
