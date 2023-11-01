@@ -57,16 +57,14 @@ function CreateProposalForm({
   return (
     <div>
       {session?.user.email ? (
-        <form className="" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-6 sm:grid-cols-6  rounded-lg  ">
+        <form className="bg-gray-100/50" onSubmit={handleSubmit}>
+          <div className="grid grid-cols-6 sm:grid-cols-6">
             <div className="mt-4 form_span_6">
-              <div className=" ">
-                <DescriptionField
-                  type={type}
-                  task={task}
-                  setTask={setTask}
-                ></DescriptionField>
-              </div>
+              <DescriptionField
+                type={type}
+                task={task}
+                setTask={setTask}
+              ></DescriptionField>
             </div>
             <div className="mt-2 form_span_3" />
 
