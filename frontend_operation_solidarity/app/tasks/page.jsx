@@ -199,7 +199,7 @@ export default function Home() {
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-            <Header title="Operation Solidarity" />
+            <Header title="My Requests and Proposals" />
             <div className="flex items-center">
               <button
                 type="button"
@@ -218,20 +218,23 @@ export default function Home() {
             </h2>
 
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
-              <FilterBar
-                mobileFiltersOpen={!mobileFiltersOpen}
-                citiesHebrew={citiesHebrew}
-                weekDaysOptions={weekDaysOptions}
-                handleResetFilters={handleResetFilters}
-                categories={categories}
-                handleCategoryFilterChange={handleCategoryFilterChange}
-                categoryFilter={categoryFilter}
-                handleAvailabilityFilterChange={handleAvailabilityFilterChange}
-                availabilityFilter={availabilityFilter}
-                handleCityFilterChange={handleCityFilterChange}
-                cityFilter={cityFilter}
-              />
-
+              <div className="hidden md:block md:flex">
+                <FilterBar
+                  mobileFiltersOpen={!mobileFiltersOpen}
+                  citiesHebrew={citiesHebrew}
+                  weekDaysOptions={weekDaysOptions}
+                  handleResetFilters={handleResetFilters}
+                  categories={categories}
+                  handleCategoryFilterChange={handleCategoryFilterChange}
+                  categoryFilter={categoryFilter}
+                  handleAvailabilityFilterChange={
+                    handleAvailabilityFilterChange
+                  }
+                  availabilityFilter={availabilityFilter}
+                  handleCityFilterChange={handleCityFilterChange}
+                  cityFilter={cityFilter}
+                />
+              </div>
               <div className="lg:col-span-3">
                 <Suspense fallback={<div>Loading...</div>}>
                   <div className="flex flex-row">

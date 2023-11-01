@@ -20,7 +20,6 @@ const UserProfile = ({
       />
       {toggleDropdown && (
         <div className="dropdown">
-          {/* Add your links here */}
           <button
             type="button"
             onClick={() => {

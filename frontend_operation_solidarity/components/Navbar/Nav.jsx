@@ -9,13 +9,6 @@ import Image from 'next/image';
 import { useEffect, useState, Fragment } from 'react';
 import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
 
-import { Disclosure, Menu, Transition } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
-import { PlusIcon } from '@heroicons/react/20/solid';
-function classNames(...classes) {
-  return classes.filter(Boolean).join(' ');
-}
-
 const Nav = () => {
   const { data: session } = useSession();
   const [providers, setProviders] = useState(null);
@@ -30,11 +23,14 @@ const Nav = () => {
   }, []);
 
   return (
-    <nav className="flex-between w-full mb-16 pt-3">
+    <nav className="flex flex-between w-full mb-16 pt-3">
       <Logo />
-      <p className="xs:hidden sm:flex sm:text-xl text-2xl text-supporting1-800 tracking-tighter font-bold text-center justify-center px-20 py-4">
+      <Link
+        href="/"
+        className="text-xl md:block sm:text-xl lg:text-2xl text-supporting1-800 tracking-tighter font-bold text-center justify-center px-20 py-4"
+      >
         Operation Solidarity
-      </p>
+      </Link>
       <DesktopNav
         session={session}
         providers={providers}

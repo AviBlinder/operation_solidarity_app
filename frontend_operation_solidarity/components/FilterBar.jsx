@@ -1,4 +1,6 @@
+'use client';
 import Select from 'react-select';
+import { useState, useEffect } from 'react';
 
 const customStyles = {
   control: (provided) => ({
@@ -36,6 +38,13 @@ const FilterBar = ({
 }) => {
   const languageEnglish = 'english';
   const languageHebrew = 'hebrew';
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <div
@@ -46,7 +55,7 @@ const FilterBar = ({
       {' '}
       <button
         onClick={handleResetFilters}
-        className="m-2 p-1 bg-secondary-500 text-white rounded w-[90%]"
+        className="m-2 px-1 py-2 bg-secondary-500 text-white rounded w-[90%]"
       >
         Reset Filters
       </button>
@@ -98,7 +107,7 @@ const FilterBar = ({
           name="availability-choice"
           aria-label="availability-choice"
           aria-placeholder="בחירת יום"
-          id="availability-choice"
+          inputId="availability-choice"
           value={availabilityFilter.map((value) => ({
             value,
             label: value,
