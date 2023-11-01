@@ -112,7 +112,7 @@ function CreateProposalForm({
               ></AvailabilitySelector>
             </div>
 
-            <div className="mt-4 col-span-4 col-start-2 sm:col-span-6 sm:col-start-2">
+            <div className="col-span-4 col-start-2 sm:col-span-3 sm:col-start-2">
               <CategorySelector
                 categories={categories}
                 selectedCategories={selectedCategories}

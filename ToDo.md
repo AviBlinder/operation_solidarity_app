@@ -2,15 +2,13 @@
 
 ## ToDo:
 
-### Tuesday:
+### Wednesday:
 
-1. Style FORM pages
+1. finish styling 'create proposal' -> create genering classes -> add styling to other forms
 2. Add tab to distinguish between requests and proposals?
-
-### Wednesday
-
-5. Style <TaskDetail>
-6. Create 'tasks/[id]' view details page
+3. Style <TaskDetail>
+4. Create 'tasks/[id]' view details page
+5. Hebrew font??
 
 Thursday:
 
