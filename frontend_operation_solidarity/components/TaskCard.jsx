@@ -9,45 +9,22 @@ const TaskCard = ({ task }) => {
   return (
     <div className="bg-primary-100 mx-2 p-2 rounded-xl">
       <div className="">
-        <div className=" flex flex-col w-full items-center justify-between space-x-6 p-6">
-          <div className="flex truncate ">
-            <div className="flex  flex-row items-center space-x-3">
-              <div>
-                {' '}
-                {session?.user.email === task.email &&
-                  (task.taskType == 'request' ? (
-                    <Link
-                      href={`/request/update/${task.taskId}?entryDate=${task.entryDate}`}
-                    >
-                      {' '}
-                      <FaPencilAlt
-                        size={20}
-                        className="text-primary-500 mr-6"
-                      ></FaPencilAlt>
-                    </Link>
-                  ) : (
-                    <Link
-                      className="text-primary-500 mr-6"
-                      href={`/proposal/update/${task.taskId}?entryDate=${task.entryDate}`}
-                    >
-                      <FaEye
-                        size={20}
-                        className="text-primary-500 mr-6"
-                      ></FaEye>
-                    </Link>
-                  ))}
-              </div>
+        <div className="flex flex-col w-full items-center justify-between space-x-6 p-6">
+          <Link
+            className="text-white mx-6 w-full mt-1 mb-4 bg-secondary-400 rounded-lg"
+            href={`/tasks/${task.taskId}?entryDate=${task.entryDate}`}
+          >
+            <div className="flex flex-row flex-wrap justify-center  align-middle   p-2">
+              <span className="mx-2 ">View Details</span>
+              <FaEye size={20} className="text-gray-600/80 ml-3 mt-1"></FaEye>
             </div>
+          </Link>
+
+          <div className="flex truncate ">
+            <div className="flex  flex-row items-center space-x-3"></div>
             <div className="inline-flex flex-shrink-0 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
               {task.taskType}
             </div>
-            <Link href={`/tasks/${task.taskId}?entryDate=${task.entryDate}`}>
-              {' '}
-              <FaPencilAlt
-                size={20}
-                className="text-primary-500 mr-6"
-              ></FaPencilAlt>
-            </Link>
           </div>
           <p className="mt-1 truncate text-sm text-gray-500">
             {task.description}
@@ -64,6 +41,22 @@ const TaskCard = ({ task }) => {
         </div>
       </div>
       <div>
+        {session?.user.email === task.email && (
+          <div className="flex flex-col w-full items-center justify-between space-x-6 p-6">
+            <Link
+              className="text-white mx-6 w-full mt-1 mb-4 bg-secondary-400 rounded-lg"
+              href={`/${task.taskType}/update/${task.taskId}?entryDate=${task.entryDate}`}
+            >
+              <div className="flex flex-row flex-wrap justify-center  align-middle   p-2">
+                <span className="mx-2 ">Update Task</span>
+                <FaPencilAlt
+                  size={20}
+                  className="text-gray-600/80 ml-3 mt-1"
+                ></FaPencilAlt>
+              </div>
+            </Link>
+          </div>
+        )}
         <div className="-mt-px flex divide-x divide-gray-200">
           <div className="flex w-0 flex-1">
             <a

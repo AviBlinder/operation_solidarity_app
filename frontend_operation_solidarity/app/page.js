@@ -1,4 +1,7 @@
 'use client';
+import { useDispatch, useSelector } from 'react-redux';
+import { setTasks, selectTask } from '@/store/taskSlice';
+
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { FunnelIcon } from '@heroicons/react/20/solid';
@@ -127,8 +130,21 @@ export default function Tasks() {
     setFilter('');
   };
 
+  // const dispatch = useDispatch();
+  // const ReduxTasks = useSelector((state) => state.tasks);
+
+  // const fetchReduxTasks = () => {
+  //   const ReduxTasks = [{ name: 'abc' }];
+  //   dispatch(setTasks(ReduxTasks.list));
+  // };
+
   return (
     <div className="bg-white">
+      <div>
+        {/* <button className="btn_secondary" onClick={fetchReduxTasks}>
+          Load Tasks
+        </button> */}
+      </div>
       <div>
         {/* Mobile filter dialog */}
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>

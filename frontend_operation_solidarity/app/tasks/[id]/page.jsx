@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { useSearchParams } from 'next/navigation';
-
+import BackButton from '@/components/BackButton';
 const TaskDetails = ({ params }) => {
   const [taskDetails, setTaskDetails] = useState([]);
   const searchParams = useSearchParams();
@@ -44,14 +44,7 @@ const TaskDetails = ({ params }) => {
     <Suspense fallback={<Loading />}>
       <div className="max-w-2xl mx-auto my-10 p-4">
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-          <button
-            className="btn_secondary mx-4 my-4"
-            type="button"
-            onClick={() => router.back()}
-          >
-            Click here to go back
-          </button>
-
+          <BackButton />
           <div className="px-4 py-5 sm:px-6 bg-gradient-to-r from-purple-500 to-indigo-500">
             <h3 className="text-lg leading-6 font-semibold text-white">
               Task Details

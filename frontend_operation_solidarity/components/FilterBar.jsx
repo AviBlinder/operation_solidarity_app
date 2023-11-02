@@ -55,7 +55,7 @@ const FilterBar = ({
       {' '}
       <button
         onClick={handleResetFilters}
-        className="m-2 px-1 py-2 bg-secondary-500 text-white rounded w-[90%]"
+        className="mx-2 my-6 px-1 py-2 bg-secondary-500 text-white rounded w-[90%]"
       >
         Reset Filters
       </button>

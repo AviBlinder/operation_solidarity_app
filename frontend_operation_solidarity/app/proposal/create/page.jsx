@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 
 import CreateProposalForm from '@/components/CreateProposalForm';
 import Loading from './loading';
+import BackButton from '@/components/BackButton';
 
 //
 
@@ -111,11 +112,16 @@ const CreateProposal = () => {
   };
   return (
     <div>
-      <p className=" desc text-left max-w-md">
-        <span className="blue_gradient text-2xl ml-8 text-center font-bold ">
-          Create Proposal
-        </span>
-      </p>
+      <div className="grid grid-cols-6 sm:grid-cols-6">
+        <div className="form_span_6_1 ml-10 md:ml-0">
+          <BackButton className="ml-2"> </BackButton>
+          <p className="text-md md:text-lg">
+            <span className="blue_gradient text-2xl ml-8 text-center font-bold ">
+              Create Proposal
+            </span>
+          </p>
+        </div>
+      </div>
       <Suspense fallback={<Loading />}>
         <CreateProposalForm
           type="proposal"
