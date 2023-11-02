@@ -4,16 +4,15 @@
 
 ### ### Thursday:
 
-1. Review reactive 'details' design and implement on other pages?
+1. Style <TaskDetail>
 2. Add tab to distinguish between requests and proposals?
-3. Style <TaskDetail>
-4. Style 'tasks/[id]' view details page
-5. Hebrew font??
-6. Create userPool + add JWT to the POST/PUT/DELETE endpoints
-7. ChatGPT -> improve layout style + suggestions for Hero part of landing page
-8. Fix /listTasks to match 2 new GSIs
-9. Create User form/Update Preferences Form
-10. Debug and tests
+3. Style 'tasks/[id]' view details page
+4. Hebrew font??
+5. Create userPool + add JWT to the POST/PUT/DELETE endpoints
+6. ChatGPT -> improve layout style + suggestions for Hero part of landing page
+7. Fix /listTasks to match 2 new GSIs
+8. Create User form/Update Preferences Form
+9. Debug and tests
 
 ### Weekend:
 

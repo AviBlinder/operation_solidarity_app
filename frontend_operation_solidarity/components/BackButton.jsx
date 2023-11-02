@@ -5,7 +5,7 @@ const BackButton = () => {
 
   return (
     <button
-      className="btn_secondary mx-4 my-4 px-6 py-2"
+      className="btn_secondary px-6 py-2"
       type="button"
       onClick={() => router.back()}
     >

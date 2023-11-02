@@ -45,7 +45,7 @@ const TaskDetails = ({ params }) => {
       <div className="max-w-2xl mx-auto my-10 p-4">
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
           <BackButton />
-          <div className="px-4 py-5 sm:px-6 bg-gradient-to-r from-purple-500 to-indigo-500">
+          <div className="px-4 py-5 sm:px-6 bg-gradient-to-r from-primary-500 to-indigo-500">
             <h3 className="text-lg leading-6 font-semibold text-white">
               Task Details
             </h3>
