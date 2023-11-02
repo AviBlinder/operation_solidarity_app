@@ -37,8 +37,8 @@ const TaskCard = ({ task }) => {
           <div className="flex flex-wrap items-center rounded-full px-1.5 py-0.5 text-xl font-medium">
             <p className="mt-1 text-xl text-gray-500 text-right">
               מתי:
-              {task.availability.map((day) => (
-                <span> {day} </span>
+              {task.availability.map((day, index) => (
+                <span key={index}> {day} </span>
               ))}
             </p>
           </div>
@@ -54,51 +54,55 @@ const TaskCard = ({ task }) => {
             </div>
           </Link>
         </div>
-        <div>
-          <div className="flex divide-gray-200">
-            <div className="flex w-0 flex-1">
+        {/* <div className="divide-y divide-blue-200"></div> */}
+        <div className="">
+          <div className="flex flex-col md:flex-row ">
+            <div className="flex flex-1">
               <a
                 href={`mailto:${task.email}`}
-                className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
+                className="flex items-center justify-center space-x-3 rounded-bl-lg border border-transparent p-4 text-sm font-semibold text-gray-900"
               >
                 <EnvelopeIcon
                   className="h-5 w-5 text-gray-400"
                   aria-hidden="true"
                 />
-                Email
+                <span className="ml-1 md:ml-2`">Email</span>
               </a>
             </div>
             {task.contact && (
-              <div className="flex w-0 flex-1">
+              <div className="flex flex-1">
                 <a
                   href={`tel:${task.contact.phone}`}
-                  className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
+                  className="flex items-center justify-center space-x-3 rounded-br-lg border border-transparent p-4 text-sm font-semibold text-gray-900"
                 >
                   <PhoneIcon
                     className="h-5 w-5 text-gray-400"
                     aria-hidden="true"
                   />
-                  Call
+                  <span className="ml-1 md:ml-2`">Call</span>
                 </a>
               </div>
             )}
           </div>
           {task.contact && (
-            <div className="flex flex-1">
-              <a
-                href={`https://wa.me/${task.contact.phone}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
-              >
-                <ChatBubbleBottomCenterIcon
-                  className="h-5 w-5 text-green-400"
-                  aria-hidden="true"
-                />
-                WhatsApp
-              </a>
+            <div className="flex flex-col md:flex-row ">
+              <div className="flex flex-1">
+                <a
+                  href={`https://wa.me/${task.contact.phone}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center space-x-3 rounded-br-lg border border-transparent p-4 text-sm font-semibold text-green-500"
+                >
+                  <ChatBubbleBottomCenterIcon
+                    className="h-5 w-5 text-green-400"
+                    aria-hidden="true"
+                  />
+                  <span className="ml-1 md:ml-2`">WhatsApp</span>
+                </a>
+              </div>
             </div>
           )}
+
           {session?.user.email === task.email && (
             <div className="flex flex-col w-full items-center justify-between space-y-2 p-2">
               <Link
