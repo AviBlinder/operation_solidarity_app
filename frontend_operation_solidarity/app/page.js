@@ -130,13 +130,14 @@ export default function Tasks() {
     setFilter('');
   };
 
-  // const dispatch = useDispatch();
-  // const ReduxTasks = useSelector((state) => state.tasks);
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
-  // const fetchReduxTasks = () => {
-  //   const ReduxTasks = [{ name: 'abc' }];
-  //   dispatch(setTasks(ReduxTasks.list));
-  // };
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <div className="bg-white">

@@ -5,14 +5,12 @@
 ### ### Thursday:
 
 1. Add tab to distinguish between requests and proposals?
-2. Style 'tasks/[id]' view details page
-3. Hebrew font??
-4. Create userPool + add JWT to the POST/PUT/DELETE endpoints
+2. Create userPool + add JWT to the POST/PUT/DELETE endpoints
 
-5. ChatGPT -> improve layout style + suggestions for Hero part of landing page
-6. Fix /listTasks to match 2 new GSIs
-7. Create User form/Update Preferences Form
-8. Debug and tests
+3. ChatGPT -> improve layout style + suggestions for Hero part of landing page
+4. Fix /listTasks to match 2 new GSIs
+5. Create User form/Update Preferences Form
+6. Debug and tests
 
 ### Weekend:
 

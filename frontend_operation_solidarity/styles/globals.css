@@ -72,7 +72,7 @@
   @apply grid grid-cols-6 sm:grid-cols-6;
 }
 .app {
-  @apply relative z-10 flex  flex-col  mx-auto sm:px-16 px-6;
+  @apply relative z-10 flex max-w-full mx-auto flex-col  sm:px-16 px-6;
 }
 
 .btn_primary {
