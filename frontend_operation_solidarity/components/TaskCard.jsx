@@ -1,4 +1,8 @@
-import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/20/solid';
+import {
+  EnvelopeIcon,
+  PhoneIcon,
+  ChatBubbleBottomCenterIcon,
+} from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { FaPencilAlt, FaEye } from 'react-icons/fa';
@@ -71,7 +75,7 @@ const TaskCard = ({ task }) => {
             </a>
           </div>
           {task.contact && (
-            <div className="-ml-px flex w-0 flex-1">
+            <div className="flex w-0 flex-1">
               <a
                 href={`tel:${task.contact.phone}`}
                 className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
@@ -85,6 +89,22 @@ const TaskCard = ({ task }) => {
             </div>
           )}
         </div>
+        {task.contact && (
+          <div className="flex flex-1">
+            <a
+              href={`https://wa.me/${task.contact.phone}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
+            >
+              <ChatBubbleBottomCenterIcon
+                className="h-5 w-5 text-green-400"
+                aria-hidden="true"
+              />
+              WhatsApp
+            </a>
+          </div>
+        )}
       </div>
     </div>
   );
