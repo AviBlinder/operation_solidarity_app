@@ -275,6 +275,8 @@ Resources:
           AttributeType: S
         - AttributeName: emailtaskType
           AttributeType: S
+        - AttributeName: statustaskType
+          AttributeType: S
       KeySchema:
         - AttributeName: taskId
           KeyType: HASH
@@ -303,6 +305,15 @@ Resources:
         - IndexName: status-index
           KeySchema:
             - AttributeName: status
+              KeyType: HASH
+            - AttributeName: entryDate
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        #GSI 4:  statustaskType + entryDate
+        - IndexName: statustaskType-index
+          KeySchema:
+            - AttributeName: statustaskType
               KeyType: HASH
             - AttributeName: entryDate
               KeyType: RANGE
@@ -400,11 +411,3 @@ Outputs:
   ApiURL:
     Description: 'API Gateway endpoint URL'
     Value: !Sub 'https://${SolidarityApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/'
-  # ApiId:
-  #   Description: The ID of the shared HTTP API
-  #   Value:
-  #     Fn::GetAtt:
-  #       - SolidarityApi
-  #       - ApiId
-  #   Export:
-  #     Name: Shared-HttpApi-ApiId

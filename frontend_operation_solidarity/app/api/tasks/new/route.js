@@ -36,6 +36,9 @@ export const POST = async (request) => {
         taskType: taskType,
         userName: userName ? userName : null,
         emailtaskType: email + '#' + taskType,
+        statustaskType: status
+          ? status + '#' + taskType
+          : 'new' + '#' + taskType,
         description: description ? description : 'No description',
         comments: comments ? comments : null,
         contact: contact ? contact : null,

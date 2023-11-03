@@ -12,6 +12,11 @@ Check whether'nonce mismatch' issue persists
 
 2. ChatGPT -> suggestions for Hero part of landing page
 3. Fix /listTasks to match 2 new GSIs
+   Tasks GSIs:
+   email (HASH) + entryDate (RANGE)
+   emailTaskType (HASH) + entryDate (RANGE) --> on 'my activities' + entryDate desc
+   status (HASH) + entryDate ---> on app/page -> change to status#TaskType and fetch also by entryDate desc
+
 4. Handle statuses -> fetch and update
 5. Create User form/Update Preferences Form
 
