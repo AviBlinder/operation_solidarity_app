@@ -2,6 +2,10 @@
 
 ## ToDo:
 
+Issues:
+
+Check whether'nonce mismatch' issue persists
+
 ### ### Thursday:
 
 1. Add tab to distinguish between requests and proposals?
