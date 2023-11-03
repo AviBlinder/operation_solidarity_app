@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import Loading from './loading';
 import BackButton from '@/components/BackButton';
-import { formatDate, translateCategory } from '@/app/utils';
+import { formatDate, translateCategory, translateStatus } from '@/app/utils';
 
 const TaskDetails = ({ params }) => {
   const [taskDetails, setTaskDetails] = useState(null);
@@ -53,7 +53,7 @@ const TaskDetails = ({ params }) => {
                   className="col-span-4 col-start-2 sm:col-span-12 sm:col-start-1 
                 text-right px-4 py-5 sm:p-6"
                 >
-                  <div className="">
+                  <div className="px-2 md:px-20">
                     <div className="col-span-4 col-start-2 sm:col-span-6 sm:col-start-1 text-right">
                       <dt className="text-xl font-medium text-gray-500">
                         תיאור
@@ -76,6 +76,14 @@ const TaskDetails = ({ params }) => {
                       </dt>
                       <dd className="mt-1 text-xl text-gray-900">
                         {translateCategory(taskDetails.category)}
+                      </dd>
+                    </div>
+                    <div className="col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
+                      <dt className="text-xl font-medium text-gray-500">
+                        סטטוס
+                      </dt>
+                      <dd className="mt-1 text-xl text-gray-900">
+                        {translateStatus(taskDetails.status)}
                       </dd>
                     </div>
                     <div className="mt-4 border-t-2 col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
@@ -112,18 +120,18 @@ const TaskDetails = ({ params }) => {
                     )}
 
                     <div className="mt-4 border-t-2 col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
-                      <dt className="text-xl font-medium text-gray-500 truncate">
+                      <dt className="text-xl font-medium text-gray-500 ">
                         מייל ליצרית קשר
                       </dt>
-                      <dd className="mt-1 text-xl text-gray-900">
+                      <dd className="mt-1 text-xl text-gray-900 truncate">
                         {taskDetails.email}
                       </dd>
                     </div>
-                    <div className="col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
-                      <dt className="text-xl font-medium text-gray-500 truncate">
+                    <div className="mt-4 col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
+                      <dt className="mt-4 text-xl font-medium text-gray-500 ">
                         טלפון ליצרית קשר
                       </dt>
-                      <dd className="mt-1 text-xl text-gray-900">
+                      <dd className="mt-1 text-xl text-gray-900 truncate">
                         {taskDetails.contact.phone}
                       </dd>
                     </div>
