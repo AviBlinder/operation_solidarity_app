@@ -112,7 +112,7 @@ const TaskDetails = ({ params }) => {
                     )}
 
                     <div className="mt-4 border-t-2 col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
-                      <dt className="text-xl font-medium text-gray-500">
+                      <dt className="text-xl font-medium text-gray-500 truncate">
                         מייל ליצרית קשר
                       </dt>
                       <dd className="mt-1 text-xl text-gray-900">
@@ -120,7 +120,7 @@ const TaskDetails = ({ params }) => {
                       </dd>
                     </div>
                     <div className="col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
-                      <dt className="text-xl font-medium text-gray-500">
+                      <dt className="text-xl font-medium text-gray-500 truncate">
                         טלפון ליצרית קשר
                       </dt>
                       <dd className="mt-1 text-xl text-gray-900">
