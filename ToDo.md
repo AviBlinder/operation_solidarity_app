@@ -5,12 +5,11 @@
 ### ### Thursday:
 
 1. Add tab to distinguish between requests and proposals?
-2. Create userPool + add JWT to the POST/PUT/DELETE endpoints
 
-3. ChatGPT -> suggestions for Hero part of landing page
-4. Fix /listTasks to match 2 new GSIs
-5. Create User form/Update Preferences Form
-6. Debug and tests
+2. ChatGPT -> suggestions for Hero part of landing page
+3. Fix /listTasks to match 2 new GSIs
+4. Create User form/Update Preferences Form
+5. Debug and tests
 
 ### Weekend:
 
