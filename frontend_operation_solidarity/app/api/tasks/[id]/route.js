@@ -1,3 +1,5 @@
+import { headers } from 'next/headers';
+
 export const GET = async (request, { params }) => {
   const baseURL = process.env.baseURL;
   const env = process.env.APIGW_ENV;
@@ -24,6 +26,9 @@ export const GET = async (request, { params }) => {
 };
 
 export const PUT = async (request, { params }) => {
+  const headersList = headers();
+  const accessToken = headersList.get('accessToken');
+
   const baseURL = process.env.baseURL;
   const env = process.env.APIGW_ENV;
   const { id } = params;
@@ -61,6 +66,7 @@ export const PUT = async (request, { params }) => {
       }),
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     const tasks = await res.json();

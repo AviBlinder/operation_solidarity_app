@@ -1,4 +1,5 @@
 .ToDo.md
+*.png
 **/.aws-sam/
 **/node_modules
 

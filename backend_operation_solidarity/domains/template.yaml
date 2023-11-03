@@ -12,6 +12,30 @@ Globals:
         TASKS_TABLE: !Ref TasksTable
 
 Resources:
+  CognitoUserPool:
+    Type: 'AWS::Cognito::UserPool'
+    Properties:
+      UserPoolName: SolidarityOperationUserPool
+      AutoVerifiedAttributes:
+        - email
+  CognitoUserPoolClient:
+    Type: 'AWS::Cognito::UserPoolClient'
+    Properties:
+      ClientName: SolidarityOperationUserPoolClient
+      UserPoolId: !Ref CognitoUserPool
+      GenerateSecret: true
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+        - ALLOW_CUSTOM_AUTH
+        - ALLOW_USER_SRP_AUTH
+
+  CognitoUserPoolDomain:
+    Type: 'AWS::Cognito::UserPoolDomain'
+    Properties:
+      Domain: 'operation-solidarity-unite-domain'
+      UserPoolId: !Ref CognitoUserPool
+
   # DynamoDB Tables
   UsersTable:
     Type: AWS::DynamoDB::Table
@@ -39,6 +63,14 @@ Resources:
     Type: AWS::Serverless::HttpApi
     Properties:
       StageName: dev
+      Auth:
+        Authorizers:
+          CognitoAuthorizer:
+            IdentitySource: $request.header.Authorization
+            JwtConfiguration:
+              audience:
+                - !Ref CognitoUserPoolClient
+              issuer: !Sub https://cognito-idp.${AWS::Region}.amazonaws.com/${CognitoUserPool}
 
   # Lambda Functions for Users Start
   PostUserFunction:
@@ -56,6 +88,8 @@ Resources:
             ApiId: !Ref SolidarityApi
             Path: /users
             Method: post
+            Auth:
+              Authorizer: CognitoAuthorizer
 
   GetUserFunction:
     Type: AWS::Serverless::Function
@@ -87,6 +121,8 @@ Resources:
             ApiId: !Ref SolidarityApi
             Path: /users/{userId}
             Method: put
+            Auth:
+              Authorizer: CognitoAuthorizer
 
   DeleteUserFunction:
     Type: AWS::Serverless::Function
@@ -103,6 +139,8 @@ Resources:
             ApiId: !Ref SolidarityApi
             Path: /users/{userId}
             Method: delete
+            Auth:
+              Authorizer: CognitoAuthorizer
 
   ListUsersFunction:
     Type: AWS::Serverless::Function
@@ -119,6 +157,9 @@ Resources:
             ApiId: !Ref SolidarityApi
             Path: /users
             Method: get
+            Auth:
+              Authorizer: CognitoAuthorizer
+
   # Assignment Resources
   # DynamoDB Tables
   AssignmentsTable:
@@ -148,6 +189,8 @@ Resources:
           Properties:
             Path: /assignments
             Method: post
+            Auth:
+              Authorizer: CognitoAuthorizer
             ApiId: !Ref SolidarityApi
   GetAssignmentFunction:
     Type: AWS::Serverless::Function
@@ -178,6 +221,8 @@ Resources:
           Properties:
             Path: /assignments/{AssignmentsId}
             Method: put
+            Auth:
+              Authorizer: CognitoAuthorizer
             ApiId: !Ref SolidarityApi
   DeleteAssignmentFunction:
     Type: AWS::Serverless::Function
@@ -193,6 +238,8 @@ Resources:
           Properties:
             Path: /assignments/{AssignmentsId}
             Method: delete
+            Auth:
+              Authorizer: CognitoAuthorizer
             ApiId: !Ref SolidarityApi
 
   ListAssignmentsFunction:
@@ -279,6 +326,8 @@ Resources:
           Properties:
             Path: /tasks
             Method: post
+            Auth:
+              Authorizer: CognitoAuthorizer
             ApiId: !Ref SolidarityApi
   GetTaskFunction:
     Type: AWS::Serverless::Function
@@ -310,6 +359,8 @@ Resources:
           Properties:
             Path: /tasks/{TaskId}/{EntryDate}
             Method: put
+            Auth:
+              Authorizer: CognitoAuthorizer
             ApiId: !Ref SolidarityApi
   DeleteTaskFunction:
     Type: AWS::Serverless::Function
@@ -325,6 +376,8 @@ Resources:
           Properties:
             Path: /tasks/{TaskId}
             Method: delete
+            Auth:
+              Authorizer: CognitoAuthorizer
             ApiId: !Ref SolidarityApi
   ListTasksFunction:
     Type: AWS::Serverless::Function

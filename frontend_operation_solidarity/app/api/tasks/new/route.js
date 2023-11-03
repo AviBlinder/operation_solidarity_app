@@ -1,5 +1,12 @@
+import { headers } from 'next/headers';
+
 export const POST = async (request) => {
   console.log('POST request: ', request);
+  const headersList = headers();
+  const accessToken = headersList.get('accessToken');
+
+  console.log('accessToken :', accessToken);
+
   const baseURL = process.env.baseURL;
   const env = process.env.APIGW_ENV;
   try {
@@ -43,6 +50,7 @@ export const POST = async (request) => {
       }),
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     const tasks = await res.json();

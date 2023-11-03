@@ -7,7 +7,7 @@
 1. Add tab to distinguish between requests and proposals?
 2. Create userPool + add JWT to the POST/PUT/DELETE endpoints
 
-3. ChatGPT -> improve layout style + suggestions for Hero part of landing page
+3. ChatGPT -> suggestions for Hero part of landing page
 4. Fix /listTasks to match 2 new GSIs
 5. Create User form/Update Preferences Form
 6. Debug and tests
@@ -144,3 +144,37 @@ sam logs -n sqs-example-QueueConsumerFunction-M1GVFCEH030D --tail
 ```sh
 npx aws-sdk-js-codemod -t v2-to-v3 temp.js
 ```
+
+## Manual actions when creating the sam template from scratch:
+
+1. grab the new API GW ID
+2. grab the new UserPool ID + new App Client Id / Secret
+3. set the following env. vars (both on .env and Vercel env.)
+   COGNITO_USER_POOL_ID=
+   COGNITO_CLIENT_ID=
+   COGNITO_CLIENT_SECRET=
+   COGNITO_ISSUER=
+
+4. In the new userPool -> Sign-In Experience -> Add Identity Provider --> Google
+   4.1 ClientId: 432934400013-dn446snirc1l8356hf13a0iimgqlstsn.apps.googleusercontent.com
+   4.2 ClientSecret: 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
+   4.3 User pool attributes: email=email phone_number=phoneNumbers picture=picture username=sub (format is attribute=googleAttribute name)
+
+5. In the new userPool --> App Integration --> App Clients
+   4.1 Select the new appClient --> update COGNITO_CLIENT_ID and COGNITO_CLIENT_SECRET
+   4.2 Review Authentication flows:
+   ALLOW_CUSTOM_AUTH
+   ALLOW_REFRESH_TOKEN_AUTH
+   ALLOW_USER_PASSWORD_AUTH
+   ALLOW_USER_SRP_AUTH
+   4.3 Update Hosted UI:
+   Allowed callback URLs
+   http://localhost:3000/api/auth/callback/cognito
+   https://operation-solidarity.vercel.app/api/auth/callback/cognito
+
+- Identity Providers:
+  Google
+- OAuth 2.0 grant types
+  Authorization code grant
+- OpenID Connect scopes
+  Email OpenID

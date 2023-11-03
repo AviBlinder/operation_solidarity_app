@@ -49,6 +49,10 @@ const CreateRequest = () => {
     try {
       const response = await fetch('/api/tasks/new', {
         method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          accessToken: session?.accessToken,
+        },
         body: JSON.stringify({
           email: session?.user.email,
           userId: session?.user.userId,

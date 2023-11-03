@@ -111,6 +111,10 @@ const updateRequest = ({ params }) => {
         `/api/tasks/${params?.id}?entryDate=${entryDate}`,
         {
           method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            accessToken: session.accessToken,
+          },
           body: JSON.stringify({
             //
             description: task.description,

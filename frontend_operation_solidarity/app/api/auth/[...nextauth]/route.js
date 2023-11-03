@@ -1,37 +1,29 @@
 import NextAuth from 'next-auth';
 // [NextAuth Documentation](https://next-auth.js.org/configuration/nextjs)
 import GoogleProvider from 'next-auth/providers/google';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import CognitoProvider from 'next-auth/providers/cognito';
 
-// import User from '@models/user';
-// import { connectToDB } from '@utils/database';
+import {
+  CognitoUserPool,
+  CognitoUser,
+  AuthenticationDetails,
+} from 'amazon-cognito-identity-js';
 
 const handler = NextAuth({
   providers: [
-    // 1. console.cloud.google.com --> create new project ==> API & Services ==>
-    //  oauth consent
-    // 2. Click "CREATE"
-    // 3. Add Name + Authorized domains
-    // 4. edit %SystemRoot%\System32\drivers\etc\ so it redirects from dummy Authorized domain
-    // test.cc --> localhost
-    // refer to https://stackoverflow.com/questions/76350539/google-oauth-consent-screen-scheme-error-invalid-domain-must-not-specify-the-s
-    // 5. Credentials -> Create Credentials -> OAUTH Client ID -> Application Type = Web App.
-    // Authorized JavaScript Origins = http://localhost:3000
-    // Authorized Redirect URIs = http://localhost:3000/api/auth/callback/google
-    // Grab and update .env with GOOGLE_ID and GOOGLE_CLIENT_SECRET
-    // 6. Configure next.config.js so CORS is allowed for user's image:
-    // images: {
-    //   domains: ['lh3.googleusercontent.com'],
-    // },
-    // checking is a user is logged in or not:
-    // session?.user && ...
-    // or
-    // session?.user ? ... : ...
+    // GoogleProvider({
+    //   clientId: process.env.GOOGLE_ID,
+    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    // }),
 
-    GoogleProvider({
-      clientId: process.env.GOOGLE_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+    CognitoProvider({
+      clientId: process.env.COGNITO_CLIENT_ID,
+      clientSecret: process.env.COGNITO_CLIENT_SECRET,
+      issuer: process.env.COGNITO_ISSUER,
     }),
   ],
+  debug: process.env.NODE_ENV === 'development' ? true : false,
   // [nextauth callbacks](https://next-auth.js.org/configuration/callbacks)
   callbacks: {
     async session({ session }) {
@@ -61,42 +53,87 @@ const handler = NextAuth({
       //
       return session;
     },
+
     async signIn({ account, profile, user, credentials }) {
-      // fetch the user details on each sign In
-      try {
-        // check if user already exists
-        const baseURL = process.env.baseURL;
-        const env = process.env.APIGW_ENV;
-        const email = profile.email;
-        const res = await fetch(`${baseURL}/${env}/users?email=${email}`);
-        const userExists = await res.json();
-        // // if not, create a new User and save it in the DynamoDB users table
-        if (userExists.length === 0) {
-          const response = await fetch(`${baseURL}/${env}/users`, {
-            method: 'POST',
-            body: JSON.stringify({
-              email: profile.email,
-              username: profile.name.replace(' ', '').toLowerCase(),
-              createDate: new Date().toISOString(),
-              isVolunteer: null,
-              isRequester: null,
-              isAdmin: false,
-              status: 'active',
-            }),
-          });
-          if (response.ok) {
-            const user = await response.json();
-            console.log('created new user ', user);
-            // profile.user.userId = user.userId;
+      // if (account.provider === 'google') {
+      //   console.log('User signed in with Google:', profile);
+      //   return true;
+      // }
+      if (account.provider.toLowerCase() === 'cognito') {
+        // Handle Cognito sign-in
+        try {
+          const user = 'avi ';
+          if (profile.email) {
+            try {
+              // check if user already exists
+              const baseURL = process.env.baseURL;
+              const env = process.env.APIGW_ENV;
+              const email = profile.email;
+              const res = await fetch(`${baseURL}/${env}/users?email=${email}`);
+              const userExists = await res.json();
+              // // if not, create a new User and save it in the DynamoDB users table
+              if (userExists.length === 0) {
+                const response = await fetch(`${baseURL}/${env}/users`, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${account.access_token}`,
+                    // Authorization: `Bearer ${token}`,
+                  },
+
+                  body: JSON.stringify({
+                    email: profile.email,
+                    username: profile?.name,
+                    given_name: profile?.given_name,
+                    family_name: profile?.family_name,
+                    sub: profile?.sub,
+                    picture: profile?.picture,
+                    createDate: new Date().toISOString(),
+                    isVolunteer: null,
+                    isRequester: null,
+                    isAdmin: false,
+                    status: 'active',
+                  }),
+                });
+                if (response.ok) {
+                  const user = await response.json();
+                  console.log('created new user ', user);
+                  // profile.user.userId = user.userId;
+                } else {
+                  console.log('Error creating user: ', response);
+                }
+              }
+              return true;
+            } catch (error) {
+              console.log('Error checking if user exists: ', error.message);
+              return false;
+            }
+
+            // User is authenticated - end
           } else {
-            console.log('Error creating user: ', response);
+            // Authentication failed
+            console.log('Cognito authentication failed');
+            return false;
           }
+        } catch (error) {
+          console.error('Error during Cognito authentication:', error);
+          return false;
         }
-        return true;
-      } catch (error) {
-        console.log('Error checking if user exists: ', error.message);
+      } else {
+        console.log('Unknown provider:', account.provider);
         return false;
       }
+    },
+    async jwt({ token, account }) {
+      // Initial sign in
+      if (account && account.access_token) {
+        token.accessToken = account.access_token;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.accessToken = token.accessToken;
+      return session;
     },
   },
 });
