@@ -12,8 +12,8 @@ Check whether'nonce mismatch' issue persists
 
 2. ChatGPT -> suggestions for Hero part of landing page
 3. Fix /listTasks to match 2 new GSIs
-4. Create User form/Update Preferences Form
-5. Debug and tests
+4. Handle statuses -> fetch and update
+5. Create User form/Update Preferences Form
 
 ### Weekend:
 
