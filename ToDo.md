@@ -4,9 +4,10 @@
 
 Issues:
 
-- test lambda with different query params
 - Check whether'nonce mismatch' issue persists
 - Check if there is need to manage the refresh-token flow
+
+- Implement access path to the /api routes
 
 ### ### Thursday:
 
@@ -15,6 +16,7 @@ Issues:
 2. ChatGPT -> suggestions for Hero part of landing page
 3. Fix /listTasks to match 2 new GSIs
    Tasks GSIs:
+
    email (HASH) + entryDate (RANGE)
    emailTaskType (HASH) + entryDate (RANGE) --> on 'my activities' + entryDate desc
    status (HASH) + entryDate
@@ -23,11 +25,18 @@ Issues:
 https://wj5af91tc8.execute-api.eu-west-1.amazonaws.com/dev/tasks
 ?email= -> OK
 ?status= -> OK
-?emailTaskType=operationsolidarity.test1@gmail.com#request ---> fetches all the tasks!!!
-?statusTaskType='' ---> ?????
-?sortType='asc' --> not working
+?emailTaskType --> OK
+?statusTaskType='' ---> OK
 
-query
+Examples:
+
+app/pages.jsx: by request or proposal
+https://wj5af91tc8.execute-api.eu-west-1.amazonaws.com/dev/tasks?statusTaskType=new-request&sortType=desc
+
+https://wj5af91tc8.execute-api.eu-west-1.amazonaws.com/dev/tasks?status=new&sortType=desc
+
+app/tasks/[id]/page.jsx by request or proposal
+https://wj5af91tc8.execute-api.eu-west-1.amazonaws.com/dev/tasks?emailTaskType=aviblinder@gmail.com-request&sortType=asc
 
 1. Handle statuses -> fetch and update
 2. Create User form/Update Preferences Form

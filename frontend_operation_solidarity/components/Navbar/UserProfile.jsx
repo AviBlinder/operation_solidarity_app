@@ -27,7 +27,7 @@ const UserProfile = ({
             type="button"
             onClick={() => {
               setToggleDropdown(false);
-              signOut({ callbackUrl: `${baseURL}` });
+              signOut({ redirect: false, callbackUrl: `${baseURL}` });
             }}
             className="mt-5 w-full btn_primary"
           >
