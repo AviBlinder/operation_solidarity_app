@@ -51,7 +51,6 @@ export const PUT = async (request, { params }) => {
       updateDate,
       status,
     } = await request.json();
-    console.log('description :', description);
     const res = await fetch(`${baseURL}/${env}/tasks/${id}/${entryDate}`, {
       method: 'PUT',
       body: JSON.stringify({

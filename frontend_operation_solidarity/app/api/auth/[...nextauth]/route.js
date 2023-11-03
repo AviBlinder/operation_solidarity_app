@@ -23,7 +23,9 @@ const handler = NextAuth({
       issuer: process.env.COGNITO_ISSUER,
     }),
   ],
-  // debug: process.env.NODE_ENV === 'development' ? true : false,
+  secret: process.env.NEXTAUTH_SECRET,
+  // session: {jwt: true},
+  debug: process.env.NODE_ENV === 'development' ? true : false,
   // [nextauth callbacks](https://next-auth.js.org/configuration/callbacks)
   callbacks: {
     async session({ session }) {
