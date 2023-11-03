@@ -62,30 +62,84 @@ exports.getTaskHandler = async (event) => {
 };
 
 exports.listTasksHandler = async (event) => {
-  console.log('listTasksHandler', entity);
-  try {
-    const params = {
-      TableName: entity,
-    };
+  console.log('listTasksHandler', event);
 
-    // handle queryParam=email
+  const params = {
+    TableName: entity,
+  };
+
+  let queryType = 'all';
+
+  try {
+    let queryParams = 'all';
     if (
       event.queryStringParameters &&
-      event.queryStringParameters.email != null
+      Object.keys(event.queryStringParameters).length > 0
     ) {
-      params.IndexName = 'email-index';
-      params.KeyConditionExpression = 'email = :emailValue';
-      params.ExpressionAttributeValues = {
-        ':emailValue': event.queryStringParameters.email,
-      };
-      queryType = 'email';
-    } else {
-      queryType = 'all';
+      queryParams = event.queryStringParameters;
     }
+    console.log('queryParams', queryParams);
+    // defult order is set to desc
+    let sortOrder = false;
+    sortOrder =
+      queryParams.sortType && queryParams.sortType.toLowerCase() === 'asc';
+    params.ScanIndexForward = sortOrder;
+
+    if (queryParams) {
+      // handle queryParam=email
+      if (queryParams.email) {
+        params.IndexName = 'email-index';
+        params.KeyConditionExpression = 'email = :emailValue';
+        params.ExpressionAttributeValues = {
+          ':emailValue': queryParams.email,
+        };
+        queryType = 'email';
+      }
+
+      // handle queryParam=emailTaskType
+      if (queryParams.emailTaskType) {
+        params.IndexName = 'email-taskType-index';
+        params.KeyConditionExpression = 'emailtaskType = :emailTaskTypeValue';
+        params.ExpressionAttributeValues = {
+          ':emailTaskTypeValue': queryParams.emailTaskType,
+        };
+        queryType = 'emailTaskType';
+      }
+
+      // handle queryParam=status
+      if (queryParams.status) {
+        params.IndexName = 'status-index';
+        params.KeyConditionExpression = '#status = :statusValue';
+        params.ExpressionAttributeValues = {
+          ':statusValue': queryParams.status,
+        };
+        params.ExpressionAttributeNames = {
+          '#status': 'status',
+        };
+        queryType = 'status';
+      }
+
+      // handle queryParam=statusTaskType
+      if (queryParams.statusTaskType) {
+        params.IndexName = 'statustaskType-index';
+        params.KeyConditionExpression = 'statustaskType = :statusTaskTypeValue';
+        params.ExpressionAttributeValues = {
+          ':statusTaskTypeValue': queryParams.statusTaskType,
+        };
+        queryType = 'statusTaskType';
+      }
+    }
+
+    //
     // Handling the records retrieval
     let result = null;
 
-    if (queryType == 'email') {
+    if (
+      queryType == 'email' ||
+      queryType == 'status' ||
+      queryType == 'emailTaskType' ||
+      queryType == 'statusTaskType'
+    ) {
       result = await dynamoDb.query(params).promise();
       // check 'query' result
       if (result.Items) {
@@ -99,7 +153,7 @@ exports.listTasksHandler = async (event) => {
     } else if (queryType == 'all') {
       // Project all attributes but 'comments'
       params.ProjectionExpression =
-        'taskId, email, userId, taskType, userName, emailtaskType, entryDate, description, category, city, address, #from, #to, availability, updateDate, contact, #status';
+        'taskId, email, userId, taskType, userName, emailtaskType, entryDate, description, category, city, address, #from, #to, availability, updateDate, contact, statustaskType, #status';
       params.ExpressionAttributeNames = {
         '#from': 'from',
         '#to': 'to',

@@ -56,10 +56,6 @@ export default function Home() {
     setCityFilter(event.target.value);
   };
 
-  const handleLocationFromFilterChange = (event) => {
-    setLocationFromFilter(event.target.value);
-  };
-
   useEffect(() => {
     const fetchTasks = async () => {
       const response = await fetch(
@@ -67,9 +63,8 @@ export default function Home() {
       );
 
       const data = await response.json();
-      data.length === 0 ? setEmptyDB(true) : setEmptyDB(false);
+      data.length === 0 ? setTasks([]) : setTasks(data);
 
-      setTasks(data);
       console.log('data: ', data);
       setFilteredTasks(data);
     };

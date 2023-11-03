@@ -4,7 +4,9 @@
 
 Issues:
 
-Check whether'nonce mismatch' issue persists
+- test lambda with different query params
+- Check whether'nonce mismatch' issue persists
+- Check if there is need to manage the refresh-token flow
 
 ### ### Thursday:
 
@@ -15,10 +17,20 @@ Check whether'nonce mismatch' issue persists
    Tasks GSIs:
    email (HASH) + entryDate (RANGE)
    emailTaskType (HASH) + entryDate (RANGE) --> on 'my activities' + entryDate desc
-   status (HASH) + entryDate ---> on app/page -> change to status#TaskType and fetch also by entryDate desc
+   status (HASH) + entryDate
+   statusTaskType (HASH) + entryDate ---> on app/page and fetch also by entryDate desc
 
-4. Handle statuses -> fetch and update
-5. Create User form/Update Preferences Form
+https://wj5af91tc8.execute-api.eu-west-1.amazonaws.com/dev/tasks
+?email= -> OK
+?status= -> OK
+?emailTaskType=operationsolidarity.test1@gmail.com#request ---> fetches all the tasks!!!
+?statusTaskType='' ---> ?????
+?sortType='asc' --> not working
+
+query
+
+1. Handle statuses -> fetch and update
+2. Create User form/Update Preferences Form
 
 ### Weekend:
 

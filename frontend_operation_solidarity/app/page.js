@@ -59,16 +59,13 @@ export default function Tasks() {
     setCityFilter(event.target.value);
   };
 
-  const handleLocationFromFilterChange = (event) => {
-    setLocationFromFilter(event.target.value);
-  };
-
   useEffect(() => {
     const fetchTasks = async () => {
       const response = await fetch(`/api/tasks/`);
       // `/api/tasks?userEmail=${session?.user.email}`;
 
       const data = await response.json();
+      data.length === 0 ? setTasks([]) : setTasks(data);
       setTasks(data);
       console.log('data: ', data);
       setFilteredTasks(data);
@@ -80,7 +77,6 @@ export default function Tasks() {
 
   useEffect(() => {
     let result = [...tasks];
-
     // Existing filter and sort logic
 
     if (categoryFilter) {
