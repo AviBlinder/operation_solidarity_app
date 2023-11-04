@@ -75,6 +75,7 @@ const TaskDetails = ({ params }) => {
                         קטגוריה
                       </dt>
                       <dd className="mt-1 text-xl text-gray-900">
+                        {taskDetails.category}{' '}
                         {translateCategory(taskDetails.category)}
                       </dd>
                     </div>
