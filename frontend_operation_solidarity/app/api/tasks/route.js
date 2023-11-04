@@ -6,6 +6,7 @@ export const GET = async (request) => {
     return searchParamValue;
   };
 
+  const sortType = 'desc';
   try {
     const userEmail = getStringParams(request.url, 'userEmail');
     const statusTaskType = getStringParams(request.url, 'statusTaskType');
@@ -13,7 +14,9 @@ export const GET = async (request) => {
     const env = process.env.APIGW_ENV;
 
     if (userEmail) {
-      const res = await fetch(`${baseURL}/${env}/tasks?email=${userEmail}`);
+      const res = await fetch(
+        `${baseURL}/${env}/tasks?email=${userEmail}&sortType=${sortType}`
+      );
       const tasks = await res.json();
       return new Response(JSON.stringify(tasks), { status: 200 });
     } else if (statusTaskType) {
