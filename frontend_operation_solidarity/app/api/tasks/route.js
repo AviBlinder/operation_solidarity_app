@@ -1,4 +1,5 @@
 export const GET = async (request) => {
+  const revalidateTime = 300;
   const getStringParams = (url, searchParam) => {
     const urlObj = new URL(url);
     const params = new URLSearchParams(urlObj.search);
@@ -16,16 +17,19 @@ export const GET = async (request) => {
 
     if (emailTypeRequest) {
       const res = await fetch(
-        `${baseURL}/${env}/tasks?emailTaskType=${emailTypeRequest}&sortType=${sortType}`
+        `${baseURL}/${env}/tasks?emailTaskType=${emailTypeRequest}&sortType=${sortType}`,
+        {
+          next: { revalidate: revalidateTime },
+        }
       );
       const tasks = await res.json();
       return new Response(JSON.stringify(tasks), { status: 200 });
     } else if (statusTaskType) {
       const res = await fetch(
-        `${baseURL}/${env}/tasks?statusTaskType=${statusTaskType}&sortType=${sortType}`
-        // {
-        //   next: { revalidate: 3600 },
-        // }
+        `${baseURL}/${env}/tasks?statusTaskType=${statusTaskType}&sortType=${sortType}`,
+        {
+          next: { revalidate: revalidateTime },
+        }
       );
       const tasks = await res.json();
       return new Response(JSON.stringify(tasks), { status: 200 });

@@ -2,16 +2,15 @@
 
 ## ToDo:
 
-### ### Saturday:
+### ### Sunday:
 
-1. Add tab to distinguish between requests and proposals on /tasks page
-
-2. ChatGPT -> suggestions for Hero part of landing page
+1. ChatGPT -> suggestions for Hero part of landing page
+2. Requests/Proposals -> handle as multi-language object
 3. Handle statuses -> update (on task's update)
 
 4. Create User form/Update Preferences Form
 
-### Sunday/Monday (prioritize!):
+### Monday/Tuesday (prioritize!):
 
 - Multi-language --> just create infra with i18n packages + translate labels
 - Geo location --> add to filter, according to user's location
