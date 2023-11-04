@@ -5,20 +5,21 @@
 ### ### Saturday:
 
 1. Add tab to distinguish between requests and proposals
-2. Implement access path to the /api routes
 
-3. ChatGPT -> suggestions for Hero part of landing page
+2. ChatGPT -> suggestions for Hero part of landing page
+3. Handle statuses -> update (on task's update)
 
-4. Handle statuses -> fetch and update
-5. Create User form/Update Preferences Form
+4. Create User form/Update Preferences Form
 
 ### Sunday/Monday (prioritize!):
 
-- Multi-language --> just create infra + translate labels
+- Multi-language --> just create infra with i18n packages + translate labels
 - Geo location --> add to filter, according to user's location
 - Font sizes on the global level
 - ML Translation
 - "Comments" - open for everyone to update + automatic push to owner (?)
+
+- "Find me a match" feature
 
 ## // for a 'volunteer': create page for listing all request and add filter and message capabilities
 

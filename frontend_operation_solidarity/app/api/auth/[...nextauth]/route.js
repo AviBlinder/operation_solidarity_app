@@ -1,14 +1,47 @@
 import NextAuth from 'next-auth';
 // [NextAuth Documentation](https://next-auth.js.org/configuration/nextjs)
-import GoogleProvider from 'next-auth/providers/google';
-import CredentialsProvider from 'next-auth/providers/credentials';
+// import GoogleProvider from 'next-auth/providers/google';
 import CognitoProvider from 'next-auth/providers/cognito';
 
-import {
-  CognitoUserPool,
-  CognitoUser,
-  AuthenticationDetails,
-} from 'amazon-cognito-identity-js';
+async function refreshAccessToken(token) {
+  try {
+    const url = `https://${process.env.COGNITO_DOMAIN}/oauth2/token`;
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization:
+          'Basic ' +
+          Buffer.from(
+            `${process.env.COGNITO_CLIENT_ID}:${process.env.COGNITO_CLIENT_SECRET}`
+          ).toString('base64'),
+      },
+      body: new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token: token.refreshToken,
+      }),
+    });
+
+    const refreshedTokens = await response.json();
+
+    if (!response.ok) {
+      throw refreshedTokens;
+    }
+
+    return {
+      ...token,
+      accessToken: refreshedTokens.access_token,
+      accessTokenExpires: Date.now() + refreshedTokens.expires_in * 1000,
+      refreshToken: refreshedTokens.refresh_token ?? token.refreshToken, // Fall back to old refresh token
+    };
+  } catch (error) {
+    console.error('RefreshAccessTokenError', error);
+    return {
+      ...token,
+      error: 'RefreshAccessTokenError',
+    };
+  }
+}
 
 const handler = NextAuth({
   providers: [
@@ -28,11 +61,17 @@ const handler = NextAuth({
   // session: {jwt: true},
   // debug: process.env.NODE_ENV === 'development' ? true : false,
   // [nextauth callbacks](https://next-auth.js.org/configuration/callbacks)
+
   callbacks: {
-    async session({ session }) {
+    async session({ session, token }) {
       const baseURL = process.env.baseURL;
       const env = process.env.APIGW_ENV;
       const email = session.user.email;
+
+      session.user.accessToken = token.accessToken;
+      session.user.refreshToken = token.refreshToken;
+      session.user.accessTokenExpires = token.accessTokenExpires;
+
       try {
         const res = await fetch(`${baseURL}/${env}/users?email=${email}`);
         if (!res.ok) {
@@ -131,9 +170,19 @@ const handler = NextAuth({
       // Initial sign in
       if (account && account.access_token) {
         token.accessToken = account.access_token;
+        token.accessTokenExpires = Date.now() + account.expires_at * 1000;
+        token.refreshToken = account.refresh_token;
       }
-      return token;
+
+      // Return previous token if the access token has not expired yet
+      if (Date.now() < token.accessTokenExpires) {
+        return token;
+      }
+
+      // Access token has expired, try to update it
+      return refreshAccessToken(token);
     },
+
     async session({ session, token }) {
       session.accessToken = token.accessToken;
       return session;
