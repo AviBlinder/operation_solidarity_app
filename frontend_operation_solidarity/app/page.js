@@ -16,7 +16,7 @@ import { weekDays } from '@/constants/index';
 import { cities_short_list } from '@/constants/index';
 import RequestsProposalsTab from '@/components/RequestsProposalsTab';
 
-export default function Tasks() {
+export default function Home() {
   const [currentTab, setCurrentTab] = useState('Requests');
 
   const { data: session } = useSession();
@@ -77,7 +77,7 @@ export default function Tasks() {
 
       const data = await response.json();
       data.length === 0 ? setTasks([]) : setTasks(data);
-      setTasks(data);
+      // setTasks(data);
       setFilteredTasks(data);
     };
     fetchTasks();

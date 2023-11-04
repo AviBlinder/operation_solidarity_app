@@ -1,4 +1,5 @@
 'use client';
+
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { FunnelIcon } from '@heroicons/react/20/solid';
@@ -13,8 +14,11 @@ import FilterBar from '@/components/FilterBar';
 
 import { weekDays } from '@/constants/index';
 import { cities_short_list } from '@/constants/index';
+import RequestsProposalsTab from '@/components/RequestsProposalsTab';
 
-export default function Home() {
+export default function Tasks() {
+  const [currentTab, setCurrentTab] = useState('Requests');
+
   const { data: session } = useSession();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
@@ -58,24 +62,31 @@ export default function Home() {
 
   useEffect(() => {
     const fetchTasks = async () => {
-      const response = await fetch(
-        `/api/tasks?userEmail=${session?.user.email}`
-      );
+      let response = [];
+      const fetchEmailTypeRequest = session?.user.email + '-request';
+      const fetchEmailTypeProposal = session?.user.email + '-proposal';
+      if (session?.user.email) {
+        if (currentTab === 'Requests') {
+          response = await fetch(
+            `/api/tasks?emailTypeRequest=${fetchEmailTypeRequest}`
+          );
+        } else {
+          response = await fetch(
+            `/api/tasks?emailTypeRequest=${fetchEmailTypeProposal}`
+          );
+        }
 
-      const data = await response.json();
-      data.length === 0 ? setTasks([]) : setTasks(data);
-
-      console.log('data: ', data);
-      setFilteredTasks(data);
+        const data = await response.json();
+        data.length === 0 ? setTasks([]) : setTasks(data);
+        // setTasks(data);
+        setFilteredTasks(data);
+      }
     };
-    // if (session?.user.email) {
     fetchTasks();
-    // }
-  }, [session]);
+  }, [session, currentTab]);
 
   useEffect(() => {
     let result = [...tasks];
-
     // Existing filter and sort logic
 
     if (categoryFilter) {
@@ -124,6 +135,7 @@ export default function Home() {
     setLocationFromFilter('');
     setFilter('');
   };
+
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
     setIsClient(true);
@@ -181,6 +193,8 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col">
                     <FilterBar
+                      onClose={setMobileFiltersOpen}
+                      setMobileFiltersOpen={setMobileFiltersOpen}
                       mobileFiltersOpen={mobileFiltersOpen}
                       citiesHebrew={citiesHebrew}
                       weekDaysOptions={weekDaysOptions}
@@ -242,12 +256,14 @@ export default function Home() {
               </div>
               <div className="lg:col-span-3">
                 <Suspense fallback={<div>Loading...</div>}>
+                  <div className="mb-4 ml-4">
+                    <RequestsProposalsTab
+                      currentTab={currentTab}
+                      setCurrentTab={setCurrentTab}
+                    />
+                  </div>
                   <div className="flex flex-row">
-                    {emptyDB ? (
-                      <div> No tasks...</div>
-                    ) : (
-                      <TaskList tasks={filteredTasks} />
-                    )}
+                    <TaskList tasks={filteredTasks} />{' '}
                   </div>
                 </Suspense>
               </div>

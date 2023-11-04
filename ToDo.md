@@ -4,7 +4,7 @@
 
 ### ### Saturday:
 
-1. Add tab to distinguish between requests and proposals
+1. Add tab to distinguish between requests and proposals on /tasks page
 
 2. ChatGPT -> suggestions for Hero part of landing page
 3. Handle statuses -> update (on task's update)

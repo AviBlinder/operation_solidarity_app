@@ -4,7 +4,7 @@ import { useState } from 'react';
 const RequestsProposalsTab = ({ currentTab, setCurrentTab }) => {
   const tabs = [
     { name: 'Requests', type: 'request', current: true },
-    { name: 'Proposals', type: 'request', current: false },
+    { name: 'Proposals', type: 'proposal', current: false },
   ];
 
   const handleTabClick = (tabName) => {
