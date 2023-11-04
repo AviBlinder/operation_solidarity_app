@@ -188,6 +188,8 @@ export default function Tasks() {
                   </div>
                   <div className="flex flex-col">
                     <FilterBar
+                      onClose={setMobileFiltersOpen}
+                      setMobileFiltersOpen={setMobileFiltersOpen}
                       mobileFiltersOpen={mobileFiltersOpen}
                       citiesHebrew={citiesHebrew}
                       weekDaysOptions={weekDaysOptions}

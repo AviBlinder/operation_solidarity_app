@@ -26,6 +26,7 @@ const customStyles = {
 const FilterBar = ({
   categories,
   mobileFiltersOpen,
+  setMobileFiltersOpen,
   citiesHebrew,
   weekDaysOptions,
   handleResetFilters,
@@ -121,6 +122,12 @@ const FilterBar = ({
           classNamePrefix="react-select"
         />
       </label>
+      <button
+        onClick={() => setMobileFiltersOpen(false)}
+        className="flex align-middle justify-center  md:hidden mx-2 my-6 px-1 py-2 bg-secondary-500 text-white rounded w-[90%]"
+      >
+        Show Results
+      </button>
     </div>
   );
 };
