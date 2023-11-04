@@ -8,11 +8,21 @@ export const GET = async (request) => {
 
   try {
     const userEmail = getStringParams(request.url, 'userEmail');
+    const statusTaskType = getStringParams(request.url, 'statusTaskType');
     const baseURL = process.env.baseURL;
     const env = process.env.APIGW_ENV;
 
     if (userEmail) {
       const res = await fetch(`${baseURL}/${env}/tasks?email=${userEmail}`);
+      const tasks = await res.json();
+      return new Response(JSON.stringify(tasks), { status: 200 });
+    } else if (statusTaskType) {
+      const res = await fetch(
+        `${baseURL}/${env}/tasks?statusTaskType=${statusTaskType}`,
+        {
+          next: { revalidate: 3600 },
+        }
+      );
       const tasks = await res.json();
       return new Response(JSON.stringify(tasks), { status: 200 });
     } else {

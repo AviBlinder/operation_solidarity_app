@@ -4,18 +4,30 @@
 
 ### ### Saturday:
 
-1. Add tab to distinguish between requests and proposals?
+1. Add tab to distinguish between requests and proposals
 2. Implement access path to the /api routes
-3. Fix /listTasks to match 2 new GSIs
 
-4. ChatGPT -> suggestions for Hero part of landing page
+3. ChatGPT -> suggestions for Hero part of landing page
 
-   Tasks GSIs:
+4. Handle statuses -> fetch and update
+5. Create User form/Update Preferences Form
 
-   email (HASH) + entryDate (RANGE)
-   emailTaskType (HASH) + entryDate (RANGE) --> on 'my activities' + entryDate desc
-   status (HASH) + entryDate
-   statusTaskType (HASH) + entryDate ---> on app/page and fetch also by entryDate desc
+### Sunday/Monday (prioritize!):
+
+- Multi-language --> just create infra + translate labels
+- Geo location --> add to filter, according to user's location
+- Font sizes on the global level
+- ML Translation
+- "Comments" - open for everyone to update + automatic push to owner (?)
+
+## // for a 'volunteer': create page for listing all request and add filter and message capabilities
+
+Tasks GSIs:
+
+email (HASH) + entryDate (RANGE)
+emailTaskType (HASH) + entryDate (RANGE) --> on 'my activities' + entryDate desc
+status (HASH) + entryDate
+statusTaskType (HASH) + entryDate ---> on app/page and fetch also by entryDate desc
 
 ?email= -> OK
 ?status= -> OK
@@ -30,19 +42,6 @@ https://wj5af91tc8.execute-api.eu-west-1.amazonaws.com/dev/tasks?status=new&sort
 
 app/tasks/[id]/page.jsx by request or proposal
 https://wj5af91tc8.execute-api.eu-west-1.amazonaws.com/dev/tasks?emailTaskType=aviblinder@gmail.com-request&sortType=asc
-
-1. Handle statuses -> fetch and update
-2. Create User form/Update Preferences Form
-
-### Next Week (prioritize!):
-
-- Multi-language
-- Geo location
-- Font sizes on the global level
-- ML Translation
-- "Comments" - open for everyone to update?
-
-## // for a 'volunteer': create page for listing all request and add filter and message capabilities
 
 Routes:
 /tasks/ --> sort , filter by city/distance range/availability/ and 'link to update'

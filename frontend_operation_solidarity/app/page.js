@@ -1,6 +1,4 @@
 'use client';
-import { useDispatch, useSelector } from 'react-redux';
-import { setTasks, selectTask } from '@/store/taskSlice';
 
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
@@ -16,8 +14,11 @@ import FilterBar from '@/components/FilterBar';
 
 import { weekDays } from '@/constants/index';
 import { cities_short_list } from '@/constants/index';
+import RequestsProposalsTab from '@/components/RequestsProposalsTab';
 
 export default function Tasks() {
+  const [currentTab, setCurrentTab] = useState('Requests');
+
   const { data: session } = useSession();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
@@ -61,19 +62,26 @@ export default function Tasks() {
 
   useEffect(() => {
     const fetchTasks = async () => {
-      const response = await fetch(`/api/tasks/`);
-      // `/api/tasks?userEmail=${session?.user.email}`;
+      let response = [];
+      const fetchStatusTypeRequest = 'new-request';
+      const fetchStatusTypeProposal = 'new-proposal';
+      if (currentTab === 'Requests') {
+        response = await fetch(
+          `/api/tasks?statusTaskType=${fetchStatusTypeRequest}`
+        );
+      } else {
+        response = await fetch(
+          `/api/tasks?statusTaskType=${fetchStatusTypeProposal}`
+        );
+      }
 
       const data = await response.json();
       data.length === 0 ? setTasks([]) : setTasks(data);
       setTasks(data);
-      console.log('data: ', data);
       setFilteredTasks(data);
     };
-    // if (session?.user.email) {
     fetchTasks();
-    // }
-  }, [session]);
+  }, [session, currentTab]);
 
   useEffect(() => {
     let result = [...tasks];
@@ -137,11 +145,6 @@ export default function Tasks() {
 
   return (
     <div className="bg-white">
-      <div>
-        {/* <button className="btn_secondary" onClick={fetchReduxTasks}>
-          Load Tasks
-        </button> */}
-      </div>
       <div>
         {/* Mobile filter dialog */}
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>
@@ -251,6 +254,12 @@ export default function Tasks() {
               </div>
               <div className="lg:col-span-3">
                 <Suspense fallback={<div>Loading...</div>}>
+                  <div className="mb-4 ml-4">
+                    <RequestsProposalsTab
+                      currentTab={currentTab}
+                      setCurrentTab={setCurrentTab}
+                    />
+                  </div>
                   <div className="flex flex-row">
                     <TaskList tasks={filteredTasks} />{' '}
                   </div>
