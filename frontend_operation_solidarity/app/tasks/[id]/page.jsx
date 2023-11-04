@@ -5,6 +5,11 @@ import { useSearchParams } from 'next/navigation';
 import Loading from './loading';
 import BackButton from '@/components/BackButton';
 import { formatDate, translateCategory, translateStatus } from '@/app/utils';
+import {
+  EnvelopeIcon,
+  PhoneIcon,
+  ChatBubbleBottomCenterIcon,
+} from '@heroicons/react/20/solid';
 
 const TaskDetails = ({ params }) => {
   const [taskDetails, setTaskDetails] = useState(null);
@@ -75,7 +80,6 @@ const TaskDetails = ({ params }) => {
                         קטגוריה
                       </dt>
                       <dd className="mt-1 text-xl text-gray-900">
-                        {taskDetails.category}{' '}
                         {translateCategory(taskDetails.category)}
                       </dd>
                     </div>
@@ -124,8 +128,19 @@ const TaskDetails = ({ params }) => {
                       <dt className="text-xl font-medium text-gray-500 ">
                         מייל ליצרית קשר
                       </dt>
-                      <dd className="mt-1 text-xl text-gray-900 truncate">
-                        {taskDetails.email}
+                      <dd className="mt-1 text-xl text-gray-900 truncate ">
+                        <a
+                          href={`mailto:${taskDetails.email}`}
+                          className="flex flex-col md:flex-row"
+                        >
+                          <EnvelopeIcon
+                            className="h-5 w-5  md:mt-2 text-secondary-400"
+                            aria-hidden="true"
+                          />
+                          <span className="ml-1 md:ml-2 text-md`">
+                            {taskDetails.email}
+                          </span>
+                        </a>
                       </dd>
                     </div>
                     <div className="mt-4 col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
@@ -134,6 +149,32 @@ const TaskDetails = ({ params }) => {
                       </dt>
                       <dd className="mt-1 text-xl text-gray-900 truncate">
                         {taskDetails.contact.phone}
+
+                        <div className="flex flex-col md:flex-row justify-center">
+                          <a
+                            href={`https://wa.me/${taskDetails.contact.phone}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-center space-x-3 rounded-br-lg border border-transparent p-4 text-sm font-semibold text-green-500"
+                          >
+                            <ChatBubbleBottomCenterIcon
+                              className="h-5 w-5 text-green-400"
+                              aria-hidden="true"
+                            />
+                            <span className="ml-1 md:ml-2`">WhatsApp</span>
+                          </a>
+
+                          <a
+                            href={`tel:${taskDetails.contact.phone}`}
+                            className="flex items-center justify-center space-x-3 rounded-br-lg border border-transparent p-4 text-sm font-semibold text-gray-900"
+                          >
+                            <PhoneIcon
+                              className="h-5 w-5 text-secondary-400"
+                              aria-hidden="true"
+                            />
+                            <span className="ml-1 md:ml-2`">Call</span>
+                          </a>
+                        </div>
                       </dd>
                     </div>
                     <div className="mt-4 border-t-2 col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">

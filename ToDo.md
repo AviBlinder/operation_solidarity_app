@@ -2,19 +2,14 @@
 
 ## ToDo:
 
-Issues:
-
-- Check whether'nonce mismatch' issue persists
-- Check if there is need to manage the refresh-token flow
-
-- Implement access path to the /api routes
-
-### ### Thursday:
+### ### Saturday:
 
 1. Add tab to distinguish between requests and proposals?
-
-2. ChatGPT -> suggestions for Hero part of landing page
+2. Implement access path to the /api routes
 3. Fix /listTasks to match 2 new GSIs
+
+4. ChatGPT -> suggestions for Hero part of landing page
+
    Tasks GSIs:
 
    email (HASH) + entryDate (RANGE)
@@ -22,16 +17,14 @@ Issues:
    status (HASH) + entryDate
    statusTaskType (HASH) + entryDate ---> on app/page and fetch also by entryDate desc
 
-https://wj5af91tc8.execute-api.eu-west-1.amazonaws.com/dev/tasks
 ?email= -> OK
 ?status= -> OK
 ?emailTaskType --> OK
 ?statusTaskType='' ---> OK
 
-Examples:
-
-app/pages.jsx: by request or proposal
-https://wj5af91tc8.execute-api.eu-west-1.amazonaws.com/dev/tasks?statusTaskType=new-request&sortType=desc
+- Examples:
+  app/pages.jsx: by request or proposal
+  https://wj5af91tc8.execute-api.eu-west-1.amazonaws.com/dev/tasks?statusTaskType=new-request&sortType=desc
 
 https://wj5af91tc8.execute-api.eu-west-1.amazonaws.com/dev/tasks?status=new&sortType=desc
 
@@ -41,7 +34,7 @@ https://wj5af91tc8.execute-api.eu-west-1.amazonaws.com/dev/tasks?emailTaskType=a
 1. Handle statuses -> fetch and update
 2. Create User form/Update Preferences Form
 
-### Weekend:
+### Next Week (prioritize!):
 
 - Multi-language
 - Geo location
