@@ -4,13 +4,10 @@
 
 ### ### Sunday:
 
-1. Add 'filter by STATUS' on /tasks page
-2. Add SORT BY entryDate (?)
-3. ChatGPT -> suggestions for Hero part of landing page
-4. Requests/Proposals -> handle as multi-language object
-5. Handle statuses -> update (on task's update)
+1. ChatGPT -> suggestions for Hero part of landing page
+2. Requests/Proposals -> handle as multi-language object
 
-6. Create User form/Update Preferences Form
+3. Create User form/Update Preferences Form
 
 ### Monday/Tuesday (prioritize!):
 

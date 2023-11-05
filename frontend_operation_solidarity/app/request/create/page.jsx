@@ -119,6 +119,7 @@ const CreateRequest = () => {
       router.push('/tasks');
     } finally {
       setIsSubmitting(false);
+      router.push('/tasks');
     }
   };
 

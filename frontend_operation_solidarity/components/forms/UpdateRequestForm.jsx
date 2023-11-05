@@ -183,6 +183,7 @@ const UpdateRequestForm = ({ params }) => {
             //
             description: task.description,
             category: selectedCategories,
+            taskType: taskType,
             city: task.city
               ? {
                   city: task.city,

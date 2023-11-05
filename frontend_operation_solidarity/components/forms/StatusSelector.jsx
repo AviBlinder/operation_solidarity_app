@@ -12,7 +12,7 @@ function StatusSelector({ task, setTask }) {
     <div className="flex flex-col ">
       <div>
         <h2 className="text-sm font-medium text-primary-800">
-          Select a Status {task.status}
+          Select a Status
         </h2>
       </div>
       <div className="flex flex-row">

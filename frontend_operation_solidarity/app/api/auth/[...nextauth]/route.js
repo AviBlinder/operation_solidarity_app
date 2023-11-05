@@ -168,9 +168,9 @@ const handler = NextAuth({
     },
     async jwt({ token, account }) {
       // Initial sign in
-      console.log('token expiration time ', new Date(token.accessTokenExpires));
-      console.log('token =', token);
-      console.log('account =', account);
+      // console.log('token expiration time ', new Date(token.accessTokenExpires));
+      // console.log('token =', token);
+      // console.log('account =', account);
       if (account && account.access_token) {
         token.accessToken = account.access_token;
         token.accessTokenExpires = Date.now() + account.expires_at * 1000;

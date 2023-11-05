@@ -117,6 +117,7 @@ const updateRequest = ({ params }) => {
           },
           body: JSON.stringify({
             //
+            taskType: task.taskType,
             description: task.description,
             category: task.category,
             city: task.city

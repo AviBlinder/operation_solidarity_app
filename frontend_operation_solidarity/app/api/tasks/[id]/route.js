@@ -40,6 +40,7 @@ export const PUT = async (request, { params }) => {
   };
 
   const entryDate = getStringParams(request.url, 'entryDate');
+  let updatedStatusTypeRequest = '';
   try {
     const {
       description,
@@ -50,7 +51,14 @@ export const PUT = async (request, { params }) => {
       availability,
       updateDate,
       status,
+      taskType,
     } = await request.json();
+    //
+    if (status) {
+      updatedStatusTypeRequest = `${status}-${taskType}`;
+    } else {
+    }
+    //
     const res = await fetch(`${baseURL}/${env}/tasks/${id}/${entryDate}`, {
       method: 'PUT',
       body: JSON.stringify({
@@ -61,6 +69,7 @@ export const PUT = async (request, { params }) => {
         to: to ? to : null,
         availability: availability ? availability : null,
         status: status ? status : null,
+        statustaskType: status ? updatedStatusTypeRequest : null,
         updateDate: [updateDate],
       }),
       headers: {
