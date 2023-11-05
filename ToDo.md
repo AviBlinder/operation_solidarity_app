@@ -4,11 +4,13 @@
 
 ### ### Sunday:
 
-1. ChatGPT -> suggestions for Hero part of landing page
-2. Requests/Proposals -> handle as multi-language object
-3. Handle statuses -> update (on task's update)
+1. Add 'filter by STATUS' on /tasks page
+2. Add SORT BY entryDate (?)
+3. ChatGPT -> suggestions for Hero part of landing page
+4. Requests/Proposals -> handle as multi-language object
+5. Handle statuses -> update (on task's update)
 
-4. Create User form/Update Preferences Form
+6. Create User form/Update Preferences Form
 
 ### Monday/Tuesday (prioritize!):
 
@@ -19,6 +21,8 @@
 - "Comments" - open for everyone to update + automatic push to owner (?)
 
 - "Find me a match" feature
+
+- General "Look and Feel" improvements?
 
 ## // for a 'volunteer': create page for listing all request and add filter and message capabilities
 

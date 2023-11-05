@@ -168,6 +168,9 @@ const handler = NextAuth({
     },
     async jwt({ token, account }) {
       // Initial sign in
+      console.log('token expiration time ', new Date(token.accessTokenExpires));
+      console.log('token =', token);
+      console.log('account =', account);
       if (account && account.access_token) {
         token.accessToken = account.access_token;
         token.accessTokenExpires = Date.now() + account.expires_at * 1000;
@@ -175,6 +178,8 @@ const handler = NextAuth({
       }
 
       // Return previous token if the access token has not expired yet
+      // check token.iat ?
+      // (new Date(Date.now() + 3600000 < token.iat ) --> refreshAccessToken(token)
       if (Date.now() < token.accessTokenExpires) {
         return token;
       }

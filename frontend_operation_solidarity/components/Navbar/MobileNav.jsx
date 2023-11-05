@@ -25,7 +25,7 @@ const MobileNav = ({
 
           {toggleDropdown && (
             <div className="dropdown">
-              <div className="text-sm text-gray-400 font-medium">
+              <div className="text-sm text-gray-400 font-medium truncate">
                 {session?.user.email}
               </div>
 

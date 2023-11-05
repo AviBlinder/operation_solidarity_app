@@ -24,12 +24,16 @@ const customStyles = {
   }),
 };
 const FilterBar = ({
+  callingPage,
   categories,
   mobileFiltersOpen,
   setMobileFiltersOpen,
   citiesHebrew,
   weekDaysOptions,
   handleResetFilters,
+  handleStatusFilterChange,
+  statuses,
+  statusFilter,
   handleCategoryFilterChange,
   categoryFilter,
   handleAvailabilityFilterChange,
@@ -60,6 +64,25 @@ const FilterBar = ({
       >
         Reset Filters
       </button>
+      {callingPage === 'tasks' && (
+        <label>
+          <select
+            className={`${
+              mobileFiltersOpen ? 'mt-2  w-[90%] my-10 mx-2' : 'ml-2 w-52'
+            }`}
+            id="status-choice"
+            value={statusFilter}
+            onChange={handleStatusFilterChange}
+          >
+            <option value="all">כל הסטטוסים</option>
+            {statuses[languageEnglish].map((status, index) => (
+              <option key={index} value={status}>
+                {statuses[languageHebrew][index]}
+              </option>
+            ))}
+          </select>
+        </label>
+      )}
       <label htmlFor="category-choice" className="mt-2 ">
         {/* Category: */}
         <select

@@ -3,7 +3,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { FunnelIcon } from '@heroicons/react/20/solid';
-import { categories } from '@/constants/index';
+import { categories, statuses } from '@/constants/index';
 
 import { useState, useEffect, Fragment, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
@@ -191,6 +191,7 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col">
                     <FilterBar
+                      callingPage="home"
                       onClose={setMobileFiltersOpen}
                       setMobileFiltersOpen={setMobileFiltersOpen}
                       mobileFiltersOpen={mobileFiltersOpen}
@@ -237,10 +238,12 @@ export default function Home() {
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               <div className="hidden md:block bg-gray-100">
                 <FilterBar
+                  callingPage="home"
                   mobileFiltersOpen={!mobileFiltersOpen}
                   citiesHebrew={citiesHebrew}
                   weekDaysOptions={weekDaysOptions}
                   handleResetFilters={handleResetFilters}
+                  statuses={statuses}
                   categories={categories}
                   handleCategoryFilterChange={handleCategoryFilterChange}
                   categoryFilter={categoryFilter}

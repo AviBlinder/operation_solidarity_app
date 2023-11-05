@@ -40,6 +40,7 @@ export const POST = async (request) => {
       }),
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
       },
     });
     const tasks = await res.json();

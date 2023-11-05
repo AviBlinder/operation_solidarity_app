@@ -3,7 +3,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { FunnelIcon } from '@heroicons/react/20/solid';
-import { categories } from '@/constants/index';
+import { categories, statuses } from '@/constants/index';
 
 import { useState, useEffect, Fragment, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
@@ -35,6 +35,7 @@ export default function Tasks() {
 
   const [showAll, setShowAll] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
   const [availability, setAvailability] = useState([]);
   const [availabilityFilter, setAvailabilityFilter] = useState([]);
   const [cityFilter, setCityFilter] = useState('');
@@ -48,6 +49,15 @@ export default function Tasks() {
     } else {
       setShowAll(false);
       setCategoryFilter(event.target.value);
+    }
+  };
+  const handleStatusFilterChange = (event) => {
+    if (event.target.value === 'all') {
+      setStatusFilter('');
+      setShowAll(true);
+    } else {
+      setShowAll(false);
+      setStatusFilter(event.target.value);
     }
   };
 
@@ -94,6 +104,11 @@ export default function Tasks() {
         task.category.includes(categoryFilter.toLocaleLowerCase())
       );
     }
+    if (statusFilter) {
+      result = result.filter((task) =>
+        task.status.includes(statusFilter.toLocaleLowerCase())
+      );
+    }
 
     if (availabilityFilter.length > 0) {
       result = result.filter((task) =>
@@ -123,6 +138,7 @@ export default function Tasks() {
     filter,
     tasks,
     categoryFilter,
+    statusFilter,
     availabilityFilter,
     cityFilter,
     locationFromFilter,
@@ -193,12 +209,16 @@ export default function Tasks() {
                   </div>
                   <div className="flex flex-col">
                     <FilterBar
+                      callingPage="tasks"
                       onClose={setMobileFiltersOpen}
                       setMobileFiltersOpen={setMobileFiltersOpen}
                       mobileFiltersOpen={mobileFiltersOpen}
                       citiesHebrew={citiesHebrew}
                       weekDaysOptions={weekDaysOptions}
                       handleResetFilters={handleResetFilters}
+                      handleStatusFilterChange={handleStatusFilterChange}
+                      statuses={statuses}
+                      statusFilter={statusFilter}
                       categories={categories}
                       handleCategoryFilterChange={handleCategoryFilterChange}
                       categoryFilter={categoryFilter}
@@ -239,10 +259,14 @@ export default function Tasks() {
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               <div className="hidden md:block bg-gray-100">
                 <FilterBar
+                  callingPage="tasks"
                   mobileFiltersOpen={!mobileFiltersOpen}
                   citiesHebrew={citiesHebrew}
                   weekDaysOptions={weekDaysOptions}
                   handleResetFilters={handleResetFilters}
+                  handleStatusFilterChange={handleStatusFilterChange}
+                  statuses={statuses}
+                  statusFilter={statusFilter}
                   categories={categories}
                   handleCategoryFilterChange={handleCategoryFilterChange}
                   categoryFilter={categoryFilter}
