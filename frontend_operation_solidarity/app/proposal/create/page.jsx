@@ -135,8 +135,13 @@ const CreateProposal = () => {
         <div className="div_grid_main">
           <div className="form_span_6_1 ml-10 md:ml-0">
             <div className="flex flex-col md:flex-row mt-6">
-              <BackButton className="ml-2 mb-2 md:mb-0 max-w-md "> </BackButton>
-              <p className="text-md md:text-lg">
+              <BackButton
+                language={language}
+                className="ml-2 mb-2 md:mb-0 max-w-md "
+              >
+                {' '}
+              </BackButton>
+              <p className="text-md md:text-lg mt-4 md:mt-0">
                 <span className="blue_gradient text-2xl ml-8 text-center font-bold ">
                   {language === 'he'
                     ? labels.hebrew.createProposal

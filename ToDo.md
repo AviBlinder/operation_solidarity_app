@@ -5,32 +5,41 @@
 - general styling (flex vs grid, HeadlessUI components)
 - Management of multiple query params on Lambda / API GW
 
+### Issues:
+
+convert tabs to be multilanguage:
+<select
+id="tabs"
+name="tabs"
+className="block w-[90%] rounded-md border-gray-300 focus:border-secondary-500 focus:ring-secondary-500"
+value={currentTab}
+onChange={(e) => handleTabClick(e.target.value)} >
+{tabs.map((tab) => (
+
+<option key={tab.name}>{tab.name}</option>
+))}
+</select>
+
 ## ToDo:
 
 ### ### Sunday:
 
-- Small
+- Geo location --> add to filter, according to user's location
+- Font sizes on the global level + Hebrew Font
+- Mobile styling ('back' to close to form)
+- ChatGPT -> suggestions for Hero part of landing page
 
-1. ChatGPT -> suggestions for Hero part of landing page
-2. Requests/Proposals -> handle as multi-language object
-
-- Big
-
-3. Create User Preferences Form
+2. Create User Preferences Form
 
 ### Monday/Tuesday (prioritize!):
 
 - Multi-language --> just create infra with i18n packages + translate labels
-- Geo location --> add to filter, according to user's location
-- Font sizes on the global level
 - ML Translation
 - "Comments" - open for everyone to update + automatic push to owner (?)
 
 - "Find me a match" feature
 
 - General "Look and Feel" improvements?
-
-## // for a 'volunteer': create page for listing all request and add filter and message capabilities
 
 Tasks GSIs:
 

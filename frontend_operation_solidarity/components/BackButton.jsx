@@ -1,6 +1,7 @@
 import { useRouter } from 'next/navigation';
+import { labels } from '@/constants/index';
 
-const BackButton = () => {
+const BackButton = ({ language }) => {
   const router = useRouter();
 
   return (
@@ -9,7 +10,7 @@ const BackButton = () => {
       type="button"
       onClick={() => router.back()}
     >
-      Back
+      {language === 'he' ? labels.hebrew.back : labels.english.back}
     </button>
   );
 };

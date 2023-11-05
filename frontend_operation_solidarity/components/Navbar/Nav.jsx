@@ -23,7 +23,7 @@ const Nav = () => {
   }, []);
 
   return (
-    <nav className="flex flex-between w-full mb-16 pt-3">
+    <nav className="flex flex-between w-full mb-2 md:mb-16 pt-3">
       <Logo />
       <Link
         href="/"

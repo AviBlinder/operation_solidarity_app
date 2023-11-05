@@ -39,7 +39,12 @@ const TaskDetails = ({ params }) => {
             <div className=" ">
               <div className="flex flex-col md:flex-row mt-6">
                 <div className="w-[50%] flex flex-1">
-                  <BackButton className="ml-2  max-w-md "> </BackButton>
+                  <BackButton
+                    language={language}
+                    className="ml-2 mb-2 max-w-md "
+                  >
+                    {' '}
+                  </BackButton>
                 </div>
               </div>
               <div className="mt-6 bg-white shadow-lg rounded-lg grid grid-cols-6 sm:grid-cols-12">
