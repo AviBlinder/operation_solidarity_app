@@ -3,7 +3,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { FunnelIcon } from '@heroicons/react/20/solid';
-import { categories, statuses } from '@/constants/index';
+import { categories, statuses, labels } from '@/constants/index';
 
 import { useState, useEffect, Fragment, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
@@ -18,6 +18,7 @@ import RequestsProposalsTab from '@/components/RequestsProposalsTab';
 
 export default function Tasks() {
   const [currentTab, setCurrentTab] = useState('Requests');
+  const [language, setLanguage] = useState('he');
 
   const { data: session } = useSession();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -209,6 +210,7 @@ export default function Tasks() {
                   </div>
                   <div className="flex flex-col">
                     <FilterBar
+                      language={language}
                       callingPage="tasks"
                       onClose={setMobileFiltersOpen}
                       setMobileFiltersOpen={setMobileFiltersOpen}
@@ -259,6 +261,7 @@ export default function Tasks() {
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               <div className="hidden md:block bg-gray-100">
                 <FilterBar
+                  language={language}
                   callingPage="tasks"
                   mobileFiltersOpen={!mobileFiltersOpen}
                   citiesHebrew={citiesHebrew}

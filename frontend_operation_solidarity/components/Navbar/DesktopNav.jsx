@@ -1,8 +1,10 @@
 import SignInButton from './SignInButton';
 import UserProfile from './UserProfile';
 import Link from 'next/link';
+import { labels } from '@/constants/index';
 
 const DesktopNav = ({
+  language,
   signIn,
   signOut,
   session,
@@ -14,13 +16,19 @@ const DesktopNav = ({
     {session?.user ? (
       <div className="flex gap-3 md:gap-5">
         <Link href="/request/create" className="btn_primary">
-          Create Request
+          {language === 'he'
+            ? labels.hebrew.createRequest
+            : labels.english.createRequest}
         </Link>
         <Link href="/proposal/create" className="btn_primary">
-          Create Proposal
+          {language === 'he'
+            ? labels.hebrew.createProposal
+            : labels.english.createProposal}
         </Link>
         <Link href="/tasks" className="btn_secondary">
-          My Activity
+          {language === 'he'
+            ? labels.hebrew.myActivity
+            : labels.english.myActivity}
         </Link>
 
         <UserProfile

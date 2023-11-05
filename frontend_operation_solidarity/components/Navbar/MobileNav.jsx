@@ -1,8 +1,9 @@
 import SignInButton from './SignInButton';
 import UserProfile from './UserProfile';
-import Image from 'next/image';
+import { labels } from '@/constants/index';
 import Link from 'next/link';
 const MobileNav = ({
+  language,
   signIn,
   signOut,
   session,
@@ -34,21 +35,27 @@ const MobileNav = ({
                 className="dropdown_link"
                 onClick={() => setToggleDropdown(false)}
               >
-                Create request
+                {language === 'he'
+                  ? labels.hebrew.createRequest
+                  : labels.english.createRequest}
               </Link>
               <Link
                 href="/proposal/create"
                 className="dropdown_link"
                 onClick={() => setToggleDropdown(false)}
               >
-                Propose Help
+                {language === 'he'
+                  ? labels.hebrew.createProposal
+                  : labels.english.createProposal}
               </Link>
               <Link
                 href="/tasks"
                 className="dropdown_link"
                 onClick={() => setToggleDropdown(false)}
               >
-                My Activity
+                {language === 'he'
+                  ? labels.hebrew.myActivity
+                  : labels.english.myActivity}
               </Link>
               <button
                 type="button"

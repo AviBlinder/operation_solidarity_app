@@ -1,13 +1,22 @@
 ########################################################################################
 
+## Things to review and take overs from project
+
+- general styling (flex vs grid, HeadlessUI components)
+- Management of multiple query params on Lambda / API GW
+
 ## ToDo:
 
 ### ### Sunday:
 
+- Small
+
 1. ChatGPT -> suggestions for Hero part of landing page
 2. Requests/Proposals -> handle as multi-language object
 
-3. Create User form/Update Preferences Form
+- Big
+
+3. Create User Preferences Form
 
 ### Monday/Tuesday (prioritize!):
 

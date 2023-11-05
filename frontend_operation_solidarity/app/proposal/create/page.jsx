@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 
 import Loading from './loading';
 import BackButton from '@/components/BackButton';
-import { cities_short_list } from '@/constants/index';
+import { cities_short_list, labels } from '@/constants/index';
 
 import DescriptionField from '@/components/forms/DescriptionField';
 import LocationTypeSelector from '@/components/forms/LocationTypeSelector';
@@ -18,6 +18,8 @@ import CommentsField from '@/components/forms/CommentsField';
 
 const CreateProposal = () => {
   const { data: session } = useSession();
+  const [language, setLanguage] = useState('he');
+
   const [availability, setAvailability] = useState([]);
   const [contact, setContact] = useState({ phone: '' });
 
@@ -136,7 +138,9 @@ const CreateProposal = () => {
               <BackButton className="ml-2 mb-2 md:mb-0 max-w-md "> </BackButton>
               <p className="text-md md:text-lg">
                 <span className="blue_gradient text-2xl ml-8 text-center font-bold ">
-                  Create Proposal
+                  {language === 'he'
+                    ? labels.hebrew.createProposal
+                    : labels.english.createProposal}
                 </span>
               </p>
             </div>

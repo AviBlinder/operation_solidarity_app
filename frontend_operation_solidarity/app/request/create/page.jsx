@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react';
 
 import Loading from './loading';
 import BackButton from '@/components/BackButton';
-import { cities_short_list } from '@/constants/index';
+import { cities_short_list, labels } from '@/constants/index';
 
 import DescriptionField from '@/components/forms/DescriptionField';
 import LocationTypeSelector from '@/components/forms/LocationTypeSelector';
@@ -18,6 +18,7 @@ import CommentsField from '@/components/forms/CommentsField';
 
 const CreateRequest = () => {
   const { data: session } = useSession();
+  const [language, setLanguage] = useState('he');
   const [availability, setAvailability] = useState([]);
   const [contact, setContact] = useState({ phone: '' });
 
@@ -123,9 +124,6 @@ const CreateRequest = () => {
     }
   };
 
-  const [categories, setCategories] = useState([]);
-  const [categoriesHebrew, setCategoriesHebrew] = useState([]);
-
   const [locationType, setLocationType] = useState('cityAddress');
 
   return (
@@ -137,7 +135,9 @@ const CreateRequest = () => {
               <BackButton className="ml-2  max-w-md "> </BackButton>
               <p className="text-md md:text-lg mt-4 md:mt-0">
                 <span className="blue_gradient text-2xl ml-8 text-center font-bold ">
-                  Create Request
+                  {language === 'he'
+                    ? labels.hebrew.createRequest
+                    : labels.english.createRequest}
                 </span>
               </p>
             </div>

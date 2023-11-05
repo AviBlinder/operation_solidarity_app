@@ -5,14 +5,14 @@ import DesktopNav from './DesktopNav';
 import MobileNav from './MobileNav';
 
 import Link from 'next/link';
-import Image from 'next/image';
-import { useEffect, useState, Fragment } from 'react';
+import { useEffect, useState } from 'react';
 import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
 
 const Nav = () => {
   const { data: session } = useSession();
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
+  const [language, setLanguage] = useState('he');
 
   useEffect(() => {
     const fetchProviders = async () => {
@@ -33,6 +33,7 @@ const Nav = () => {
         Operation Solidarity
       </Link>
       <DesktopNav
+        language={language}
         session={session}
         providers={providers}
         toggleDropdown={toggleDropdown}
@@ -41,6 +42,7 @@ const Nav = () => {
         signOut={signOut}
       />
       <MobileNav
+        language={language}
         session={session}
         providers={providers}
         toggleDropdown={toggleDropdown}
