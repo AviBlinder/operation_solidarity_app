@@ -285,6 +285,7 @@ export default function Tasks() {
                 <Suspense fallback={<div>Loading...</div>}>
                   <div className="mb-4 ml-4">
                     <RequestsProposalsTab
+                      language={language}
                       currentTab={currentTab}
                       setCurrentTab={setCurrentTab}
                     />

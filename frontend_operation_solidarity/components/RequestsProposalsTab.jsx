@@ -1,10 +1,15 @@
 'use client';
 import { useState } from 'react';
 
-const RequestsProposalsTab = ({ currentTab, setCurrentTab }) => {
+const RequestsProposalsTab = ({ language, currentTab, setCurrentTab }) => {
   const tabs = [
-    { name: 'Requests', type: 'request', current: true },
-    { name: 'Proposals', type: 'proposal', current: false },
+    { name: 'Requests', nameHebrew: 'בקשות', type: 'request', current: true },
+    {
+      name: 'Proposals',
+      nameHebrew: 'הצעות',
+      type: 'proposal',
+      current: false,
+    },
   ];
 
   const handleTabClick = (tabName) => {
@@ -49,7 +54,7 @@ const RequestsProposalsTab = ({ currentTab, setCurrentTab }) => {
                 )}
                 aria-current={currentTab === tab.name ? 'page' : undefined}
               >
-                {tab.name}
+                {language === 'he' ? tab.nameHebrew : tab.name}
               </button>
             ))}
           </div>
