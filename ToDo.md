@@ -8,6 +8,11 @@
 ### Issues:
 
 convert tabs to be multilanguage:
+const handleTabClick = (tabName) => {
+setCurrentTab(tabName);
+// Logic to display content based on the selected tab or navigate to a new URL
+};
+
 <select
 id="tabs"
 name="tabs"
@@ -22,26 +27,29 @@ onChange={(e) => handleTabClick(e.target.value)} >
 
 ## ToDo:
 
-### ### Sunday:
+### Big
 
 - Geo location --> add to filter, according to user's location
-- Font sizes on the global level + Hebrew Font
-- Mobile styling ('back' to close to form)
+
+1. Create new GSI (GeoHash + statusTaskType)
+2. Update POST and PUT (both on server-side + Lambda functions)
+3. Ask for User's location only if he wants to filter by location (?)
+4. Add Search by Geolocation distance
+
+#### Small:
+
+- Font sizes on the global level + Hebrew Font (As part of Availability features)
 - ChatGPT -> suggestions for Hero part of landing page
-
-2. Create User Preferences Form
-
-### Monday/Tuesday (prioritize!):
-
 - Multi-language --> just create infra with i18n packages + translate labels
 - ML Translation
 - "Comments" - open for everyone to update + automatic push to owner (?)
+- Create User Preferences Form
 
 - "Find me a match" feature
 
 - General "Look and Feel" improvements?
 
-Tasks GSIs:
+#### Tasks GSIs:
 
 email (HASH) + entryDate (RANGE)
 emailTaskType (HASH) + entryDate (RANGE) --> on 'my activities' + entryDate desc

@@ -172,32 +172,6 @@ exports.listTasksHandler = async (event) => {
   }
 };
 
-exports.postTaskHandler = async (event) => {
-  try {
-    const data = JSON.parse(event.body);
-    const taskId = uuidv4();
-
-    const params = {
-      TableName: entity,
-      Item: {
-        taskId,
-        ...data,
-      },
-    };
-    await dynamoDb.put(params).promise();
-    return {
-      statusCode: 200,
-      body: JSON.stringify({ taskId, ...data }),
-    };
-  } catch (error) {
-    console.error(error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: 'Internal Server Error' }),
-    };
-  }
-};
-
 exports.updateTaskHandler = async (event) => {
   try {
     const taskId = event.pathParameters.TaskId;

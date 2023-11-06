@@ -35,10 +35,6 @@ export const POST = async (request) => {
         userId,
         taskType: taskType,
         userName: userName ? userName : null,
-        emailtaskType: email + '-' + taskType,
-        statustaskType: status
-          ? status + '-' + taskType
-          : 'new' + '-' + taskType,
         description: description ? description : 'No description',
         comments: comments ? comments : null,
         contact: contact ? contact : null,
@@ -49,7 +45,7 @@ export const POST = async (request) => {
         to: to ? to : null,
         status: status ? status : 'new',
         availability: availability ? availability : null,
-        entryDate: entryDate ? entryDate : new Date(),
+        // entryDate: entryDate ? entryDate : new Date(),
       }),
       headers: {
         'Content-Type': 'application/json',

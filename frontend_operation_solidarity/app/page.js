@@ -41,6 +41,7 @@ export default function Home() {
   const [cityFilter, setCityFilter] = useState('');
   const [locationFromFilter, setLocationFromFilter] = useState('');
   const [filter, setFilter] = useState('');
+  const [location, setLocation] = useState({});
 
   const handleCategoryFilterChange = (event) => {
     if (event.target.value === 'all') {
@@ -60,6 +61,17 @@ export default function Home() {
   const handleCityFilterChange = (event) => {
     setCityFilter(event.target.value);
   };
+
+  //
+  useEffect(() => {
+    if ('geolocation' in navigator) {
+      // Retrieve latitude & longitude coordinates from `navigator.geolocation` Web API
+      navigator.geolocation.getCurrentPosition(({ coords }) => {
+        const { latitude, longitude } = coords;
+        setLocation({ ...location, latitude, longitude });
+      });
+    }
+  }, []);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -127,6 +139,7 @@ export default function Home() {
     locationFromFilter,
     showAll,
   ]);
+
   const handleResetFilters = () => {
     setCategoryFilter('');
     setAvailabilityFilter([]);
@@ -147,6 +160,7 @@ export default function Home() {
   return (
     <div className="bg-white">
       <div>
+        {location?.latitude} / {location?.longitude}
         {/* Mobile filter dialog */}
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>
           <Dialog
@@ -216,7 +230,6 @@ export default function Home() {
             </div>
           </Dialog>
         </Transition.Root>
-
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
             <Header title="Requests and Proposals" />

@@ -326,7 +326,7 @@ Resources:
   PostTaskFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: index.postTaskHandler
+      Handler: indexPost.postTaskHandler
       CodeUri: tasks/code/
       Policies:
         - DynamoDBCrudPolicy:

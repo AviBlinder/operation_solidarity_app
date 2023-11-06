@@ -15,6 +15,8 @@ const TaskDetails = ({ params }) => {
   const [taskDetails, setTaskDetails] = useState(null);
   const searchParams = useSearchParams();
   const entryDate = searchParams.get('entryDate');
+  const [language, setLanguage] = useState('he');
+
   const router = useRouter();
 
   useEffect(() => {
