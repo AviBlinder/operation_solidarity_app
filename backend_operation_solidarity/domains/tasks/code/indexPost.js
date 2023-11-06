@@ -1,4 +1,6 @@
 const AWS = require('aws-sdk');
+const ngeohash = require('ngeohash');
+
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const { v4: uuidv4 } = require('uuid');
 const entity = process.env.TASKS_TABLE || 'TasksTable';
@@ -12,6 +14,12 @@ exports.postTaskHandler = async (event) => {
     data.status ? (data.status = data.status.toLowerCase()) : 'new';
     data.emailtaskType = data.email + '-' + data.taskType;
     data.statustaskType = data.status + '-' + data.taskType;
+
+    if (data.city && data.city.lat && data.city.lng) {
+      data.geohash = ngeohash.encode(data.city.lat, data.city.lng);
+    } else {
+      data.geohash = ngeohash.encode(data.from.lat, data.from.lng);
+    }
 
     const params = {
       TableName: entity,
