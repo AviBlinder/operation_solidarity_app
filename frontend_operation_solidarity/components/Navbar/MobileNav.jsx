@@ -1,3 +1,4 @@
+import { useRouter } from 'next/navigation';
 import SignInButton from './SignInButton';
 import UserProfile from './UserProfile';
 import { labels } from '@/constants/index';
@@ -12,7 +13,7 @@ const MobileNav = ({
   setToggleDropdown,
 }) => {
   const baseURL = process.env.NEXT_PUBLIC_BASEURL;
-
+  const router = useRouter();
   return (
     <div className="block lg:hidden relative">
       {session?.user ? (
@@ -62,6 +63,7 @@ const MobileNav = ({
                 onClick={() => {
                   setToggleDropdown(false);
                   signOut({ redirect: false, callbackUrl: `${baseURL}` });
+                  router.push('/');
                 }}
                 className="mt-5 w-full btn_primary"
               >

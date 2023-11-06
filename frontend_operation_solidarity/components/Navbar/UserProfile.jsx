@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const UserProfile = ({
   signOut,
@@ -7,7 +8,7 @@ const UserProfile = ({
   setToggleDropdown,
 }) => {
   const baseURL = process.env.NEXT_PUBLIC_BASEURL;
-
+  const router = useRouter();
   return (
     <div className="relative">
       <Image
@@ -28,6 +29,7 @@ const UserProfile = ({
             onClick={() => {
               setToggleDropdown(false);
               signOut({ redirect: false, callbackUrl: `${baseURL}` });
+              router.push('/');
             }}
             className="mt-5 w-full btn_primary"
           >
