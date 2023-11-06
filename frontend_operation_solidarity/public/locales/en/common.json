@@ -1,0 +1,13 @@
+{
+  "welcome": "Welcome",
+  "title": "Operation Solidarity",
+  "createRequest": "Create Request",
+  "createProposal": "Create Proposal",
+  "createTask": "Create Task",
+  "requests": "Requests",
+  "proposals": "Proposals",
+  "resetFilters": "Reset Filters",
+  "showResults": "Show Results",
+  "myActivity": "My Activity",
+  "back": "Back"
+}

@@ -1,11 +1,12 @@
 'use client';
+import ngeohash from 'ngeohash';
 
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { FunnelIcon } from '@heroicons/react/20/solid';
 import { categories, statuses, labels } from '@/constants/index';
 
-import { useState, useEffect, Fragment, Suspense } from 'react';
+import { useContext, useState, useEffect, Fragment, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 
 import Header from '@/components/Header';
@@ -13,12 +14,27 @@ import TaskList from '@/components/TaskList';
 import FilterBar from '@/components/FilterBar';
 
 import { weekDays } from '@/constants/index';
-import { cities_short_list } from '@/constants/index';
+import { RefDataContext } from '@/components/RefDataContext';
+
 import RequestsProposalsTab from '@/components/RequestsProposalsTab';
 
 export default function Home() {
   const [currentTab, setCurrentTab] = useState('Requests');
   const [language, setLanguage] = useState('he');
+  const [distanceRange, setDistanceRange] = useState(0);
+  const [maxDistanceRange, setMaxDistanceRange] = useState(500);
+  const handleDistanceRangeChange = (event) => {
+    if (event.target?.value === '') {
+      setDistanceRange(0);
+    } else {
+      const value = Math.min(
+        Math.max(1, parseInt(event.target.value, 10)),
+        maxDistanceRange
+      );
+      console.log('value =', value);
+      setDistanceRange(value);
+    }
+  };
 
   const { data: session } = useSession();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -30,7 +46,9 @@ export default function Home() {
     label: day,
   }));
 
-  const citiesHebrew = cities_short_list.map((city) => city.cityHebrew);
+  const refData = useContext(RefDataContext);
+  console.log('refData context =', refData);
+  const citiesHebrew = refData.cities.map((city) => city.cityHebrew);
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
 
@@ -100,6 +118,32 @@ export default function Home() {
     let result = [...tasks];
     // Existing filter and sort logic
 
+    if (location.latitude && location.longitude && distanceRange > 0) {
+      // Calculate the geohashes for the given distance range around the user's location
+      const userGeohash = ngeohash.encode(
+        location.latitude,
+        location.longitude
+      );
+      console.log('userGeohash :', userGeohash);
+      const precision = calculateGeohashPrecisionForDistance(distanceRange);
+      const bounds = ngeohash.neighbors(userGeohash.substring(0, precision));
+
+      // Include the user's current geohash as well
+      bounds.push(userGeohash.substring(0, precision));
+
+      // Filter tasks by geohash
+      result = result.filter((task) => {
+        // task?.geohash &&
+        const taskGeohash = ngeohash.encode(
+          task.city?.lat ? task.city.lat : task.from.lat,
+          task.city?.lng ? task.city.lng : task.from.lng
+        );
+        console.log('taskGeohash :', taskGeohash);
+        // bounds.includes(task?.geohash.substring(0, precision));
+        bounds.includes(taskGeohash.substring(0, precision));
+      });
+    }
+
     if (categoryFilter) {
       result = result.filter((task) =>
         task.category.includes(categoryFilter.toLocaleLowerCase())
@@ -131,6 +175,7 @@ export default function Home() {
 
     setFilteredTasks(result);
   }, [
+    location,
     filter,
     tasks,
     categoryFilter,
@@ -148,6 +193,16 @@ export default function Home() {
     setFilter('');
   };
 
+  // Function to calculate the appropriate geohash precision based on the distance
+  function calculateGeohashPrecisionForDistance(distance) {
+    // This function should be adjusted based on empirical testing and may vary
+    // according to the specific geohash implementation details.
+    if (distance < 5) return 7; // around 2.4 km x 4.9 km
+    if (distance < 20) return 6; // around 4.9 km x 9.7 km
+    if (distance < 80) return 5; // around 20 km x 20 km
+    if (distance < 600) return 4; // around 78 km x 78 km
+    return 3; // up to 500+ km
+  }
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
     setIsClient(true);
@@ -206,6 +261,8 @@ export default function Home() {
                   </div>
                   <div className="flex flex-col">
                     <FilterBar
+                      distanceRange={distanceRange}
+                      handleDistanceRangeChange={handleDistanceRangeChange}
                       language={language}
                       callingPage="home"
                       onClose={setMobileFiltersOpen}
@@ -253,6 +310,8 @@ export default function Home() {
             <div className="grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-4">
               <div className="hidden md:block bg-gray-100">
                 <FilterBar
+                  distanceRange={distanceRange}
+                  handleDistanceRangeChange={handleDistanceRangeChange}
                   language={language}
                   callingPage="home"
                   mobileFiltersOpen={!mobileFiltersOpen}
