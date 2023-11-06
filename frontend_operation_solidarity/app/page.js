@@ -20,15 +20,16 @@ import RequestsProposalsTab from '@/components/RequestsProposalsTab';
 
 export default function Home() {
   const [currentTab, setCurrentTab] = useState('Requests');
-  const [language, setLanguage] = useState('he');
+
   const [distanceRange, setDistanceRange] = useState(0);
   const [maxDistanceRange, setMaxDistanceRange] = useState(500);
   const handleDistanceRangeChange = (event) => {
-    if (event.target?.value === '') {
+    console.log('handleDistanceRangeChange', event);
+    if (event === '') {
       setDistanceRange(0);
     } else {
       const value = Math.min(
-        Math.max(1, parseInt(event.target.value, 10)),
+        Math.max(1, parseInt(event * 100, 10)),
         maxDistanceRange
       );
       console.log('value =', value);
@@ -47,8 +48,10 @@ export default function Home() {
   }));
 
   const refData = useContext(RefDataContext);
-  console.log('refData context =', refData);
-  const citiesHebrew = refData.cities.map((city) => city.cityHebrew);
+  const { language, setLanguage, labels, cities, statuses } =
+    useContext(RefDataContext);
+
+  const citiesHebrew = cities.map((city) => city.cityHebrew);
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
 

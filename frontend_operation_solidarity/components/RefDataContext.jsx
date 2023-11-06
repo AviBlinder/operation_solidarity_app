@@ -1,12 +1,20 @@
-import { createContext } from 'react';
+import { createContext, useState } from 'react';
 
 // Create the context with a default value
 // context name
-export const RefDataContext = createContext([]);
+export const RefDataContext = createContext({
+  language: 'en',
+  setLanguage: () => {},
+});
 
 // provider's name
-export const RefDataProvider = ({ children }) => {
+export const RefDataProvider = function ({ children }) {
+  const [language, setLanguage] = useState('he');
+
   const refData = {
+    languages: ['en', 'he'],
+    language,
+    setLanguage,
     statuses: ['new', 'in-progress', 'active', 'done'],
     cities: [
       {
@@ -670,8 +678,35 @@ export const RefDataProvider = ({ children }) => {
         population_proper: '29146',
       },
     ],
+    labels: {
+      en: {
+        welcome: 'Welcome',
+        title: 'Operation Solidarity',
+        createRequest: 'Create Request',
+        createProposal: 'Create Proposal',
+        createTask: 'Create Task',
+        requests: 'Requests',
+        proposals: 'Proposals',
+        resetFilters: 'Reset Filters',
+        showResults: 'Show Results',
+        myActivity: 'My Activity',
+        back: 'Back',
+      },
+      he: {
+        welcome: 'ברוך הבא',
+        title: 'מבצע סולידריות',
+        createRequest: 'בקשה חדשה',
+        createProposal: 'הצעה חדשה',
+        createTask: 'משימה חדשה',
+        requests: 'בקשות',
+        proposals: 'הצעות',
+        resetFilters: 'איפוס סינון',
+        showResults: 'הצגת תוצאות',
+        myActivity: 'הבקשות/הצעות שלי',
+        back: 'חזרה',
+      },
+    },
   };
-  // const statuses = ['new', 'in-progress', 'active', 'done'];
 
   return (
     <RefDataContext.Provider value={refData}>

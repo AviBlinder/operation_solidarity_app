@@ -2,7 +2,7 @@
 import Select from 'react-select';
 import { useState, useEffect } from 'react';
 import { labels } from '@/constants/index';
-
+import Switch from 'react-switch';
 const customStyles = {
   control: (provided) => ({
     ...provided,
@@ -25,6 +25,8 @@ const customStyles = {
   }),
 };
 const FilterBar = ({
+  distanceRange,
+  handleDistanceRangeChange,
   language,
   callingPage,
   categories,
@@ -43,6 +45,29 @@ const FilterBar = ({
   handleCityFilterChange,
   cityFilter,
 }) => {
+  const [delayedDistance, setDelayedDistance] = useState(distanceRange);
+  const [toggleDistance, setToggleDistance] = useState(false);
+  const [timeoutId, setTimeoutId] = useState(null);
+  const handleDistanceChange = (e) => {
+    console.log(e.target.value);
+    const newDistance = e.target.value;
+    setDelayedDistance(newDistance);
+    if (timeoutId) clearTimeout(timeoutId); // Clear the existing timeout
+
+    const newTimeoutId = setTimeout(() => {
+      handleDistanceRangeChange(newDistance);
+    }, 3000); // Set a new timeout
+
+    setTimeoutId(newTimeoutId); // Save the new timeout ID
+  };
+
+  const handleToggleDistance = (checked) => {
+    setToggleDistance(checked);
+    if (!checked) {
+      handleDistanceRangeChange(1); // Reset or handle the distance range change when toggling off
+    }
+  };
+
   const languageEnglish = 'english';
   const languageHebrew = 'hebrew';
   const [isClient, setIsClient] = useState(false);
@@ -87,6 +112,24 @@ const FilterBar = ({
           </select>
         </label>
       )}
+      <Switch
+        onChange={handleToggleDistance}
+        checked={toggleDistance}
+        className="mr-2"
+      />
+      <input
+        type="number"
+        disabled={!toggleDistance}
+        value={toggleDistance ? delayedDistance : 0}
+        onChange={handleDistanceChange}
+        min="1"
+        max="500"
+        placeholder="Enter distance range in km"
+        className={`${
+          (mobileFiltersOpen ? 'mt-2  w-[90%] my-2 mx-2' : 'ml-2 w-52',
+          !toggleDistance ? 'hidden' : 'block')
+        }`}
+      />
       <label htmlFor="category-choice" className="mt-2 ">
         {/* Category: */}
         <select
