@@ -1,19 +1,21 @@
 import { useRouter } from 'next/navigation';
 import SignInButton from './SignInButton';
 import UserProfile from './UserProfile';
-import { labels } from '@/constants/index';
+import { useContext } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
 import Link from 'next/link';
-const MobileNav = ({
-  language,
+export default function MobileNav({
   signIn,
   signOut,
   session,
   providers,
   toggleDropdown,
   setToggleDropdown,
-}) => {
+}) {
+  const { language, labels } = useContext(RefDataContext);
   const baseURL = process.env.NEXT_PUBLIC_BASEURL;
   const router = useRouter();
+
   return (
     <div className="block lg:hidden relative">
       {session?.user ? (
@@ -36,27 +38,21 @@ const MobileNav = ({
                 className="dropdown_link"
                 onClick={() => setToggleDropdown(false)}
               >
-                {language === 'he'
-                  ? labels.hebrew.createRequest
-                  : labels.english.createRequest}
+                {labels[language].createRequest}
               </Link>
               <Link
                 href="/proposal/create"
                 className="dropdown_link"
                 onClick={() => setToggleDropdown(false)}
               >
-                {language === 'he'
-                  ? labels.hebrew.createProposal
-                  : labels.english.createProposal}
+                {labels[language].createProposal}
               </Link>
               <Link
                 href="/tasks"
                 className="dropdown_link"
                 onClick={() => setToggleDropdown(false)}
               >
-                {language === 'he'
-                  ? labels.hebrew.myActivity
-                  : labels.english.myActivity}
+                {labels[language].myActivity}
               </Link>
               <button
                 type="button"
@@ -86,6 +82,4 @@ const MobileNav = ({
       )}
     </div>
   );
-};
-
-export default MobileNav;
+}

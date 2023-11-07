@@ -3,7 +3,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { FunnelIcon } from '@heroicons/react/20/solid';
-import { statuses, labels } from '@/constants/index';
+
 import { RefDataContext } from '@/components/RefDataContext';
 
 import { useState, useEffect, Fragment, Suspense, useContext } from 'react';
@@ -13,8 +13,6 @@ import Header from '@/components/Header';
 import TaskList from '@/components/TaskList';
 import FilterBar from '@/components/FilterBar';
 
-import { weekDays } from '@/constants/index';
-import { cities_short_list } from '@/constants/index';
 import RequestsProposalsTab from '@/components/RequestsProposalsTab';
 
 export default function Tasks() {
@@ -22,14 +20,16 @@ export default function Tasks() {
     language,
     labels,
     categories,
+    statuses,
     cities: cities_short_list,
+    weekDays,
   } = useContext(RefDataContext);
   const [currentTab, setCurrentTab] = useState('Requests');
 
   const { data: session } = useSession();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  const weekDaysHebrew = weekDays.hebrew;
+  const weekDaysHebrew = weekDays.he;
   // const weekDaysEnglish = weekDays.english;
   const weekDaysOptions = weekDaysHebrew.map((day) => ({
     value: day,
@@ -226,7 +226,6 @@ export default function Tasks() {
                       onClose={setMobileFiltersOpen}
                       setMobileFiltersOpen={setMobileFiltersOpen}
                       mobileFiltersOpen={mobileFiltersOpen}
-                      citiesHebrew={citiesHebrew}
                       weekDaysOptions={weekDaysOptions}
                       handleResetFilters={handleResetFilters}
                       handleStatusFilterChange={handleStatusFilterChange}
@@ -274,7 +273,6 @@ export default function Tasks() {
                   language={language}
                   callingPage="tasks"
                   mobileFiltersOpen={!mobileFiltersOpen}
-                  citiesHebrew={citiesHebrew}
                   weekDaysOptions={weekDaysOptions}
                   handleResetFilters={handleResetFilters}
                   handleStatusFilterChange={handleStatusFilterChange}

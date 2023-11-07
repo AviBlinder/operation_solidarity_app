@@ -1,7 +1,6 @@
 'use client';
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { cities_short_list } from '@/constants/index';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import DescriptionField from '@/components/forms/DescriptionField';

@@ -8,7 +8,6 @@ import CommentsField from './CommentsField';
 
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { cities_short_list } from '@/constants/index';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 const UpdateRequestForm = ({ params }) => {

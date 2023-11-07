@@ -18,6 +18,7 @@
     "aws-sdk": "^2.1481.0",
     "axios": "^1.5.1",
     "encoding": "^0.1.13",
+    "multiselect-react-dropdown": "^2.0.25",
     "next": "13.5.6",
     "next-auth": "^4.24.3",
     "next-i18next": "^15.0.0",

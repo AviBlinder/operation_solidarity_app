@@ -746,6 +746,10 @@ export const RefDataProvider = function ({ children }) {
         addComments: 'Remarks',
         statusSelect: 'Select a Status',
         selectAll: 'Select All',
+        availabilityChoice: 'Select Days',
+        allStatuses: 'All Statuses',
+        allCategories: 'All Categories',
+        allCities: 'All Cities',
       },
       he: {
         welcome: 'ברוך הבא',
@@ -773,6 +777,10 @@ export const RefDataProvider = function ({ children }) {
         addComments: 'הערות',
         statusSelect: 'בחירת סטטוס',
         selectAll: 'בחר הכל',
+        availabilityChoice: 'בחירת יום',
+        allStatuses: 'כל הסטטוסים',
+        allCategories: 'כל הקטגוריות',
+        allCities: 'כל הערים',
       },
     },
   };

@@ -14,7 +14,7 @@ import { useContext } from 'react';
 import { RefDataContext } from '@/components/RefDataContext';
 
 const TaskDetails = ({ params }) => {
-  const { language, labels, categories } = useContext(RefDataContext);
+  const { language, labels, statuses, categories } = useContext(RefDataContext);
 
   const [taskDetails, setTaskDetails] = useState(null);
   const searchParams = useSearchParams();
@@ -93,7 +93,7 @@ const TaskDetails = ({ params }) => {
                         סטטוס
                       </dt>
                       <dd className="mt-1 text-xl text-gray-900">
-                        {translateStatus(taskDetails.status)}
+                        {translateStatus(statuses, taskDetails.status)}
                       </dd>
                     </div>
                     <div className="mt-4 border-t-2 col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">

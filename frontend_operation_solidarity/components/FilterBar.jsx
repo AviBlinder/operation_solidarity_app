@@ -1,38 +1,16 @@
 'use client';
-import Select from 'react-select';
+import { Multiselect } from 'multiselect-react-dropdown';
+
 import { useState, useEffect, useContext } from 'react';
 import { RefDataContext } from '@/components/RefDataContext';
 
 import Switch from 'react-switch';
-const customStyles = {
-  control: (provided) => ({
-    ...provided,
-    height: '45px',
-    minHeight: '45px',
-  }),
-  valueContainer: (provided) => ({
-    ...provided,
-    height: '40px',
-    padding: '0 6px',
-    fontWeight: 'bold',
-  }),
-  input: (provided) => ({
-    ...provided,
-    margin: '0px',
-  }),
-  indicatorsContainer: (provided) => ({
-    ...provided,
-    height: '40px',
-  }),
-};
 const FilterBar = ({
   distanceRange,
   handleDistanceRangeChange,
   callingPage,
   mobileFiltersOpen,
   setMobileFiltersOpen,
-  citiesHebrew,
-  weekDaysOptions,
   handleResetFilters,
   handleStatusFilterChange,
   statuses,
@@ -44,13 +22,27 @@ const FilterBar = ({
   handleCityFilterChange,
   cityFilter,
 }) => {
-  const {
-    language,
-    labels,
-    categories,
-    cities: cities_short_list,
-  } = useContext(RefDataContext);
+  const { language, labels, categories, cities, weekDays } =
+    useContext(RefDataContext);
+  const weekDaysOptions = weekDays.en.map((day, index) => ({
+    value: day, // always in English
+    label: language === 'he' ? weekDays.he[index] : day, // dynamic based on language
+  }));
 
+  const [selectedDays, setSelectedDays] = useState([]);
+
+  const onSelect = (selectedList) => {
+    setSelectedDays(selectedList.map((item) => item.value));
+    handleAvailabilityFilterChange(selectedList);
+  };
+
+  // This function will be called when an item is removed
+  const onRemove = (selectedList) => {
+    setSelectedDays(selectedList.map((item) => item.value));
+    handleAvailabilityFilterChange(selectedList);
+  };
+
+  //
   const [delayedDistance, setDelayedDistance] = useState(distanceRange);
   const [toggleDistance, setToggleDistance] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
@@ -74,8 +66,8 @@ const FilterBar = ({
     }
   };
 
-  const languageEnglish = 'english';
-  const languageHebrew = 'hebrew';
+  const languageEnglish = 'en';
+  const languageHebrew = 'he';
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
     setIsClient(true);
@@ -107,10 +99,10 @@ const FilterBar = ({
             value={statusFilter}
             onChange={handleStatusFilterChange}
           >
-            <option value="all">כל הסטטוסים</option>
+            <option value="all">{labels[language].allStatuses}</option>
             {statuses[languageEnglish].map((status, index) => (
               <option key={index} value={status}>
-                {statuses[languageHebrew][index]}
+                {statuses[language][index]}
               </option>
             ))}
           </select>
@@ -144,7 +136,7 @@ const FilterBar = ({
           value={categoryFilter}
           onChange={handleCategoryFilterChange}
         >
-          <option value="all">כל הקטגוריות</option>
+          <option value="all">{labels[language].allCategories}</option>
           {categories['en'].map((category, index) => (
             <option key={index} value={category}>
               {categories[language][index]}
@@ -162,40 +154,57 @@ const FilterBar = ({
           value={cityFilter}
           onChange={handleCityFilterChange}
         >
-          <option value="all">כל הערים</option>
-          {citiesHebrew.map((city, index) => (
-            <option key={index} value={city}>
-              {city}
+          <option value="all">{labels[language].allCities}</option>
+          {cities.map((city, index) => (
+            <option key={index} value={city.city}>
+              {language === 'he' ? city.cityHebrew : city.city}
             </option>
           ))}
         </select>
       </label>
       {/* Availability Filter  */}
       <label
-        className={`${mobileFiltersOpen ? 'mt-2 py-1' : '"ml-4 mt-2 py-1'}`}
-        htmlFor="availability-choice"
-      >
-        {/* Availability: */}
-        <Select
-          styles={customStyles}
-          placeholder="בחירת יום"
-          name="availability-choice"
-          aria-label="availability-choice"
-          aria-placeholder="בחירת יום"
-          inputId="availability-choice"
-          value={availabilityFilter.map((value) => ({
-            value,
-            label: value,
-          }))}
-          onChange={handleAvailabilityFilterChange}
-          options={weekDaysOptions}
-          isMulti
-          className={`${
-            mobileFiltersOpen ? 'mt-2  w-[90%] my-10 mx-2' : 'ml-2 w-64 -mt-1'
-          }`}
-          classNamePrefix="react-select"
-        />
-      </label>
+        htmlFor="weekDays-multiple-choice"
+        className="block text-sm font-medium text-gray-700"
+      ></label>
+      <Multiselect
+        options={weekDaysOptions} // Options to display in the dropdown
+        selectedValues={selectedDays.map((day) => ({
+          label: weekDays[language][weekDays.en.indexOf(day)],
+          value: day,
+        }))} // Preselected values
+        onSelect={onSelect} // Function will trigger on select event
+        onRemove={onRemove} // Function will trigger on remove event
+        displayValue="label" // Property name to display in the dropdown
+        placeholder={language === 'en' ? 'Select days' : 'בחר ימים'} // Placeholder based on language
+        closeIcon="cancel" // Icon to show for closing the dropdown
+        style={{
+          chips: {
+            background: '#dea341',
+            color: '#333',
+            fontSize: '14px',
+            borderRadius: '15px',
+            padding: '5px 10px',
+          },
+          searchBox: {
+            border: 'none',
+            borderBottom: '1px solid #ccc',
+            borderRadius: '0px',
+            padding: '10px',
+            fontSize: '14px',
+          },
+          multiselectContainer: {
+            color: '#333',
+            borderRadius: '4px',
+          },
+          optionContainer: {
+            color: '#dea341',
+            // To style the dropdown options
+            // Add your styles here
+          },
+          // Add any additional custom styles if needed
+        }}
+      />
       <button
         onClick={() => setMobileFiltersOpen(false)}
         className="flex align-middle justify-center  md:hidden mx-2 my-6 px-1 py-2 bg-secondary-500 text-white rounded w-[90%]"

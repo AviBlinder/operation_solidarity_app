@@ -4,7 +4,6 @@ import ngeohash from 'ngeohash';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { FunnelIcon } from '@heroicons/react/20/solid';
-import { categories, statuses, labels } from '@/constants/index';
 
 import { useContext, useState, useEffect, Fragment, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
@@ -13,12 +12,21 @@ import Header from '@/components/Header';
 import TaskList from '@/components/TaskList';
 import FilterBar from '@/components/FilterBar';
 
-import { weekDays } from '@/constants/index';
 import { RefDataContext } from '@/components/RefDataContext';
 
 import RequestsProposalsTab from '@/components/RequestsProposalsTab';
 
 export default function Home() {
+  const {
+    language,
+    setLanguage,
+    labels,
+    cities,
+    statuses,
+    weekDays,
+    categories,
+  } = useContext(RefDataContext);
+
   const [currentTab, setCurrentTab] = useState('Requests');
 
   const [distanceRange, setDistanceRange] = useState(0);
@@ -40,16 +48,12 @@ export default function Home() {
   const { data: session } = useSession();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  const weekDaysHebrew = weekDays.hebrew;
+  const weekDaysHebrew = weekDays.he;
   // const weekDaysEnglish = weekDays.english;
   const weekDaysOptions = weekDaysHebrew.map((day) => ({
     value: day,
     label: day,
   }));
-
-  const refData = useContext(RefDataContext);
-  const { language, setLanguage, labels, cities, statuses } =
-    useContext(RefDataContext);
 
   const citiesHebrew = cities.map((city) => city.cityHebrew);
   const [tasks, setTasks] = useState([]);
@@ -275,7 +279,6 @@ export default function Home() {
                       onClose={setMobileFiltersOpen}
                       setMobileFiltersOpen={setMobileFiltersOpen}
                       mobileFiltersOpen={mobileFiltersOpen}
-                      citiesHebrew={citiesHebrew}
                       weekDaysOptions={weekDaysOptions}
                       handleResetFilters={handleResetFilters}
                       categories={categories}
@@ -322,7 +325,6 @@ export default function Home() {
                   language={language}
                   callingPage="home"
                   mobileFiltersOpen={!mobileFiltersOpen}
-                  citiesHebrew={citiesHebrew}
                   weekDaysOptions={weekDaysOptions}
                   handleResetFilters={handleResetFilters}
                   statuses={statuses}

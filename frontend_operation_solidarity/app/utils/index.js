@@ -1,5 +1,3 @@
-import { statuses } from '@/constants/index';
-
 export const formatDate = (dateString) => {
   const options = {
     year: 'numeric',
@@ -14,7 +12,7 @@ export const translateCategory = (categories, value) => {
   const index = categories.en.findIndex((cat) => cat === value);
   return categories.he[index];
 };
-export const translateStatus = (value) => {
-  const index = statuses.english.findIndex((val) => val === value);
-  return statuses.hebrew[index];
+export const translateStatus = (statuses, value) => {
+  const index = statuses.en.findIndex((val) => val === value);
+  return statuses.he[index];
 };
