@@ -148,16 +148,20 @@ export default function Home() {
     // }
 
     if (categoryFilter) {
-      result = result.filter((task) =>
-        task.category.includes(categoryFilter.toLocaleLowerCase())
+      result = result.filter(
+        (task) =>
+          task.category &&
+          task.category.includes(categoryFilter.toLocaleLowerCase())
       );
     }
 
     if (availabilityFilter.length > 0) {
-      result = result.filter((task) =>
-        task.availability.some((availability) =>
-          availabilityFilter.includes(availability)
-        )
+      result = result.filter(
+        (task) =>
+          task.availability &&
+          task.availability.some((availability) =>
+            availabilityFilter.includes(availability)
+          )
       );
     }
 
