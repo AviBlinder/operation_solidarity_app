@@ -1,6 +1,9 @@
-// components/forms/ContactDetails.js
+import { useContext } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
 
 function ContactDetails({ contact, setContact }) {
+  const { language, labels } = useContext(RefDataContext);
+
   return (
     <div className="flex flex-col">
       <div>
@@ -8,7 +11,7 @@ function ContactDetails({ contact, setContact }) {
           htmlFor="phone"
           className="block  text-sm font-medium text-primary-800"
         >
-          Phone Number
+          {labels[language].phoneNumber}
         </label>
       </div>
 

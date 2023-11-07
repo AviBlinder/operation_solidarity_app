@@ -16,31 +16,6 @@ export const statuses = {
   hebrew: ['חדש', 'פעיל', 'לא פעיל', 'בוצע'],
 };
 
-export const categories = {
-  english: [
-    'general',
-    'babysitting',
-    'clothes',
-    'food',
-    'medical',
-    'therapy',
-    'moving',
-    'shelter',
-    'transportation',
-  ],
-  hebrew: [
-    'כללי',
-    'בייבי סיטינג',
-    'ביגוד',
-    'מזון',
-    'עזרה רפואית',
-    'עזרה נפשית',
-    'הובלה',
-    'דיור',
-    'תחבורה',
-  ],
-};
-
 export const labels = {
   english: {
     createRequest: 'Create Request',

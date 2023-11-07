@@ -1,12 +1,14 @@
-import React from 'react';
 import { weekDays } from '@/constants/index';
-
+import { useContext } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
 const AvailabilitySelector = ({
   task,
   setTask,
   availability,
   setAvailability,
 }) => {
+  const { language, labels } = useContext(RefDataContext);
+
   const weekDaysHebrew = weekDays.hebrew;
   const handleWeekDayChange = (day, isChecked) => {
     if (isChecked) {
@@ -29,7 +31,7 @@ const AvailabilitySelector = ({
   return (
     <div className="flex flex-col">
       <label className="block text-sm font-medium text-primary-800">
-        Availability
+        {labels[language].availability}
       </label>
       <div className="mt-2 flex flex-col">
         <div>

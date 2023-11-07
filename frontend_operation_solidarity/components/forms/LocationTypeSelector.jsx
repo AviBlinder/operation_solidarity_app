@@ -1,8 +1,12 @@
+import { useContext } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
+
 const LocationTypeSelector = ({ locationType, setLocationType }) => {
+  const { language, labels } = useContext(RefDataContext);
   return (
     <div className="mb-4">
       <label className="block text-sm font-medium text-primary-800">
-        Location Type
+        {labels[language].locationType}
       </label>
       <div className="mt-2">
         <label className="inline-flex items-center">
@@ -14,7 +18,7 @@ const LocationTypeSelector = ({ locationType, setLocationType }) => {
             checked={locationType === 'cityAddress'}
             onChange={() => setLocationType('cityAddress')}
           />
-          <span className="ml-2">City and Address</span>
+          <span className="ml-2">{labels[language].cityAndAddress}</span>
         </label>
         <label className="inline-flex items-center ml-6">
           <input
@@ -25,7 +29,7 @@ const LocationTypeSelector = ({ locationType, setLocationType }) => {
             checked={locationType === 'fromTo'}
             onChange={() => setLocationType('fromTo')}
           />
-          <span className="ml-2">From / To</span>
+          <span className="ml-2">{labels[language].fromTo}</span>
         </label>
       </div>
     </div>

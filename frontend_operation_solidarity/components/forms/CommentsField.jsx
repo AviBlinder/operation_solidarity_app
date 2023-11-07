@@ -1,13 +1,16 @@
-import React from 'react';
+import { useContext } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
 
 const CommentsField = ({ task, setTask }) => {
+  const { language, labels } = useContext(RefDataContext);
+
   return (
     <div className="my-4">
       <label
         htmlFor="comment"
-        className="block text-sm font-medium leading-6 text-gray-900"
+        className="block text-sm font-medium leading-6 text-primary-800"
       >
-        Add your comment
+        {labels[language].addComments}
       </label>
       <div className="mt-2">
         <textarea

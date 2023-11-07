@@ -1,11 +1,16 @@
+import { useContext } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
+
 const DescriptionField = ({ type, task, setTask }) => {
+  const { language, labels } = useContext(RefDataContext);
   return (
     <div className="mb-4">
       <label
         className="block text-sm font-medium text-primary-800"
         htmlFor="description"
       >
-        <span className="capitalize">{type}</span> Description
+        {/* <span className="capitalize">{type}</span>{' '} */}
+        {labels[language].description}
       </label>
       <input
         type="textarea"

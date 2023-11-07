@@ -1,3 +1,6 @@
+import { useContext } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
+
 const FromToSelector = ({
   cities_short_list,
   task,
@@ -5,6 +8,8 @@ const FromToSelector = ({
   geoLocations,
   setGeolocations,
 }) => {
+  const { language, labels } = useContext(RefDataContext);
+
   const findLatLng = (property) => {
     const result = cities_short_list.filter(
       (city) => city.cityHebrew === property
@@ -39,7 +44,7 @@ const FromToSelector = ({
             className="block text-sm font-medium text-primary-800"
             htmlFor="from"
           >
-            From
+            {labels[language].from}
           </label>
           <select
             id="from"
@@ -67,7 +72,7 @@ const FromToSelector = ({
             className="block text-sm font-medium text-primary-800"
             htmlFor="to"
           >
-            To
+            {labels[language].to}
           </label>
           <select
             id="to"
