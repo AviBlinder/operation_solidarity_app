@@ -1,7 +1,8 @@
 'use client';
 import Select from 'react-select';
-import { useState, useEffect } from 'react';
-import { labels } from '@/constants/index';
+import { useState, useEffect, useContext } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
+
 import Switch from 'react-switch';
 const customStyles = {
   control: (provided) => ({
@@ -27,9 +28,7 @@ const customStyles = {
 const FilterBar = ({
   distanceRange,
   handleDistanceRangeChange,
-  language,
   callingPage,
-  categories,
   mobileFiltersOpen,
   setMobileFiltersOpen,
   citiesHebrew,
@@ -45,6 +44,13 @@ const FilterBar = ({
   handleCityFilterChange,
   cityFilter,
 }) => {
+  const {
+    language,
+    labels,
+    categories,
+    cities: cities_short_list,
+  } = useContext(RefDataContext);
+
   const [delayedDistance, setDelayedDistance] = useState(distanceRange);
   const [toggleDistance, setToggleDistance] = useState(false);
   const [timeoutId, setTimeoutId] = useState(null);
@@ -89,9 +95,7 @@ const FilterBar = ({
         onClick={handleResetFilters}
         className="mx-2 my-6 px-1 py-2 bg-secondary-500 text-white rounded w-[90%]"
       >
-        {language === 'he'
-          ? labels.hebrew.resetFilters
-          : labels.english.resetFilters}
+        {labels[language].resetFilters}
       </button>
       {callingPage === 'tasks' && (
         <label>
@@ -141,9 +145,9 @@ const FilterBar = ({
           onChange={handleCategoryFilterChange}
         >
           <option value="all">כל הקטגוריות</option>
-          {categories[languageEnglish].map((category, index) => (
+          {categories['en'].map((category, index) => (
             <option key={index} value={category}>
-              {categories[languageHebrew][index]}
+              {categories[language][index]}
             </option>
           ))}
         </select>
@@ -196,9 +200,7 @@ const FilterBar = ({
         onClick={() => setMobileFiltersOpen(false)}
         className="flex align-middle justify-center  md:hidden mx-2 my-6 px-1 py-2 bg-secondary-500 text-white rounded w-[90%]"
       >
-        {language === 'he'
-          ? labels.hebrew.showResults
-          : labels.english.showResults}
+        {labels[language].showResults}
       </button>
     </div>
   );

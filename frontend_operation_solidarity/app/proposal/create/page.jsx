@@ -1,11 +1,10 @@
 'use client';
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-
+import { RefDataContext } from '@/components/RefDataContext';
 import Loading from './loading';
 import BackButton from '@/components/BackButton';
-import { cities_short_list, labels } from '@/constants/index';
 
 import DescriptionField from '@/components/forms/DescriptionField';
 import LocationTypeSelector from '@/components/forms/LocationTypeSelector';
@@ -17,8 +16,12 @@ import ContactDetails from '@/components/forms/ContactDetails';
 import CommentsField from '@/components/forms/CommentsField';
 
 const CreateProposal = () => {
+  const {
+    language,
+    labels,
+    cities: cities_short_list,
+  } = useContext(RefDataContext);
   const { data: session } = useSession();
-  const [language, setLanguage] = useState('he');
 
   const [availability, setAvailability] = useState([]);
   const [contact, setContact] = useState({ phone: '' });
@@ -121,11 +124,9 @@ const CreateProposal = () => {
       router.push('/tasks');
     } finally {
       setIsSubmitting(false);
+      router.push('/tasks');
     }
   };
-
-  const [categories, setCategories] = useState([]);
-  const [categoriesHebrew, setCategoriesHebrew] = useState([]);
 
   const [locationType, setLocationType] = useState('cityAddress');
 
@@ -135,17 +136,10 @@ const CreateProposal = () => {
         <div className="div_grid_main">
           <div className="form_span_6_1 ml-10 md:ml-0">
             <div className="flex flex-col md:flex-row mt-6">
-              <BackButton
-                language={language}
-                className="ml-2 mb-2 md:mb-0 max-w-md "
-              >
-                {' '}
-              </BackButton>
+              <BackButton className="ml-2 mb-2 max-w-md "> </BackButton>
               <p className="text-md md:text-lg mt-4 md:mt-0">
                 <span className="blue_gradient text-2xl ml-8 text-center font-bold ">
-                  {language === 'he'
-                    ? labels.hebrew.createProposal
-                    : labels.english.createProposal}
+                  {labels[language].createProposal}
                 </span>
               </p>
             </div>
@@ -199,7 +193,7 @@ const CreateProposal = () => {
                       setAvailability={setAvailability}
                     ></AvailabilitySelector>
                   </div>
-                  <div className="form_span_3">
+                  <div className="form_span_6">
                     <CategorySelector
                       task={task}
                       setTask={setTask}
@@ -215,7 +209,7 @@ const CreateProposal = () => {
                       setTask={setTask}
                     ></CommentsField>
                   </div>
-                  <div className="py-3 mx-2 col-span-6 col-start-1  md:col-span-6 md:col-start-2">
+                  <div className="py-3 ml-5 sm:ml-2 col-span-6 col-start-1  md:col-span-6 md:col-start-2">
                     <button
                       type="submit"
                       disabled={submitting}
@@ -227,7 +221,7 @@ const CreateProposal = () => {
                 </div>
               </form>
             ) : (
-              <div> You need to login first</div>
+              <div> {labels[language].loginFirst}</div>
             )}
           </div>
         </Suspense>

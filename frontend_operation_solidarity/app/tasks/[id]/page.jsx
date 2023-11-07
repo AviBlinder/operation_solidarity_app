@@ -10,12 +10,15 @@ import {
   PhoneIcon,
   ChatBubbleBottomCenterIcon,
 } from '@heroicons/react/20/solid';
+import { useContext } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
 
 const TaskDetails = ({ params }) => {
+  const { language, labels, categories } = useContext(RefDataContext);
+
   const [taskDetails, setTaskDetails] = useState(null);
   const searchParams = useSearchParams();
   const entryDate = searchParams.get('entryDate');
-  const [language, setLanguage] = useState('he');
 
   const router = useRouter();
 
@@ -41,12 +44,7 @@ const TaskDetails = ({ params }) => {
             <div className=" ">
               <div className="flex flex-col md:flex-row mt-6">
                 <div className="w-[50%] flex flex-1">
-                  <BackButton
-                    language={language}
-                    className="ml-2 mb-2 max-w-md "
-                  >
-                    {' '}
-                  </BackButton>
+                  <BackButton className="ml-2 mb-2 max-w-md "> </BackButton>
                 </div>
               </div>
               <div className="mt-6 bg-white shadow-lg rounded-lg grid grid-cols-6 sm:grid-cols-12">
@@ -87,7 +85,7 @@ const TaskDetails = ({ params }) => {
                         קטגוריה
                       </dt>
                       <dd className="mt-1 text-xl text-gray-900">
-                        {translateCategory(taskDetails.category)}
+                        {translateCategory(categories, taskDetails.category)}
                       </dd>
                     </div>
                     <div className="col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">

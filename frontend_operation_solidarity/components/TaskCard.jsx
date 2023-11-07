@@ -6,9 +6,13 @@ import {
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { FaPencilAlt, FaEye } from 'react-icons/fa';
+import { useContext } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
+
 import { formatDate, translateCategory } from '@/app/utils/index';
 const TaskCard = ({ task }) => {
   const { data: session } = useSession();
+  const { language, labels, categories } = useContext(RefDataContext);
 
   return (
     <div className="bg-primary-100 mx-2 p-2 rounded-xl">
@@ -24,7 +28,7 @@ const TaskCard = ({ task }) => {
         </div>
         <div className="flex flex-wrap items-center rounded-full  px-1.5 py-0.5 text-xl font-medium ">
           <p className="mt-1 text-xl text-gray-500 text-right">
-            קטגוריה: {translateCategory(task.category)}
+            קטגוריה: {translateCategory(categories, task.category)}
           </p>
         </div>
         <div className="flex flex-wrap items-center rounded-full  px-1.5 py-0.5 text-xl font-medium ">
