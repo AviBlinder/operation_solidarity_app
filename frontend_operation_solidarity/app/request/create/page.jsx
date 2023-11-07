@@ -10,7 +10,7 @@ import DescriptionField from '@/components/forms/DescriptionField';
 import LocationTypeSelector from '@/components/forms/LocationTypeSelector';
 import CitySelector from '@/components/forms/CitySelector';
 import FromToSelector from '@/components/forms/FromToSelector';
-import AvailabilitySelectorNew from '@/components/forms/AvailabilitySelectorNew';
+import AvailabilitySelector from '@/components/forms/AvailabilitySelector';
 
 import CategorySelector from '@/components/forms/CategorySelector';
 import ContactDetails from '@/components/forms/ContactDetails';
@@ -187,10 +187,10 @@ const CreateRequest = () => {
                   )}
                   <div className="form_fields_division"> </div>
                   <div className=" form_span_6">
-                    <AvailabilitySelectorNew
+                    <AvailabilitySelector
                       availability={availability}
                       setAvailability={setAvailability}
-                    ></AvailabilitySelectorNew>
+                    ></AvailabilitySelector>
                   </div>
                   <div className="form_span_6">
                     <CategorySelector

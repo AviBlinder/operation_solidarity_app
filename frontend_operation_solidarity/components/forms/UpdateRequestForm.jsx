@@ -5,13 +5,12 @@ import FromToSelector from './FromToSelector';
 import AvailabilitySelector from './AvailabilitySelector';
 import CategorySelector from './CategorySelector';
 import CommentsField from './CommentsField';
-import StatusSelector from './StatusSelector';
+
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { cities_short_list } from '@/constants/index';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { weekDays } from '@/constants/index';
 const UpdateRequestForm = ({ params }) => {
   const type = 'request';
   const router = useRouter();
@@ -264,10 +263,10 @@ const UpdateRequestForm = ({ params }) => {
           setTo={setTo}
         />
       )}
-      <AvailabilitySelectorNew
+      <AvailabilitySelector
         availability={availability}
         setAvailability={setAvailability}
-      ></AvailabilitySelectorNew>
+      ></AvailabilitySelector>
       <CategorySelector
         categories={categories}
         category={category}
