@@ -8,7 +8,7 @@ import DescriptionField from '@/components/forms/DescriptionField';
 import LocationTypeSelector from '@/components/forms/LocationTypeSelector';
 import CitySelector from '@/components/forms/CitySelector';
 import FromToSelector from '@/components/forms/FromToSelector';
-import AvailabilitySelector from '@/components/forms/AvailabilitySelector';
+import AvailabilitySelectorNew from '@/components/forms/AvailabilitySelectorNew';
 import CategorySelector from '@/components/forms/CategorySelector';
 import StatusSelector from '@/components/forms/StatusSelector';
 const updateRequest = ({ params }) => {
@@ -224,12 +224,10 @@ const updateRequest = ({ params }) => {
               )}
               <div className="form_fields_division"> </div>
               <div className=" form_span_6">
-                <AvailabilitySelector
-                  task={task}
-                  setTask={setTask}
+                <AvailabilitySelectorNew
                   availability={availability}
                   setAvailability={setAvailability}
-                ></AvailabilitySelector>
+                ></AvailabilitySelectorNew>
               </div>
               <div className="form_span_3">
                 <CategorySelector

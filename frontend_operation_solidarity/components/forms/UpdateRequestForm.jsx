@@ -264,12 +264,10 @@ const UpdateRequestForm = ({ params }) => {
           setTo={setTo}
         />
       )}
-      <AvailabilitySelector
-        task={task}
-        setTask={setTask}
+      <AvailabilitySelectorNew
         availability={availability}
         setAvailability={setAvailability}
-      />
+      ></AvailabilitySelectorNew>
       <CategorySelector
         categories={categories}
         category={category}

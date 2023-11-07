@@ -10,6 +10,7 @@ import DescriptionField from '@/components/forms/DescriptionField';
 import LocationTypeSelector from '@/components/forms/LocationTypeSelector';
 import CitySelector from '@/components/forms/CitySelector';
 import FromToSelector from '@/components/forms/FromToSelector';
+import AvailabilitySelectorNew from '@/components/forms/AvailabilitySelectorNew';
 import AvailabilitySelector from '@/components/forms/AvailabilitySelector';
 import CategorySelector from '@/components/forms/CategorySelector';
 import ContactDetails from '@/components/forms/ContactDetails';
@@ -185,13 +186,12 @@ const CreateProposal = () => {
                     </div>
                   )}
                   <div className="form_fields_division"> </div>
+
                   <div className=" form_span_6">
-                    <AvailabilitySelector
-                      task={task}
-                      setTask={setTask}
+                    <AvailabilitySelectorNew
                       availability={availability}
                       setAvailability={setAvailability}
-                    ></AvailabilitySelector>
+                    ></AvailabilitySelectorNew>
                   </div>
                   <div className="form_span_6">
                     <CategorySelector

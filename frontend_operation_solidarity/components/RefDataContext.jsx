@@ -19,6 +19,20 @@ export const RefDataProvider = function ({ children }) {
       en: ['new', 'active', 'inactive', 'done'],
       he: ['חדש', 'פעיל', 'לא פעיל', 'בוצע'],
     },
+
+    weekDays: {
+      en: [
+        'sunday',
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
+      ],
+      he: ['ראשון', 'שני', 'שלישי', 'רביעי', 'חמישי', 'שישי', 'שבת'],
+    },
+
     cities: [
       {
         city: 'Tel Aviv-Yafo',
@@ -731,6 +745,7 @@ export const RefDataProvider = function ({ children }) {
         phoneNumber: 'Phone Number',
         addComments: 'Remarks',
         statusSelect: 'Select a Status',
+        selectAll: 'Select All',
       },
       he: {
         welcome: 'ברוך הבא',
@@ -757,6 +772,7 @@ export const RefDataProvider = function ({ children }) {
         phoneNumber: 'מספר טלפון',
         addComments: 'הערות',
         statusSelect: 'בחירת סטטוס',
+        selectAll: 'בחר הכל',
       },
     },
   };
