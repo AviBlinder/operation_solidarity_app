@@ -121,31 +121,31 @@ export default function Home() {
     let result = [...tasks];
     // Existing filter and sort logic
 
-    if (location.latitude && location.longitude && distanceRange > 0) {
-      // Calculate the geohashes for the given distance range around the user's location
-      const userGeohash = ngeohash.encode(
-        location.latitude,
-        location.longitude
-      );
-      console.log('userGeohash :', userGeohash);
-      const precision = calculateGeohashPrecisionForDistance(distanceRange);
-      const bounds = ngeohash.neighbors(userGeohash.substring(0, precision));
+    // if (location.latitude && location.longitude && distanceRange > 0) {
+    //   // Calculate the geohashes for the given distance range around the user's location
+    //   const userGeohash = ngeohash.encode(
+    //     location.latitude,
+    //     location.longitude
+    //   );
+    //   console.log('userGeohash :', userGeohash);
+    //   const precision = calculateGeohashPrecisionForDistance(distanceRange);
+    //   const bounds = ngeohash.neighbors(userGeohash.substring(0, precision));
 
-      // Include the user's current geohash as well
-      bounds.push(userGeohash.substring(0, precision));
+    //   // Include the user's current geohash as well
+    //   bounds.push(userGeohash.substring(0, precision));
 
-      // Filter tasks by geohash
-      result = result.filter((task) => {
-        // task?.geohash &&
-        const taskGeohash = ngeohash.encode(
-          task.city?.lat ? task.city.lat : task.from.lat,
-          task.city?.lng ? task.city.lng : task.from.lng
-        );
-        console.log('taskGeohash :', taskGeohash);
-        // bounds.includes(task?.geohash.substring(0, precision));
-        bounds.includes(taskGeohash.substring(0, precision));
-      });
-    }
+    //   // Filter tasks by geohash
+    //   result = result.filter((task) => {
+    //     // task?.geohash &&
+    //     const taskGeohash = ngeohash.encode(
+    //       task.city?.lat ? task.city.lat : task.from.lat,
+    //       task.city?.lng ? task.city.lng : task.from.lng
+    //     );
+    //     console.log('taskGeohash :', taskGeohash);
+    //     // bounds.includes(task?.geohash.substring(0, precision));
+    //     bounds.includes(taskGeohash.substring(0, precision));
+    //   });
+    // }
 
     if (categoryFilter) {
       result = result.filter((task) =>

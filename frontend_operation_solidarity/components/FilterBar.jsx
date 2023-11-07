@@ -112,7 +112,7 @@ const FilterBar = ({
           </select>
         </label>
       )}
-      <Switch
+      {/* <Switch
         onChange={handleToggleDistance}
         checked={toggleDistance}
         className="mr-2"
@@ -129,7 +129,7 @@ const FilterBar = ({
           (mobileFiltersOpen ? 'mt-2  w-[90%] my-2 mx-2' : 'ml-2 w-52',
           !toggleDistance ? 'hidden' : 'block')
         }`}
-      />
+      /> */}
       <label htmlFor="category-choice" className="mt-2 ">
         {/* Category: */}
         <select
