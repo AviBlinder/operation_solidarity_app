@@ -15,7 +15,10 @@ export const RefDataProvider = function ({ children }) {
     languages: ['en', 'he'],
     language,
     setLanguage,
-    statuses: ['new', 'in-progress', 'active', 'done'],
+    statuses: {
+      en: ['new', 'active', 'inactive', 'done'],
+      he: ['חדש', 'פעיל', 'לא פעיל', 'בוצע'],
+    },
     cities: [
       {
         city: 'Tel Aviv-Yafo',
@@ -727,6 +730,7 @@ export const RefDataProvider = function ({ children }) {
         category: 'Category',
         phoneNumber: 'Phone Number',
         addComments: 'Remarks',
+        statusSelect: 'Select a Status',
       },
       he: {
         welcome: 'ברוך הבא',
@@ -752,6 +756,7 @@ export const RefDataProvider = function ({ children }) {
         category: 'קטגוריה',
         phoneNumber: 'מספר טלפון',
         addComments: 'הערות',
+        statusSelect: 'בחירת סטטוס',
       },
     },
   };
