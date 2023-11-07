@@ -26,18 +26,22 @@ const Nav = () => {
   return (
     <nav className="flex flex-between w-full mb-2 md:mb-16 pt-3">
       <Logo />
-      <h1> {labels[language].welcome} </h1>
       <label htmlFor="language-select"></label>
       <select
         name="languages"
         id="language-select"
         onChange={(event) => setLanguage(event.target.value)}
         defaultValue="he" // set default language as English
+        className="rounded-lg text-primary-600/90 "
       >
         {/* Option for English */}
-        <option value="en">English</option>
+        <option className="text-sm md:texl-lg" value="en">
+          English
+        </option>
         {/* Option for Hebrew */}
-        <option value="he">עברית</option>
+        <option className="text-sm md:texl-lg" value="he">
+          עברית
+        </option>
       </select>
 
       <Link
