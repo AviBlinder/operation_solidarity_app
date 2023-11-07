@@ -36,7 +36,6 @@ export default function Tasks() {
     label: day,
   }));
 
-  const citiesHebrew = cities_short_list.map((city) => city.cityHebrew);
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
 

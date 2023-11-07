@@ -1,19 +1,11 @@
 import { useContext } from 'react';
 import { RefDataContext } from '@/components/RefDataContext';
 
-const FromToSelector = ({
-  cities_short_list,
-  task,
-  setTask,
-  geoLocations,
-  setGeolocations,
-}) => {
-  const { language, labels } = useContext(RefDataContext);
+const FromToSelector = ({ task, setTask, geoLocations, setGeolocations }) => {
+  const { language, labels, cities } = useContext(RefDataContext);
 
   const findLatLng = (property) => {
-    const result = cities_short_list.filter(
-      (city) => city.cityHebrew === property
-    );
+    const result = cities.filter((city) => city.city === property);
     const lat = result[0].lat;
     const lng = result[0].lng;
     return [lat, lng];
@@ -59,8 +51,8 @@ const FromToSelector = ({
             <option value="" disabled>
               Choose a city
             </option>
-            {cities_short_list.map((city, index) => (
-              <option key={index} value={city.cityHebrew}>
+            {cities.map((city, index) => (
+              <option key={index} value={city.city}>
                 {city.cityHebrew}
               </option>
             ))}
@@ -87,8 +79,8 @@ const FromToSelector = ({
             <option value="" disabled>
               Choose a city
             </option>
-            {cities_short_list.map((city, index) => (
-              <option key={index} value={city.cityHebrew}>
+            {cities.map((city, index) => (
+              <option key={index} value={city.city}>
                 {city.cityHebrew}
               </option>
             ))}

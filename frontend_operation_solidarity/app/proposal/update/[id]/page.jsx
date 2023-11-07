@@ -219,13 +219,11 @@ const updateProposal = ({ params }) => {
                     setTask={setTask}
                     geoLocations={geoLocations}
                     setGeolocations={setGeolocations}
-                    cities_short_list={cities_short_list}
                   ></CitySelector>
                 </div>
               ) : (
                 <div className=" col-span-4 col-start-2 sm:col-span-2 sm:col-start-2">
                   <FromToSelector
-                    cities_short_list={cities_short_list}
                     task={task}
                     setTask={setTask}
                     geoLocations={geoLocations}
