@@ -9,6 +9,7 @@ import {
   translateCategory,
   translateStatus,
   translateAvailability,
+  translateCity,
 } from '@/app/utils';
 
 import {
@@ -46,46 +47,57 @@ const TaskDetails = ({ params }) => {
 
   return (
     <Suspense fallback={<Loading />}>
-      <div className="flex justify-center my-10 p-4 ">
+      <div className="flex justify-center my-2 p-4 ">
         <div className="max-w-3xl   overflow-hidden">
-          <div className="flex flex-col md:flex-row mt-6">
+          <div className="flex flex-col md:flex-row">
             <div className="w-[50%] flex flex-1">
               <BackButton className="ml-2 mb-2 max-w-md "> </BackButton>
             </div>
           </div>
-          <div className="mt-6 bg-white shadow-lg rounded-lg grid grid-cols-6 sm:grid-cols-12">
+          <div
+            dir={direction}
+            className={`transition-shadow duration-300 mt-6 bg-white shadow-lg rounded-lg grid grid-cols-6 sm:grid-cols-12
+  ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
+          >
             <div
-              className="col-span-4 col-start-2 sm:col-span-12 sm:col-start-1  text-right
+              className="col-span-4 col-start-2 sm:col-span-12 sm:col-start-1 
+              mt-2 md:mt-3 rounded-lg 
               px-4 py-5 sm:px-6 bg-gradient-to-r from-primary-500 to-primary-500"
             >
               <h3 className="text-lg leading-6 font-semibold text-white">
                 {taskDetails.taskType === 'request'
-                  ? 'פרטי הבקשה'
-                  : 'פרטי ההצעה'}
+                  ? labels[language].requestDetails
+                  : labels[language].proposalDetails}
               </h3>
-              <p className="mt-1 text-xl text-purple-200">פרטים מלאים</p>
+              <p className="mt-1 text-xl text-purple-200">
+                {labels[language].fullDetails}
+              </p>
             </div>
             <div
               className="col-span-4 col-start-2 sm:col-span-12 sm:col-start-1 
-                text-right px-4 py-5 sm:p-6"
+                 px-4 py-5 sm:p-2"
             >
               <div className="px-2 md:px-20">
-                <div className="col-span-4 col-start-2 sm:col-span-6 sm:col-start-1 text-right">
-                  <dt className="text-xl font-medium text-gray-500">תיאור</dt>
+                <div className="col-span-4 col-start-2 sm:col-span-6 sm:col-start-1 ">
+                  <dt className="text-xl font-medium text-gray-500">
+                    {labels[language].description}
+                  </dt>
                   <dd className="mt-1 text-xl text-gray-900">
                     {taskDetails.description}
                   </dd>
                 </div>
                 <div className="col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
                   <dt className="text-xl font-medium text-gray-500">
-                    תאריך פרסום
+                    {labels[language].publishDate}
                   </dt>
                   <dd className="mt-1 text-xl text-gray-900">
                     {formatDate(taskDetails.entryDate)}
                   </dd>
                 </div>
                 <div className="col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
-                  <dt className="text-xl font-medium text-gray-500">קטגוריה</dt>
+                  <dt className="text-xl font-medium text-gray-500">
+                    {labels[language].category}
+                  </dt>
                   <dd className="mt-1 text-xl text-gray-900">
                     {translateCategory(
                       categories,
@@ -96,7 +108,7 @@ const TaskDetails = ({ params }) => {
                 </div>
                 <div className="col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
                   <dt className="text-xl font-medium text-gray-500">
-                    {labels[language].status}
+                    {labels[language].statusLabel}
                   </dt>
                   <dd className="mt-1 text-xl text-gray-900">
                     {translateStatus(statuses, taskDetails.status, language)}
@@ -104,7 +116,8 @@ const TaskDetails = ({ params }) => {
                 </div>
                 <div className="mt-4 border-t-2 col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
                   <dt className="text-xl font-medium text-gray-500">
-                    ימים בשבוע: {taskDetails.availability.length}
+                    {labels[language].requiredDays}:{' '}
+                    {taskDetails.availability.length}
                   </dt>
                   {taskDetails.availability.map((day, index) => (
                     <dd className="mt-1 text-xl text-gray-900" key={index}>
@@ -119,25 +132,29 @@ const TaskDetails = ({ params }) => {
                       מיקום:
                     </dt>
                     <dd className="mt-1 text-xl text-gray-900">
-                      {taskDetails.city.city}
+                      {translateCity(taskDetails.city.city, language)}
                     </dd>
                   </div>
                 ) : (
                   <div className="mt-4 border-t-2 col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
                     <dt className="text-xl font-medium text-gray-500">
-                      :מאיפה לאיפה
+                      {labels[language].startingPoint}
                     </dt>
                     <dd className="mt-1 text-xl text-gray-900">
-                      מ{''}
-                      {taskDetails.from.cityFrom} ל{''}
-                      {taskDetails.to.cityTo}
+                      {translateCity(taskDetails.from.cityFrom, language)}
+                    </dd>
+                    <dt className="text-xl font-medium text-gray-500">
+                      {labels[language].targetPoint}
+                    </dt>
+                    <dd className="mt-1 text-xl text-gray-900">
+                      {translateCity(taskDetails.to.cityTo, language)}
                     </dd>
                   </div>
                 )}
 
                 <div className="mt-4 border-t-2 col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
                   <dt className="text-xl font-medium text-gray-500 ">
-                    מייל ליצרית קשר
+                    {labels[language].emailDetails}
                   </dt>
                   <dd className="mt-1 text-xl text-gray-900 truncate ">
                     <a
@@ -156,7 +173,7 @@ const TaskDetails = ({ params }) => {
                 </div>
                 <div className="mt-4 col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
                   <dt className="mt-4 text-xl font-medium text-gray-500 ">
-                    טלפון ליצרית קשר
+                    {labels[language].phoneDetails}
                   </dt>
                   <dd className="mt-1 text-xl text-gray-900 truncate">
                     {taskDetails.contact.phone}
@@ -189,7 +206,9 @@ const TaskDetails = ({ params }) => {
                   </dd>
                 </div>
                 <div className="mt-4 border-t-2 col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
-                  <dt className="text-xl font-medium text-gray-500">הערות</dt>
+                  <dt className="text-xl font-medium text-gray-500">
+                    {labels[language].commentsLabel}
+                  </dt>
                   <dd className="mt-1 text-xl text-gray-900">
                     {taskDetails.comments}
                   </dd>
