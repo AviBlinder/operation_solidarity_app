@@ -1,8 +1,34 @@
 import { useContext } from 'react';
 import { RefDataContext } from '@/components/RefDataContext';
 
-const LocationTypeSelector = ({ locationType, setLocationType }) => {
+const LocationTypeSelector = ({
+  locationType,
+  setLocationType,
+  task,
+  setTask,
+  setGeolocations,
+}) => {
   const { language, labels } = useContext(RefDataContext);
+  const setCityFromTo = async (event) => {
+    if (event.target.value === 'cityAddress') {
+      setTask({ ...task, from: '', to: '' });
+      setGeolocations((prevGeoLocations) => ({
+        ...prevGeoLocations,
+        fromLat: '',
+        fromLng: '',
+        toLat: '',
+        toLng: '',
+      }));
+    } else {
+      setTask({ ...task, city: '' });
+      setGeolocations((prevGeoLocations) => ({
+        ...prevGeoLocations,
+        cityLat: '',
+        cityLng: '',
+      }));
+    }
+  };
+
   return (
     <div className="mb-4">
       <label className="block text-sm font-medium text-primary-800">
@@ -16,7 +42,10 @@ const LocationTypeSelector = ({ locationType, setLocationType }) => {
             name="locationType"
             value="cityAddress"
             checked={locationType === 'cityAddress'}
-            onChange={() => setLocationType('cityAddress')}
+            onChange={(event) => {
+              setLocationType('cityAddress');
+              setCityFromTo(event);
+            }}
           />
           <span className="ml-2">{labels[language].cityAndAddress}</span>
         </label>
@@ -27,7 +56,10 @@ const LocationTypeSelector = ({ locationType, setLocationType }) => {
             name="locationType"
             value="fromTo"
             checked={locationType === 'fromTo'}
-            onChange={() => setLocationType('fromTo')}
+            onChange={(event) => {
+              setLocationType('fromTo');
+              setCityFromTo(event);
+            }}
           />
           <span className="ml-2">{labels[language].fromTo}</span>
         </label>

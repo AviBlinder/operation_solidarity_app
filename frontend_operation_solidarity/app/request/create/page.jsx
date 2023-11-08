@@ -50,32 +50,9 @@ const CreateRequest = () => {
   const [submitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  const setCityFromTo = async () => {
-    console.log('locationType :', locationType);
-    if (locationType === 'cityAddress') {
-      setTask({ ...task, from: '', to: '' });
-      setGeolocations((prevGeoLocations) => ({
-        ...prevGeoLocations,
-        fromLat: '',
-        fromLng: '',
-        toLat: '',
-        toLng: '',
-      }));
-      console.log('task 1 :', task);
-    } else {
-      setTask({ ...task, city: '' });
-      setGeolocations((prevGeoLocations) => ({
-        ...prevGeoLocations,
-        cityLat: '',
-        cityLng: '',
-      }));
-      console.log('task 2:', task);
-    }
-  };
   const createRequest = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await setCityFromTo();
     try {
       const response = await fetch('/api/tasks/new', {
         method: 'POST',
@@ -189,6 +166,9 @@ const CreateRequest = () => {
                     <LocationTypeSelector
                       locationType={locationType}
                       setLocationType={setLocationType}
+                      task={task}
+                      setTask={setTask}
+                      setGeolocations={setGeolocations}
                     ></LocationTypeSelector>
                   </div>
                   {locationType === 'cityAddress' ? (
