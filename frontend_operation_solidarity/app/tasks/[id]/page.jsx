@@ -91,6 +91,23 @@ const TaskDetails = ({ params }) => {
                           language
                         )}
                       </dd>
+                      {/*           {task.availability.length > 0 && (
+            <div className="flex flex-wrap flex-col rounded-full  px-1.5 py-0.5 text-xl font-medium ">
+              <p className="font-bold mt-1 whitespace-normal text-xl text-gray-500 ">
+                {labels[language].requiredDays}
+              </p>
+
+              <p className="mt-1 text-xl text-gray-500">
+                {task.availability.map((day, index) => (
+                  <span key={index} className="text-left">
+                    {index > 0 ? ' / ' : ' '}
+                    {translateAvailability(weekDays, day, language)}
+                  </span>
+                ))}
+              </p>
+            </div>
+          )}
+ */}
                     </div>
                     <div className="col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
                       <dt className="text-xl font-medium text-gray-500">
