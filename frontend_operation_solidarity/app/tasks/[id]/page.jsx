@@ -57,7 +57,7 @@ const TaskDetails = ({ params }) => {
           <div
             dir={direction}
             className={`transition-shadow duration-300 mt-6 bg-white shadow-lg rounded-lg grid grid-cols-6 sm:grid-cols-12
-  ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
+            ${direction === 'rtl' ? 'text-right' : 'text-left'}`}
           >
             <div
               className="col-span-4 col-start-2 sm:col-span-12 sm:col-start-1 
