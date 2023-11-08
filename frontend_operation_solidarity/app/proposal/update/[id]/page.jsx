@@ -213,6 +213,9 @@ const updateProposal = ({ params }) => {
                 <LocationTypeSelector
                   locationType={locationType}
                   setLocationType={setLocationType}
+                  task={task}
+                  setTask={setTask}
+                  setGeolocations={setGeolocations}
                 ></LocationTypeSelector>
               </div>
               {locationType === 'cityAddress' ? (
