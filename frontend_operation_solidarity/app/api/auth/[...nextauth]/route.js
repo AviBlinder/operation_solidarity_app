@@ -3,9 +3,11 @@ import NextAuth from 'next-auth';
 // import GoogleProvider from 'next-auth/providers/google';
 import CognitoProvider from 'next-auth/providers/cognito';
 
-async function refreshAccessToken(token) {
+export async function refreshAccessToken(token) {
+  console.log('inside refreshAccessToken - token:', token);
+
   try {
-    const url = `https://${process.env.COGNITO_DOMAIN}/oauth2/token`;
+    const url = `${process.env.COGNITO_DOMAIN}/oauth2/token`;
     const response = await fetch(url, {
       method: 'POST',
       headers: {
@@ -23,6 +25,7 @@ async function refreshAccessToken(token) {
     });
 
     const refreshedTokens = await response.json();
+    console.log('response :', response);
 
     if (!response.ok) {
       throw refreshedTokens;
@@ -71,7 +74,6 @@ const handler = NextAuth({
       session.user.accessToken = token.accessToken;
       session.user.refreshToken = token.refreshToken;
       session.user.accessTokenExpires = token.accessTokenExpires;
-
       try {
         const res = await fetch(`${baseURL}/${env}/users?email=${email}`);
         if (!res.ok) {

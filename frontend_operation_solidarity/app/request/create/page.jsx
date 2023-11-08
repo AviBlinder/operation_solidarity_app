@@ -53,6 +53,7 @@ const CreateRequest = () => {
   const createRequest = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    console.log('session :', session);
     try {
       const response = await fetch('/api/tasks/new', {
         method: 'POST',
@@ -96,6 +97,7 @@ const CreateRequest = () => {
           entryDate: new Date(),
         }),
       });
+      console.log('response after POST :', response);
       if (response.ok) {
         revalidateTag('TasksCollection');
         setAvailability([]);
@@ -121,6 +123,8 @@ const CreateRequest = () => {
         });
 
         router.push('/tasks');
+      } else {
+        console.log('error in Insert', response);
       }
     } catch (error) {
       console.log(error);

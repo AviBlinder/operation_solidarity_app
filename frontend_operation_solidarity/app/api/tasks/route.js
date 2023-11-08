@@ -1,7 +1,10 @@
+import { revalidateTag } from 'next/cache';
+
 export const GET = async (request) => {
   const revalidateTime = 300;
   const getStringParams = (url, searchParam) => {
     const urlObj = new URL(url);
+    revalidateTag('TasksCollection');
     const params = new URLSearchParams(urlObj.search);
     const searchParamValue = params.get(searchParam);
     return searchParamValue;
@@ -19,7 +22,7 @@ export const GET = async (request) => {
       const res = await fetch(
         `${baseURL}/${env}/tasks?emailTaskType=${emailTypeRequest}&sortType=${sortType}`,
         {
-          next: { revalidate: revalidateTime, tags: ['TasksCollection'] },
+          next: { revalidate: revalidateTime },
         }
       );
       const tasks = await res.json();

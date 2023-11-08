@@ -1,11 +1,8 @@
 import { headers } from 'next/headers';
-
+import { refreshAccessToken } from '@/app/api/auth/[...nextauth]/route';
 export const POST = async (request) => {
-  console.log('POST request: ', request);
   const headersList = headers();
   const accessToken = headersList.get('accessToken');
-
-  console.log('accessToken :', accessToken);
 
   const baseURL = process.env.baseURL;
   const env = process.env.APIGW_ENV;
@@ -53,14 +50,18 @@ export const POST = async (request) => {
       },
     });
     const tasks = await res.json();
-    console.log('tasks POST result:', tasks);
-    if (tasks.message === 'Unauthorized') {
-      return new Response('Token Unothorized, please sign out and in again', {
-        status: 500,
-      });
-    }
+    console.log('tasks.response =', res.status);
+    console.log(typeof res.status);
+
     return new Response(JSON.stringify(tasks), { status: 201 });
   } catch (error) {
+    if (res.status === 401) {
+      console.log('refreshing token');
+      refreshAccessToken(session);
+      return new Response('Token Unothorized, please sign out and in again', {
+        status: 401,
+      });
+    }
     return new Response(`Failed to create a new task : ${error}`, {
       status: 500,
     });
