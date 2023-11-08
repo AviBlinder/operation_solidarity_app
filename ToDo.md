@@ -1,7 +1,4 @@
 ########################################################################################
-// Start working on non-main branches (per feature)
-// fix caching re
-// Finish fixes on range filter ==> ewnew on new branch
 
 ## Things to review and take overs from project
 

@@ -16,9 +16,10 @@ exports.postTaskHandler = async (event) => {
     data.statustaskType = data.status + '-' + data.taskType;
 
     if (data.city && data.city.lat && data.city.lng) {
-      data.geohash = ngeohash.encode(data.city.lat, data.city.lng);
+      data.city.geohash = ngeohash.encode(data.city.lat, data.city.lng);
     } else {
-      data.geohash = ngeohash.encode(data.from.lat, data.from.lng);
+      data.from.geohash = ngeohash.encode(data.from.lat, data.from.lng);
+      data.to.geohash = ngeohash.encode(data.to.lat, data.to.lng);
     }
 
     const params = {
