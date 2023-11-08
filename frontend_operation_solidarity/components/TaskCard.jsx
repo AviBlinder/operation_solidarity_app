@@ -58,11 +58,13 @@ const TaskCard = ({ task }) => {
 
           <div className="text left flex flex-col w-full items-center justify-between space-y-2 p-2">
             <Link
-              className="text-white mx-6 w-full mt-1 mb-4 bg-secondary-400 rounded-lg"
+              className="text-white mx-6 w-full mt-1 bg-secondary-400 rounded-lg"
               href={`/tasks/${task.taskId}?entryDate=${task.entryDate}`}
             >
-              <div className="flex flex-row flex-wrap justify-center  align-middle   p-2">
-                <span className="mx-2 text-lg">פרטים נוספים</span>
+              <div className="flex flex-row flex-wrap justify-center align-middle p-1">
+                <span className="mx-2 text-sm">
+                  {labels[language].additionalDetails}
+                </span>
                 <FaEye size={20} className="text-gray-600/80 ml-3 mt-1"></FaEye>
               </div>
             </Link>
@@ -70,7 +72,7 @@ const TaskCard = ({ task }) => {
         </div>
       </div>
       {/* <div className="divide-y divide-blue-200"></div> */}
-      <div className="">
+      <div className="border-t-2 bg-gray-200/90">
         <div className="flex flex-col md:flex-row ">
           <div className="flex flex-1">
             <a
@@ -119,13 +121,13 @@ const TaskCard = ({ task }) => {
         )}
 
         {session?.user.email === task.email && (
-          <div className="flex flex-col w-full items-center justify-between space-y-2 p-2">
+          <div className="flex flex-col w-full items-center justify-between space-y-2 p-1">
             <Link
               className="text-white mx-6 w-full mt-1 mb-4 bg-secondary-400 rounded-lg"
               href={`/${task.taskType}/update/${task.taskId}?entryDate=${task.entryDate}`}
             >
-              <div className="flex flex-row flex-wrap justify-center  align-middle   p-2">
-                <span className="mx-2 ">עדכון פרטים</span>
+              <div className="flex flex-row flex-wrap justify-center align-middle p-1">
+                <span className="mx-2">{labels[language].updateDetails}</span>
                 <FaPencilAlt
                   size={20}
                   className="text-gray-600/80 ml-3 mt-1"

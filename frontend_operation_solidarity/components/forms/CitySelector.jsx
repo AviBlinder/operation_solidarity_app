@@ -40,11 +40,11 @@ const CitySelector = ({ task, setTask, geoLocations, setGeolocations }) => {
           required
         >
           <option value="" disabled>
-            Choose a city
+            {labels[language].chooseCity}
           </option>
           {cities.map((city, index) => (
             <option key={index} value={city.city}>
-              {city.cityHebrew}
+              {language === 'he' ? city.cityHebrew : city.city}
             </option>
           ))}
         </select>
