@@ -3,6 +3,8 @@ import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { revalidateTag } from 'next/cache';
+
 import DescriptionField from '@/components/forms/DescriptionField';
 import LocationTypeSelector from '@/components/forms/LocationTypeSelector';
 import CitySelector from '@/components/forms/CitySelector';
@@ -151,6 +153,7 @@ const updateProposal = ({ params }) => {
         }
       );
       if (response.ok) {
+        revalidateTag('TasksCollection');
         setAvailability([]);
         setGeolocations({
           cityLat: '',

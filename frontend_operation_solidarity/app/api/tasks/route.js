@@ -19,7 +19,7 @@ export const GET = async (request) => {
       const res = await fetch(
         `${baseURL}/${env}/tasks?emailTaskType=${emailTypeRequest}&sortType=${sortType}`,
         {
-          next: { revalidate: revalidateTime },
+          next: { revalidate: revalidateTime, tags: ['TasksCollection'] },
         }
       );
       const tasks = await res.json();

@@ -1,5 +1,6 @@
 'use client';
 import { Suspense, useState, useContext } from 'react';
+import { revalidateTag } from 'next/cache';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { RefDataContext } from '@/components/RefDataContext';
@@ -96,6 +97,7 @@ const CreateRequest = () => {
         }),
       });
       if (response.ok) {
+        revalidateTag('TasksCollection');
         setAvailability([]);
         setContact({ phone: '' });
         setGeolocations({
