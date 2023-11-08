@@ -28,6 +28,7 @@ export default function Home() {
   } = useContext(RefDataContext);
 
   const [currentTab, setCurrentTab] = useState('Requests');
+  const direction = language === 'he' ? 'rtl' : 'ltr';
 
   const [distanceRange, setDistanceRange] = useState(0);
   const [maxDistanceRange, setMaxDistanceRange] = useState(500);
@@ -114,6 +115,7 @@ export default function Home() {
       }
 
       const data = await response.json();
+      console.log('data =', data);
       data.length === 0 ? setTasks([]) : setTasks(data);
       // setTasks(data);
       setFilteredTasks(data);
@@ -226,7 +228,7 @@ export default function Home() {
   return (
     <div className="bg-white">
       <div>
-        {location?.latitude} / {location?.longitude}
+        {/* {location?.latitude} / {location?.longitude} */}
         {/* Mobile filter dialog */}
         <Transition.Root show={mobileFiltersOpen} as={Fragment}>
           <Dialog
@@ -298,8 +300,16 @@ export default function Home() {
           </Dialog>
         </Transition.Root>
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-            <Header title="Requests and Proposals" />
+          <div
+            dir={direction}
+            className={` hidden md:flex blue_gradient text-4xl capitalize border-b border-gray-200 pb-2 pt-10 ${
+              direction === 'rtl' ? 'text-right' : 'text-left'
+            }`}
+          >
+            <Header
+              title={labels[language].requestsAndProposalsHeader}
+              language={language}
+            />
             <div className="flex items-center">
               <button
                 type="button"

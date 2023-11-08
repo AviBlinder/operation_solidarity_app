@@ -103,6 +103,8 @@ export const RefDataProvider = function ({ children }) {
         emailDetails: 'Email Details',
         phoneDetails: 'Phone Details',
         commentsLabel: 'Comments',
+        requestsAndProposalsHeader: 'Requests and Proposals',
+        myRequestsAndProposalsHeader: 'My Requests and Proposals',
       },
       he: {
         welcome: 'ברוך הבא',
@@ -148,6 +150,8 @@ export const RefDataProvider = function ({ children }) {
         emailDetails: 'מייל ליצרית קשר',
         phoneDetails: 'מספר טלפון ליצרית קשר',
         commentsLabel: 'הערות נוספות',
+        requestsAndProposalsHeader: 'בקשות/הצעות',
+        myRequestsAndProposalsHeader: ' הבקשות/הצעות שלי',
       },
     },
   };

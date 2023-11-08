@@ -2,6 +2,7 @@ const AWS = require('aws-sdk');
 const dynamoDb = new AWS.DynamoDB.DocumentClient();
 const { v4: uuidv4 } = require('uuid');
 const entity = process.env.TASKS_TABLE || 'TasksTable';
+const ngeohash = require('ngeohash');
 
 exports.deleteTaskHandler = async (event) => {
   try {
@@ -188,6 +189,18 @@ exports.updateTaskHandler = async (event) => {
 
     const data = JSON.parse(event.body);
     console.log('data for update : ', data);
+    // Calculate geohashes if lat and lng are provided
+    if (data.city && data.city.lat && data.city.lng) {
+      data.city.geohash = ngeohash.encode(data.city.lat, data.city.lng);
+    } else {
+      if (data.from && data.from.lat && data.from.lng) {
+        data.from.geohash = ngeohash.encode(data.from.lat, data.from.lng);
+      }
+      if (data.to && data.to.lat && data.to.lng) {
+        data.to.geohash = ngeohash.encode(data.to.lat, data.to.lng);
+      }
+    }
+
     const updateExpression = [];
     const expressionAttributeValues = {};
     const expressionAttributeNames = {};

@@ -25,6 +25,7 @@ export default function Tasks() {
     weekDays,
   } = useContext(RefDataContext);
   const [currentTab, setCurrentTab] = useState('Requests');
+  const direction = language === 'he' ? 'rtl' : 'ltr';
 
   const { data: session } = useSession();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
@@ -247,8 +248,16 @@ export default function Tasks() {
         </Transition.Root>
 
         <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-            <Header title="My Requests and Proposals" />
+          <div
+            dir={direction}
+            className={` hidden md:flex blue_gradient text-4xl capitalize border-b border-gray-200 pb-2 pt-10 ${
+              direction === 'rtl' ? 'text-right' : 'text-left'
+            }`}
+          >
+            <Header
+              title={labels[language].myRequestsAndProposalsHeader}
+              language={language}
+            />
             <div className="flex items-center">
               <button
                 type="button"
