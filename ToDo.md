@@ -1,7 +1,7 @@
 ########################################################################################
 // Start working on non-main branches (per feature)
-// Finish fixes on multi-language -> use 'Nav' example for importing properties
-// Finish fixes on range filter
+// fix caching re
+// Finish fixes on range filter ==> ewnew on new branch
 
 ## Things to review and take overs from project
 
@@ -9,24 +9,6 @@
 - Management of multiple query params on Lambda / API GW
 
 ### Issues:
-
-convert tabs to be multilanguage:
-const handleTabClick = (tabName) => {
-setCurrentTab(tabName);
-// Logic to display content based on the selected tab or navigate to a new URL
-};
-
-<select
-id="tabs"
-name="tabs"
-className="block w-[90%] rounded-md border-gray-300 focus:border-secondary-500 focus:ring-secondary-500"
-value={currentTab}
-onChange={(e) => handleTabClick(e.target.value)} >
-{tabs.map((tab) => (
-
-<option key={tab.name}>{tab.name}</option>
-))}
-</select>
 
 ## ToDo:
 
@@ -41,7 +23,7 @@ onChange={(e) => handleTabClick(e.target.value)} >
 
 - Font sizes on the global level + Hebrew Font (As part of Availability features)
 - ChatGPT -> suggestions for Hero part of landing page
-- Multi-language --> just create infra with i18n packages + translate labels
+
 - ML Translation
 - "Comments" - open for everyone to update + automatic push to owner (?)
 - Create User Preferences Form
