@@ -167,61 +167,57 @@ const FilterBar = ({
         htmlFor="weekDays-multiple-choice"
         className="block text-sm font-medium text-gray-700"
       ></label>
-      <Multiselect
-        options={weekDaysOptions} // Options to display in the dropdown
-        selectedValues={selectedDays.map((day) => ({
-          label: weekDays[language][weekDays.en.indexOf(day)],
-          value: day,
-        }))} // Preselected values
-        onSelect={onSelect} // Function will trigger on select event
-        onRemove={onRemove} // Function will trigger on remove event
-        displayValue="label" // Property name to display in the dropdown
-        placeholder={language === 'en' ? 'Select days' : 'בחר ימים'} // Placeholder based on language
-        closeIcon="cancel" // Icon to show for closing the dropdown
-        style={{
-          chips: {
-            background: '#dea341',
-            color: '#333',
-            fontSize: '14px',
-            borderRadius: '15px',
-            padding: '5px 10px',
-          },
-          searchBox: {
-            border: '1px solid #ccc',
-            borderBottom: '1px solid #ccc',
-            borderRadius: '2px',
-            padding: '5px',
-            fontSize: '12px',
-            margin: '5px 10px',
-            background: '#fff',
-            maxHeight: '50px',
-            maxWidth: '250px',
-          },
-          multiselectContainer: {
-            background: 'transparent',
-            borderRadius: '6px',
-            margin: '10px 2px',
-          },
-          optionContainer: {
-            color: '#dea341',
-            background: '#fff',
-          },
-          option: {
-            color: '#333',
-          },
-          groupHeading: {
-            color: '#5ec435',
-          },
-          // Add any additional custom styles if needed
-        }}
-      />
-      <style>
-        {`
-          .multiselect-react-dropdown .dropdown-list .item:hover {
-            background-color: '#5ec435' ; 
-          }
-        `}
-      </style>
+      <div className="ml-1 mr-4">
+        <Multiselect
+          options={weekDaysOptions} // Options to display in the dropdown
+          selectedValues={selectedDays.map((day) => ({
+            label: weekDays[language][weekDays.en.indexOf(day)],
+            value: day,
+          }))} // Preselected values
+          onSelect={onSelect} // Function will trigger on select event
+          onRemove={onRemove} // Function will trigger on remove event
+          displayValue="label" // Property name to display in the dropdown
+          placeholder={language === 'en' ? 'Select days' : 'בחר ימים'} // Placeholder based on language
+          closeIcon="cancel" // Icon to show for closing the dropdown
+          style={{
+            chips: {
+              background: '#dea341',
+              color: '#333',
+              fontSize: '14px',
+              borderRadius: '15px',
+              padding: '5px 10px',
+            },
+            searchBox: {
+              border: '1px solid #ccc',
+              borderBottom: '1px solid #ccc',
+              borderRadius: '2px',
+              padding: '0px 0px 0px 10px',
+              fontSize: '12px',
+              fontColor: '#333',
+              margin: '5px 5px ',
+              background: '#fff',
+              maxHeight: '40px',
+              maxWidth: '290px',
+            },
+            multiselectContainer: {
+              background: 'transparent',
+              borderRadius: '6px',
+              margin: '10px 2px',
+            },
+            optionContainer: {
+              color: '#dea341',
+              background: '#fff',
+            },
+            option: {
+              color: '#333',
+            },
+            groupHeading: {
+              color: '#5ec435',
+            },
+            // Add any additional custom styles if needed
+          }}
+        />
+      </div>
       <button
         onClick={() => setMobileFiltersOpen(false)}
         className="flex align-middle justify-center  md:hidden mx-2 my-6 px-1 py-2 bg-secondary-500 text-white rounded w-[90%]"

@@ -4,11 +4,11 @@ import { RefDataContext } from '@/components/RefDataContext';
 const CitySelector = ({ task, setTask, geoLocations, setGeolocations }) => {
   const { language, labels, cities } = useContext(RefDataContext);
   const findLatLng = (property) => {
-    const result = cities.filter((city) => {
-      city.city === property;
+    const result = cities.find((city) => {
+      return city.city === property;
     });
-    const lat = result[0].lat;
-    const lng = result[0].lng;
+    const lat = result.lat;
+    const lng = result.lng;
     return [lat, lng];
   };
   const handleCity = (value) => {

@@ -105,9 +105,11 @@ const UpdateRequestForm = ({ params }) => {
   }, [params.id, session?.user.email]);
 
   const findLatLng = (property) => {
-    const result = cities_short_list.filter((city) => city.city === property);
-    const lat = result[0].lat;
-    const lng = result[0].lng;
+    const result = cities.find((city) => {
+      return city.city === property;
+    });
+    const lat = result.lat;
+    const lng = result.lng;
     return [lat, lng];
   };
   const handleCity = (value) => {
