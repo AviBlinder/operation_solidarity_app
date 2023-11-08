@@ -53,7 +53,6 @@ const CreateRequest = () => {
   const createRequest = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    console.log('session :', session);
     try {
       const response = await fetch('/api/tasks/new', {
         method: 'POST',

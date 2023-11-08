@@ -28,7 +28,6 @@ const TaskDetails = ({ params }) => {
         `/api/tasks/${params?.id}?entryDate=${entryDate}`
       );
       const data = await response.json();
-      console.log('data :', data);
       setTaskDetails(data);
     };
 
