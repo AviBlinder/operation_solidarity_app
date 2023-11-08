@@ -187,24 +187,41 @@ const FilterBar = ({
             padding: '5px 10px',
           },
           searchBox: {
-            border: 'none',
+            border: '1px solid #ccc',
             borderBottom: '1px solid #ccc',
-            borderRadius: '0px',
-            padding: '10px',
-            fontSize: '14px',
+            borderRadius: '2px',
+            padding: '5px',
+            fontSize: '12px',
+            margin: '5px 10px',
+            background: '#fff',
+            maxHeight: '50px',
+            maxWidth: '250px',
           },
           multiselectContainer: {
-            color: '#333',
-            borderRadius: '4px',
+            background: 'transparent',
+            borderRadius: '6px',
+            margin: '10px 2px',
           },
           optionContainer: {
             color: '#dea341',
-            // To style the dropdown options
-            // Add your styles here
+            background: '#fff',
+          },
+          option: {
+            color: '#333',
+          },
+          groupHeading: {
+            color: '#5ec435',
           },
           // Add any additional custom styles if needed
         }}
       />
+      <style>
+        {`
+          .multiselect-react-dropdown .dropdown-list .item:hover {
+            background-color: '#5ec435' ; 
+          }
+        `}
+      </style>
       <button
         onClick={() => setMobileFiltersOpen(false)}
         className="flex align-middle justify-center  md:hidden mx-2 my-6 px-1 py-2 bg-secondary-500 text-white rounded w-[90%]"
