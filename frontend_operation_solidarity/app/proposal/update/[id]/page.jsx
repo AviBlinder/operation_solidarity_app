@@ -1,9 +1,10 @@
 'use client';
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { cities_short_list } from '@/constants/index';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { revalidateTag } from 'next/cache';
+
 import DescriptionField from '@/components/forms/DescriptionField';
 import LocationTypeSelector from '@/components/forms/LocationTypeSelector';
 import CitySelector from '@/components/forms/CitySelector';
@@ -83,11 +84,7 @@ const updateProposal = ({ params }) => {
       fetchTask();
     }
   }, [params.id, session?.user.email]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
+  const setCityFromTo = async () => {
     if (locationType === 'cityAddress') {
       setTask((prevTask) => ({ ...prevTask, from: '', to: '' }));
       setGeolocations((prevGeoLocations) => ({
@@ -105,6 +102,12 @@ const updateProposal = ({ params }) => {
         cityLng: '',
       }));
     }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    await setCityFromTo();
 
     // update start
     try {
@@ -116,7 +119,6 @@ const updateProposal = ({ params }) => {
             'Content-Type': 'application/json',
             accessToken: session.accessToken,
           },
-
           body: JSON.stringify({
             //
             taskType: task.taskType,
@@ -151,6 +153,7 @@ const updateProposal = ({ params }) => {
         }
       );
       if (response.ok) {
+        // revalidateTag('TasksCollection');
         setAvailability([]);
         setGeolocations({
           cityLat: '',
@@ -210,6 +213,9 @@ const updateProposal = ({ params }) => {
                 <LocationTypeSelector
                   locationType={locationType}
                   setLocationType={setLocationType}
+                  task={task}
+                  setTask={setTask}
+                  setGeolocations={setGeolocations}
                 ></LocationTypeSelector>
               </div>
               {locationType === 'cityAddress' ? (
@@ -219,13 +225,11 @@ const updateProposal = ({ params }) => {
                     setTask={setTask}
                     geoLocations={geoLocations}
                     setGeolocations={setGeolocations}
-                    cities_short_list={cities_short_list}
                   ></CitySelector>
                 </div>
               ) : (
                 <div className=" col-span-4 col-start-2 sm:col-span-2 sm:col-start-2">
                   <FromToSelector
-                    cities_short_list={cities_short_list}
                     task={task}
                     setTask={setTask}
                     geoLocations={geoLocations}
@@ -236,8 +240,6 @@ const updateProposal = ({ params }) => {
               <div className="form_fields_division"> </div>
               <div className=" form_span_6">
                 <AvailabilitySelector
-                  task={task}
-                  setTask={setTask}
                   availability={availability}
                   setAvailability={setAvailability}
                 ></AvailabilitySelector>

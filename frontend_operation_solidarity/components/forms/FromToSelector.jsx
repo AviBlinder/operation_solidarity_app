@@ -1,16 +1,15 @@
-const FromToSelector = ({
-  cities_short_list,
-  task,
-  setTask,
-  geoLocations,
-  setGeolocations,
-}) => {
+import { useContext } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
+
+const FromToSelector = ({ task, setTask, geoLocations, setGeolocations }) => {
+  const { language, labels, cities } = useContext(RefDataContext);
+
   const findLatLng = (property) => {
-    const result = cities_short_list.filter(
-      (city) => city.cityHebrew === property
-    );
-    const lat = result[0].lat;
-    const lng = result[0].lng;
+    const result = cities.find((city) => {
+      return city.city === property;
+    });
+    const lat = result.lat;
+    const lng = result.lng;
     return [lat, lng];
   };
 
@@ -39,7 +38,7 @@ const FromToSelector = ({
             className="block text-sm font-medium text-primary-800"
             htmlFor="from"
           >
-            From
+            {labels[language].from}
           </label>
           <select
             id="from"
@@ -52,11 +51,11 @@ const FromToSelector = ({
             required
           >
             <option value="" disabled>
-              Choose a city
+              {labels[language].chooseCity}
             </option>
-            {cities_short_list.map((city, index) => (
-              <option key={index} value={city.cityHebrew}>
-                {city.cityHebrew}
+            {cities.map((city, index) => (
+              <option key={index} value={city.city}>
+                {language === 'he' ? city.cityHebrew : city.city}
               </option>
             ))}
           </select>
@@ -67,7 +66,7 @@ const FromToSelector = ({
             className="block text-sm font-medium text-primary-800"
             htmlFor="to"
           >
-            To
+            {labels[language].to}
           </label>
           <select
             id="to"
@@ -80,11 +79,11 @@ const FromToSelector = ({
             required
           >
             <option value="" disabled>
-              Choose a city
+              {labels[language].chooseCity}
             </option>
-            {cities_short_list.map((city, index) => (
-              <option key={index} value={city.cityHebrew}>
-                {city.cityHebrew}
+            {cities.map((city, index) => (
+              <option key={index} value={city.city}>
+                {language === 'he' ? city.cityHebrew : city.city}
               </option>
             ))}
           </select>

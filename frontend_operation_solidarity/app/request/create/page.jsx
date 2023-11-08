@@ -1,24 +1,30 @@
 'use client';
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState, useContext } from 'react';
+import { revalidateTag } from 'next/cache';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-
+import { RefDataContext } from '@/components/RefDataContext';
 import Loading from './loading';
 import BackButton from '@/components/BackButton';
-import { cities_short_list, labels } from '@/constants/index';
 
 import DescriptionField from '@/components/forms/DescriptionField';
 import LocationTypeSelector from '@/components/forms/LocationTypeSelector';
 import CitySelector from '@/components/forms/CitySelector';
 import FromToSelector from '@/components/forms/FromToSelector';
 import AvailabilitySelector from '@/components/forms/AvailabilitySelector';
+
 import CategorySelector from '@/components/forms/CategorySelector';
 import ContactDetails from '@/components/forms/ContactDetails';
 import CommentsField from '@/components/forms/CommentsField';
 
 const CreateRequest = () => {
+  const {
+    language,
+    labels,
+    cities: cities_short_list,
+  } = useContext(RefDataContext);
   const { data: session } = useSession();
-  const [language, setLanguage] = useState('he');
+
   const [availability, setAvailability] = useState([]);
   const [contact, setContact] = useState({ phone: '' });
 
@@ -90,7 +96,10 @@ const CreateRequest = () => {
           entryDate: new Date(),
         }),
       });
+      console.log('response after POST :', response);
       if (response.ok) {
+        // revalidateTag('TasksCollection');
+
         setAvailability([]);
         setContact({ phone: '' });
         setGeolocations({
@@ -130,16 +139,12 @@ const CreateRequest = () => {
     <div className="div_main">
       <div className="div_second">
         <div className="div_grid_main">
-          <div className="form_span_6_1 ml-10 md:ml-0 ">
+          <div className="form_span_6_1 ml-10 md:ml-0">
             <div className="flex flex-col md:flex-row mt-6">
-              <BackButton language={language} className="ml-2 mb-2 max-w-md ">
-                {' '}
-              </BackButton>
+              <BackButton className="ml-2 mb-2 max-w-md "> </BackButton>
               <p className="text-md md:text-lg mt-4 md:mt-0">
                 <span className="blue_gradient text-2xl ml-8 text-center font-bold ">
-                  {language === 'he'
-                    ? labels.hebrew.createRequest
-                    : labels.english.createRequest}
+                  {labels[language].createRequest}
                 </span>
               </p>
             </div>
@@ -161,6 +166,9 @@ const CreateRequest = () => {
                     <LocationTypeSelector
                       locationType={locationType}
                       setLocationType={setLocationType}
+                      task={task}
+                      setTask={setTask}
+                      setGeolocations={setGeolocations}
                     ></LocationTypeSelector>
                   </div>
                   {locationType === 'cityAddress' ? (
@@ -185,10 +193,9 @@ const CreateRequest = () => {
                     </div>
                   )}
                   <div className="form_fields_division"> </div>
+
                   <div className=" form_span_6">
                     <AvailabilitySelector
-                      task={task}
-                      setTask={setTask}
                       availability={availability}
                       setAvailability={setAvailability}
                     ></AvailabilitySelector>
@@ -221,7 +228,7 @@ const CreateRequest = () => {
                 </div>
               </form>
             ) : (
-              <div> You need to login first</div>
+              <div> {labels[language].loginFirst}</div>
             )}
           </div>
         </Suspense>

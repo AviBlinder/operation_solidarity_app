@@ -1,24 +1,29 @@
 'use client';
-import { Suspense, useState } from 'react';
+import { Suspense, useState, useContext } from 'react';
+import { revalidateTag } from 'next/cache';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-
+import { RefDataContext } from '@/components/RefDataContext';
 import Loading from './loading';
 import BackButton from '@/components/BackButton';
-import { cities_short_list, labels } from '@/constants/index';
 
 import DescriptionField from '@/components/forms/DescriptionField';
 import LocationTypeSelector from '@/components/forms/LocationTypeSelector';
 import CitySelector from '@/components/forms/CitySelector';
 import FromToSelector from '@/components/forms/FromToSelector';
 import AvailabilitySelector from '@/components/forms/AvailabilitySelector';
+
 import CategorySelector from '@/components/forms/CategorySelector';
 import ContactDetails from '@/components/forms/ContactDetails';
 import CommentsField from '@/components/forms/CommentsField';
 
 const CreateProposal = () => {
+  const {
+    language,
+    labels,
+    cities: cities_short_list,
+  } = useContext(RefDataContext);
   const { data: session } = useSession();
-  const [language, setLanguage] = useState('he');
 
   const [availability, setAvailability] = useState([]);
   const [contact, setContact] = useState({ phone: '' });
@@ -45,9 +50,31 @@ const CreateProposal = () => {
   const [submitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
+  const setCityFromTo = async () => {
+    if (locationType === 'cityAddress') {
+      setTask((prevTask) => ({ ...prevTask, from: '', to: '' }));
+      setGeolocations((prevGeoLocations) => ({
+        ...prevGeoLocations,
+        fromLat: '',
+        fromLng: '',
+        toLat: '',
+        toLng: '',
+      }));
+    } else {
+      setTask((prevTask) => ({ ...prevTask, city: '' }));
+      setGeolocations((prevGeoLocations) => ({
+        ...prevGeoLocations,
+        cityLat: '',
+        cityLng: '',
+      }));
+    }
+  };
+
   const createRequest = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    await setCityFromTo();
+    console.log('task :', task);
     try {
       const response = await fetch('/api/tasks/new', {
         method: 'POST',
@@ -92,6 +119,8 @@ const CreateProposal = () => {
         }),
       });
       if (response.ok) {
+        // revalidateTag('TasksCollection');
+
         setAvailability([]);
         setContact({ phone: '' });
         setGeolocations({
@@ -121,11 +150,9 @@ const CreateProposal = () => {
       router.push('/tasks');
     } finally {
       setIsSubmitting(false);
+      router.push('/tasks');
     }
   };
-
-  const [categories, setCategories] = useState([]);
-  const [categoriesHebrew, setCategoriesHebrew] = useState([]);
 
   const [locationType, setLocationType] = useState('cityAddress');
 
@@ -135,17 +162,10 @@ const CreateProposal = () => {
         <div className="div_grid_main">
           <div className="form_span_6_1 ml-10 md:ml-0">
             <div className="flex flex-col md:flex-row mt-6">
-              <BackButton
-                language={language}
-                className="ml-2 mb-2 md:mb-0 max-w-md "
-              >
-                {' '}
-              </BackButton>
+              <BackButton className="ml-2 mb-2 max-w-md "> </BackButton>
               <p className="text-md md:text-lg mt-4 md:mt-0">
                 <span className="blue_gradient text-2xl ml-8 text-center font-bold ">
-                  {language === 'he'
-                    ? labels.hebrew.createProposal
-                    : labels.english.createProposal}
+                  {labels[language].createProposal}
                 </span>
               </p>
             </div>
@@ -167,6 +187,9 @@ const CreateProposal = () => {
                     <LocationTypeSelector
                       locationType={locationType}
                       setLocationType={setLocationType}
+                      task={task}
+                      setTask={setTask}
+                      setGeolocations={setGeolocations}
                     ></LocationTypeSelector>
                   </div>
                   {locationType === 'cityAddress' ? (
@@ -191,15 +214,14 @@ const CreateProposal = () => {
                     </div>
                   )}
                   <div className="form_fields_division"> </div>
+
                   <div className=" form_span_6">
                     <AvailabilitySelector
-                      task={task}
-                      setTask={setTask}
                       availability={availability}
                       setAvailability={setAvailability}
                     ></AvailabilitySelector>
                   </div>
-                  <div className="form_span_3">
+                  <div className="form_span_6">
                     <CategorySelector
                       task={task}
                       setTask={setTask}
@@ -215,7 +237,7 @@ const CreateProposal = () => {
                       setTask={setTask}
                     ></CommentsField>
                   </div>
-                  <div className="py-3 mx-2 col-span-6 col-start-1  md:col-span-6 md:col-start-2">
+                  <div className="py-3 ml-5 sm:ml-2 col-span-6 col-start-1  md:col-span-6 md:col-start-2">
                     <button
                       type="submit"
                       disabled={submitting}
@@ -227,7 +249,7 @@ const CreateProposal = () => {
                 </div>
               </form>
             ) : (
-              <div> You need to login first</div>
+              <div> {labels[language].loginFirst}</div>
             )}
           </div>
         </Suspense>

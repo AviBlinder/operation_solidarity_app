@@ -1,4 +1,7 @@
 ########################################################################################
+// Start working on non-main branches (per feature)
+// Finish fixes on multi-language -> use 'Nav' example for importing properties
+// Finish fixes on range filter
 
 ## Things to review and take overs from project
 
@@ -31,10 +34,8 @@ onChange={(e) => handleTabClick(e.target.value)} >
 
 - Geo location --> add to filter, according to user's location
 
-1. Create new GSI (GeoHash + statusTaskType)
-2. Update POST and PUT (both on server-side + Lambda functions)
+2. Update PUT with geolocation calculation (both on server-side + Lambda functions)
 3. Ask for User's location only if he wants to filter by location (?)
-4. Add Search by Geolocation distance
 
 #### Small:
 

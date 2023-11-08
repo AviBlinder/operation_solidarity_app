@@ -1,9 +1,12 @@
 import { RadioGroup } from '@headlessui/react';
-import { categories } from '@/constants/index';
+
+import { useContext } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
 
 const CategorySelector = ({ task, setTask }) => {
-  const languageEnglish = 'english';
-  const languageHebrew = 'hebrew';
+  const languageEnglish = 'en';
+  const { language, labels, categories } = useContext(RefDataContext);
+
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
   }
@@ -12,7 +15,7 @@ const CategorySelector = ({ task, setTask }) => {
     <div className="flex flex-col mt-4">
       <div>
         <h2 className="text-sm font-medium text-primary-800">
-          Select a Category
+          {labels[language].category}
         </h2>
       </div>
       <div className="">
@@ -45,7 +48,8 @@ const CategorySelector = ({ task, setTask }) => {
                       as="span"
                       className={`capitalize block text-sm`}
                     >
-                      {categories[languageHebrew][index].toLowerCase()}
+                      {/* {categories[languageHebrew][index].toLowerCase()} */}
+                      {categories[language][index].toLowerCase()}
                     </RadioGroup.Description>
                   </RadioGroup.Label>
                 </RadioGroup.Option>

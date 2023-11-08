@@ -1,7 +1,10 @@
+import { revalidateTag } from 'next/cache';
+
 export const GET = async (request) => {
   const revalidateTime = 300;
   const getStringParams = (url, searchParam) => {
     const urlObj = new URL(url);
+    revalidateTag('TasksCollection');
     const params = new URLSearchParams(urlObj.search);
     const searchParamValue = params.get(searchParam);
     return searchParamValue;

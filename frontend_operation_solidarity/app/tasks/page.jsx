@@ -3,34 +3,39 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { FunnelIcon } from '@heroicons/react/20/solid';
-import { categories, statuses, labels } from '@/constants/index';
 
-import { useState, useEffect, Fragment, Suspense } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
+
+import { useState, useEffect, Fragment, Suspense, useContext } from 'react';
 import { useSession } from 'next-auth/react';
 
 import Header from '@/components/Header';
 import TaskList from '@/components/TaskList';
 import FilterBar from '@/components/FilterBar';
 
-import { weekDays } from '@/constants/index';
-import { cities_short_list } from '@/constants/index';
 import RequestsProposalsTab from '@/components/RequestsProposalsTab';
 
 export default function Tasks() {
+  const {
+    language,
+    labels,
+    categories,
+    statuses,
+    cities: cities_short_list,
+    weekDays,
+  } = useContext(RefDataContext);
   const [currentTab, setCurrentTab] = useState('Requests');
-  const [language, setLanguage] = useState('he');
 
   const { data: session } = useSession();
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-  const weekDaysHebrew = weekDays.hebrew;
+  const weekDaysHebrew = weekDays.he;
   // const weekDaysEnglish = weekDays.english;
   const weekDaysOptions = weekDaysHebrew.map((day) => ({
     value: day,
     label: day,
   }));
 
-  const citiesHebrew = cities_short_list.map((city) => city.cityHebrew);
   const [tasks, setTasks] = useState([]);
   const [filteredTasks, setFilteredTasks] = useState([]);
 
@@ -101,21 +106,26 @@ export default function Tasks() {
     // Existing filter and sort logic
 
     if (categoryFilter) {
-      result = result.filter((task) =>
-        task.category.includes(categoryFilter.toLocaleLowerCase())
+      result = result.filter(
+        (task) =>
+          task.category &&
+          task.category.includes(categoryFilter.toLocaleLowerCase())
       );
     }
     if (statusFilter) {
-      result = result.filter((task) =>
-        task.status.includes(statusFilter.toLocaleLowerCase())
+      result = result.filter(
+        (task) =>
+          task.status && task.status.includes(statusFilter.toLocaleLowerCase())
       );
     }
 
     if (availabilityFilter.length > 0) {
-      result = result.filter((task) =>
-        task.availability.some((availability) =>
-          availabilityFilter.includes(availability)
-        )
+      result = result.filter(
+        (task) =>
+          task.availability &&
+          task.availability.some((availability) =>
+            availabilityFilter.includes(availability)
+          )
       );
     }
 
@@ -215,13 +225,11 @@ export default function Tasks() {
                       onClose={setMobileFiltersOpen}
                       setMobileFiltersOpen={setMobileFiltersOpen}
                       mobileFiltersOpen={mobileFiltersOpen}
-                      citiesHebrew={citiesHebrew}
                       weekDaysOptions={weekDaysOptions}
                       handleResetFilters={handleResetFilters}
                       handleStatusFilterChange={handleStatusFilterChange}
                       statuses={statuses}
                       statusFilter={statusFilter}
-                      categories={categories}
                       handleCategoryFilterChange={handleCategoryFilterChange}
                       categoryFilter={categoryFilter}
                       handleAvailabilityFilterChange={
@@ -264,7 +272,6 @@ export default function Tasks() {
                   language={language}
                   callingPage="tasks"
                   mobileFiltersOpen={!mobileFiltersOpen}
-                  citiesHebrew={citiesHebrew}
                   weekDaysOptions={weekDaysOptions}
                   handleResetFilters={handleResetFilters}
                   handleStatusFilterChange={handleStatusFilterChange}

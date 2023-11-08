@@ -1,37 +1,16 @@
 'use client';
-import Select from 'react-select';
-import { useState, useEffect } from 'react';
-import { labels } from '@/constants/index';
+import { Multiselect } from 'multiselect-react-dropdown';
 
-const customStyles = {
-  control: (provided) => ({
-    ...provided,
-    height: '45px',
-    minHeight: '45px',
-  }),
-  valueContainer: (provided) => ({
-    ...provided,
-    height: '40px',
-    padding: '0 6px',
-    fontWeight: 'bold',
-  }),
-  input: (provided) => ({
-    ...provided,
-    margin: '0px',
-  }),
-  indicatorsContainer: (provided) => ({
-    ...provided,
-    height: '40px',
-  }),
-};
+import { useState, useEffect, useContext } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
+
+import Switch from 'react-switch';
 const FilterBar = ({
-  language,
+  distanceRange,
+  handleDistanceRangeChange,
   callingPage,
-  categories,
   mobileFiltersOpen,
   setMobileFiltersOpen,
-  citiesHebrew,
-  weekDaysOptions,
   handleResetFilters,
   handleStatusFilterChange,
   statuses,
@@ -43,8 +22,52 @@ const FilterBar = ({
   handleCityFilterChange,
   cityFilter,
 }) => {
-  const languageEnglish = 'english';
-  const languageHebrew = 'hebrew';
+  const { language, labels, categories, cities, weekDays } =
+    useContext(RefDataContext);
+  const weekDaysOptions = weekDays.en.map((day, index) => ({
+    value: day, // always in English
+    label: language === 'he' ? weekDays.he[index] : day, // dynamic based on language
+  }));
+
+  const [selectedDays, setSelectedDays] = useState([]);
+
+  const onSelect = (selectedList) => {
+    setSelectedDays(selectedList.map((item) => item.value));
+    handleAvailabilityFilterChange(selectedList);
+  };
+
+  // This function will be called when an item is removed
+  const onRemove = (selectedList) => {
+    setSelectedDays(selectedList.map((item) => item.value));
+    handleAvailabilityFilterChange(selectedList);
+  };
+
+  //
+  const [delayedDistance, setDelayedDistance] = useState(distanceRange);
+  const [toggleDistance, setToggleDistance] = useState(false);
+  const [timeoutId, setTimeoutId] = useState(null);
+  const handleDistanceChange = (e) => {
+    console.log(e.target.value);
+    const newDistance = e.target.value;
+    setDelayedDistance(newDistance);
+    if (timeoutId) clearTimeout(timeoutId); // Clear the existing timeout
+
+    const newTimeoutId = setTimeout(() => {
+      handleDistanceRangeChange(newDistance);
+    }, 3000); // Set a new timeout
+
+    setTimeoutId(newTimeoutId); // Save the new timeout ID
+  };
+
+  const handleToggleDistance = (checked) => {
+    setToggleDistance(checked);
+    if (!checked) {
+      handleDistanceRangeChange(1); // Reset or handle the distance range change when toggling off
+    }
+  };
+
+  const languageEnglish = 'en';
+  const languageHebrew = 'he';
   const [isClient, setIsClient] = useState(false);
   useEffect(() => {
     setIsClient(true);
@@ -64,9 +87,7 @@ const FilterBar = ({
         onClick={handleResetFilters}
         className="mx-2 my-6 px-1 py-2 bg-secondary-500 text-white rounded w-[90%]"
       >
-        {language === 'he'
-          ? labels.hebrew.resetFilters
-          : labels.english.resetFilters}
+        {labels[language].resetFilters}
       </button>
       {callingPage === 'tasks' && (
         <label>
@@ -78,15 +99,33 @@ const FilterBar = ({
             value={statusFilter}
             onChange={handleStatusFilterChange}
           >
-            <option value="all">כל הסטטוסים</option>
+            <option value="all">{labels[language].allStatuses}</option>
             {statuses[languageEnglish].map((status, index) => (
               <option key={index} value={status}>
-                {statuses[languageHebrew][index]}
+                {statuses[language][index]}
               </option>
             ))}
           </select>
         </label>
       )}
+      {/* <Switch
+        onChange={handleToggleDistance}
+        checked={toggleDistance}
+        className="mr-2"
+      />
+      <input
+        type="number"
+        disabled={!toggleDistance}
+        value={toggleDistance ? delayedDistance : 0}
+        onChange={handleDistanceChange}
+        min="1"
+        max="500"
+        placeholder="Enter distance range in km"
+        className={`${
+          (mobileFiltersOpen ? 'mt-2  w-[90%] my-2 mx-2' : 'ml-2 w-52',
+          !toggleDistance ? 'hidden' : 'block')
+        }`}
+      /> */}
       <label htmlFor="category-choice" className="mt-2 ">
         {/* Category: */}
         <select
@@ -97,10 +136,10 @@ const FilterBar = ({
           value={categoryFilter}
           onChange={handleCategoryFilterChange}
         >
-          <option value="all">כל הקטגוריות</option>
-          {categories[languageEnglish].map((category, index) => (
+          <option value="all">{labels[language].allCategories}</option>
+          {categories['en'].map((category, index) => (
             <option key={index} value={category}>
-              {categories[languageHebrew][index]}
+              {categories[language][index]}
             </option>
           ))}
         </select>
@@ -115,47 +154,75 @@ const FilterBar = ({
           value={cityFilter}
           onChange={handleCityFilterChange}
         >
-          <option value="all">כל הערים</option>
-          {citiesHebrew.map((city, index) => (
-            <option key={index} value={city}>
-              {city}
+          <option value="all">{labels[language].allCities}</option>
+          {cities.map((city, index) => (
+            <option key={index} value={city.city}>
+              {language === 'he' ? city.cityHebrew : city.city}
             </option>
           ))}
         </select>
       </label>
       {/* Availability Filter  */}
       <label
-        className={`${mobileFiltersOpen ? 'mt-2 py-1' : '"ml-4 mt-2 py-1'}`}
-        htmlFor="availability-choice"
-      >
-        {/* Availability: */}
-        <Select
-          styles={customStyles}
-          placeholder="בחירת יום"
-          name="availability-choice"
-          aria-label="availability-choice"
-          aria-placeholder="בחירת יום"
-          inputId="availability-choice"
-          value={availabilityFilter.map((value) => ({
-            value,
-            label: value,
-          }))}
-          onChange={handleAvailabilityFilterChange}
-          options={weekDaysOptions}
-          isMulti
-          className={`${
-            mobileFiltersOpen ? 'mt-2  w-[90%] my-10 mx-2' : 'ml-2 w-64 -mt-1'
-          }`}
-          classNamePrefix="react-select"
+        htmlFor="weekDays-multiple-choice"
+        className="block text-sm font-medium text-gray-700"
+      ></label>
+      <div className="ml-1 mr-4">
+        <Multiselect
+          options={weekDaysOptions} // Options to display in the dropdown
+          selectedValues={selectedDays.map((day) => ({
+            label: weekDays[language][weekDays.en.indexOf(day)],
+            value: day,
+          }))} // Preselected values
+          onSelect={onSelect} // Function will trigger on select event
+          onRemove={onRemove} // Function will trigger on remove event
+          displayValue="label" // Property name to display in the dropdown
+          placeholder={language === 'en' ? 'Select days' : 'בחר ימים'} // Placeholder based on language
+          closeIcon="cancel" // Icon to show for closing the dropdown
+          style={{
+            chips: {
+              background: '#dea341',
+              color: '#333',
+              fontSize: '14px',
+              borderRadius: '15px',
+              padding: '5px 10px',
+            },
+            searchBox: {
+              border: '1px solid #ccc',
+              borderBottom: '1px solid #ccc',
+              borderRadius: '2px',
+              padding: '0px 0px 0px 10px',
+              fontSize: '12px',
+              fontColor: '#333',
+              margin: '5px 5px ',
+              background: '#fff',
+              maxHeight: '40px',
+              maxWidth: '290px',
+            },
+            multiselectContainer: {
+              background: 'transparent',
+              borderRadius: '6px',
+              margin: '10px 2px',
+            },
+            optionContainer: {
+              color: '#dea341',
+              background: '#fff',
+            },
+            option: {
+              color: '#333',
+            },
+            groupHeading: {
+              color: '#5ec435',
+            },
+            // Add any additional custom styles if needed
+          }}
         />
-      </label>
+      </div>
       <button
         onClick={() => setMobileFiltersOpen(false)}
         className="flex align-middle justify-center  md:hidden mx-2 my-6 px-1 py-2 bg-secondary-500 text-white rounded w-[90%]"
       >
-        {language === 'he'
-          ? labels.hebrew.showResults
-          : labels.english.showResults}
+        {labels[language].showResults}
       </button>
     </div>
   );

@@ -1,9 +1,12 @@
 import { RadioGroup } from '@headlessui/react';
-import { statuses } from '@/constants/index';
+import { useContext } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
 
 function StatusSelector({ task, setTask }) {
-  const languageEnglish = 'english';
-  const languageHebrew = 'hebrew';
+  const { language, statuses, labels } = useContext(RefDataContext);
+
+  const languageEnglish = 'en';
+
   function classNames(...classes) {
     return classes.filter(Boolean).join(' ');
   }
@@ -12,7 +15,7 @@ function StatusSelector({ task, setTask }) {
     <div className="flex flex-col ">
       <div>
         <h2 className="text-sm font-medium text-primary-800">
-          Select a Status
+          {labels[language].statusSelect}
         </h2>
       </div>
       <div className="flex flex-row">
@@ -44,7 +47,7 @@ function StatusSelector({ task, setTask }) {
                     as="span"
                     className={`capitalize block text-sm`}
                   >
-                    {statuses[languageHebrew][index].toLowerCase()}
+                    {statuses[language][index].toLowerCase()}
                   </RadioGroup.Description>
                 </RadioGroup.Label>
               </RadioGroup.Option>

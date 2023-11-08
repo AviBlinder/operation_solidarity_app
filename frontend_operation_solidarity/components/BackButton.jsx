@@ -1,8 +1,10 @@
 import { useRouter } from 'next/navigation';
-import { labels } from '@/constants/index';
+import { useContext } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
 
-const BackButton = ({ language }) => {
+const BackButton = ({}) => {
   const router = useRouter();
+  const { language, labels } = useContext(RefDataContext);
 
   return (
     <button
@@ -10,7 +12,7 @@ const BackButton = ({ language }) => {
       type="button"
       onClick={() => router.back()}
     >
-      {language === 'he' ? labels.hebrew.back : labels.english.back}
+      {labels[language].back}
     </button>
   );
 };

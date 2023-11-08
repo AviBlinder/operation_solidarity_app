@@ -1,18 +1,14 @@
-import React from 'react';
+import { useContext } from 'react';
+import { RefDataContext } from '@/components/RefDataContext';
 
-const CitySelector = ({
-  task,
-  setTask,
-  cities_short_list,
-  geoLocations,
-  setGeolocations,
-}) => {
+const CitySelector = ({ task, setTask, geoLocations, setGeolocations }) => {
+  const { language, labels, cities } = useContext(RefDataContext);
   const findLatLng = (property) => {
-    const result = cities_short_list.filter(
-      (city) => city.cityHebrew === property
-    );
-    const lat = result[0].lat;
-    const lng = result[0].lng;
+    const result = cities.find((city) => {
+      return city.city === property;
+    });
+    const lat = result.lat;
+    const lng = result.lng;
     return [lat, lng];
   };
   const handleCity = (value) => {
@@ -31,7 +27,7 @@ const CitySelector = ({
           className="block text-sm font-medium text-primary-800"
           htmlFor="city"
         >
-          City
+          {labels[language].city}
         </label>
         <select
           id="city"
@@ -44,11 +40,11 @@ const CitySelector = ({
           required
         >
           <option value="" disabled>
-            Choose a city
+            {labels[language].chooseCity}
           </option>
-          {cities_short_list.map((city, index) => (
-            <option key={index} value={city.cityHebrew}>
-              {city.cityHebrew}
+          {cities.map((city, index) => (
+            <option key={index} value={city.city}>
+              {language === 'he' ? city.cityHebrew : city.city}
             </option>
           ))}
         </select>
