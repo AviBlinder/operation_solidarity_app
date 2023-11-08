@@ -1,5 +1,4 @@
 import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb';
-import { marshall } from '@aws-sdk/util-dynamodb';
 
 export const GET = async (request) => {
   const client = new DynamoDBClient({

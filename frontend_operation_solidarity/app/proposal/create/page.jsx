@@ -50,9 +50,31 @@ const CreateProposal = () => {
   const [submitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
+  const setCityFromTo = async () => {
+    if (locationType === 'cityAddress') {
+      setTask((prevTask) => ({ ...prevTask, from: '', to: '' }));
+      setGeolocations((prevGeoLocations) => ({
+        ...prevGeoLocations,
+        fromLat: '',
+        fromLng: '',
+        toLat: '',
+        toLng: '',
+      }));
+    } else {
+      setTask((prevTask) => ({ ...prevTask, city: '' }));
+      setGeolocations((prevGeoLocations) => ({
+        ...prevGeoLocations,
+        cityLat: '',
+        cityLng: '',
+      }));
+    }
+  };
+
   const createRequest = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    await setCityFromTo();
+    console.log('task :', task);
     try {
       const response = await fetch('/api/tasks/new', {
         method: 'POST',
@@ -97,7 +119,7 @@ const CreateProposal = () => {
         }),
       });
       if (response.ok) {
-        revalidateTag('TasksCollection');
+        // revalidateTag('TasksCollection');
 
         setAvailability([]);
         setContact({ phone: '' });

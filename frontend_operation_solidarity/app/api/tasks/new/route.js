@@ -50,8 +50,6 @@ export const POST = async (request) => {
       },
     });
     const tasks = await res.json();
-    console.log('tasks.response =', res.status);
-    console.log(typeof res.status);
 
     return new Response(JSON.stringify(tasks), { status: 201 });
   } catch (error) {

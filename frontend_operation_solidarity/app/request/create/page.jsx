@@ -50,9 +50,32 @@ const CreateRequest = () => {
   const [submitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
+  const setCityFromTo = async () => {
+    console.log('locationType :', locationType);
+    if (locationType === 'cityAddress') {
+      setTask({ ...task, from: '', to: '' });
+      setGeolocations((prevGeoLocations) => ({
+        ...prevGeoLocations,
+        fromLat: '',
+        fromLng: '',
+        toLat: '',
+        toLng: '',
+      }));
+      console.log('task 1 :', task);
+    } else {
+      setTask({ ...task, city: '' });
+      setGeolocations((prevGeoLocations) => ({
+        ...prevGeoLocations,
+        cityLat: '',
+        cityLng: '',
+      }));
+      console.log('task 2:', task);
+    }
+  };
   const createRequest = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    await setCityFromTo();
     try {
       const response = await fetch('/api/tasks/new', {
         method: 'POST',
@@ -98,7 +121,8 @@ const CreateRequest = () => {
       });
       console.log('response after POST :', response);
       if (response.ok) {
-        revalidateTag('TasksCollection');
+        // revalidateTag('TasksCollection');
+
         setAvailability([]);
         setContact({ phone: '' });
         setGeolocations({
@@ -122,8 +146,6 @@ const CreateRequest = () => {
         });
 
         router.push('/tasks');
-      } else {
-        console.log('error in Insert', response);
       }
     } catch (error) {
       console.log(error);
@@ -191,6 +213,7 @@ const CreateRequest = () => {
                     </div>
                   )}
                   <div className="form_fields_division"> </div>
+
                   <div className=" form_span_6">
                     <AvailabilitySelector
                       availability={availability}

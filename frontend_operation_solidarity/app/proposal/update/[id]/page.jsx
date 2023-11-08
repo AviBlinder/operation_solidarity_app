@@ -10,7 +10,6 @@ import LocationTypeSelector from '@/components/forms/LocationTypeSelector';
 import CitySelector from '@/components/forms/CitySelector';
 import FromToSelector from '@/components/forms/FromToSelector';
 import AvailabilitySelector from '@/components/forms/AvailabilitySelector';
-
 import CategorySelector from '@/components/forms/CategorySelector';
 import StatusSelector from '@/components/forms/StatusSelector';
 
@@ -85,11 +84,7 @@ const updateProposal = ({ params }) => {
       fetchTask();
     }
   }, [params.id, session?.user.email]);
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-
+  const setCityFromTo = async () => {
     if (locationType === 'cityAddress') {
       setTask((prevTask) => ({ ...prevTask, from: '', to: '' }));
       setGeolocations((prevGeoLocations) => ({
@@ -107,6 +102,12 @@ const updateProposal = ({ params }) => {
         cityLng: '',
       }));
     }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    await setCityFromTo();
 
     // update start
     try {
@@ -118,7 +119,6 @@ const updateProposal = ({ params }) => {
             'Content-Type': 'application/json',
             accessToken: session.accessToken,
           },
-
           body: JSON.stringify({
             //
             taskType: task.taskType,
@@ -153,7 +153,7 @@ const updateProposal = ({ params }) => {
         }
       );
       if (response.ok) {
-        revalidateTag('TasksCollection');
+        // revalidateTag('TasksCollection');
         setAvailability([]);
         setGeolocations({
           cityLat: '',
