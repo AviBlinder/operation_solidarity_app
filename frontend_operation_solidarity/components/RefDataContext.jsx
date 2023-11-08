@@ -750,6 +750,8 @@ export const RefDataProvider = function ({ children }) {
         allStatuses: 'All Statuses',
         allCategories: 'All Categories',
         allCities: 'All Cities',
+        publishDate: 'Publish Date',
+        requiredDays: 'Possible Days',
       },
       he: {
         welcome: 'ברוך הבא',
@@ -781,6 +783,8 @@ export const RefDataProvider = function ({ children }) {
         allStatuses: 'כל הסטטוסים',
         allCategories: 'כל הקטגוריות',
         allCities: 'כל הערים',
+        publishDate: 'תאריך פרסום',
+        requiredDays: 'ימים אפשריים',
       },
     },
   };

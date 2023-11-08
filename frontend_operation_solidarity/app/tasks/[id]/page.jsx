@@ -85,7 +85,11 @@ const TaskDetails = ({ params }) => {
                         קטגוריה
                       </dt>
                       <dd className="mt-1 text-xl text-gray-900">
-                        {translateCategory(categories, taskDetails.category)}
+                        {translateCategory(
+                          categories,
+                          taskDetails.category,
+                          language
+                        )}
                       </dd>
                     </div>
                     <div className="col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
@@ -93,7 +97,11 @@ const TaskDetails = ({ params }) => {
                         סטטוס
                       </dt>
                       <dd className="mt-1 text-xl text-gray-900">
-                        {translateStatus(statuses, taskDetails.status)}
+                        {translateStatus(
+                          statuses,
+                          taskDetails.status,
+                          language
+                        )}
                       </dd>
                     </div>
                     <div className="mt-4 border-t-2 col-span-4 col-start-2 sm:col-span-6 sm:col-start-1">
