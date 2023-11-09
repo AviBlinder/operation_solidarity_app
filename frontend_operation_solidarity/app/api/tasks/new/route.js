@@ -6,6 +6,7 @@ export const POST = async (request) => {
 
   const baseURL = process.env.baseURL;
   const env = process.env.APIGW_ENV;
+  let res;
   try {
     const {
       email,
@@ -25,7 +26,7 @@ export const POST = async (request) => {
       entryDate,
     } = await request.json();
 
-    const res = await fetch(`${baseURL}/${env}/tasks`, {
+    res = await fetch(`${baseURL}/${env}/tasks`, {
       method: 'POST',
       body: JSON.stringify({
         email,
@@ -49,14 +50,19 @@ export const POST = async (request) => {
         Authorization: `Bearer ${accessToken}`,
       },
     });
-    const tasks = await res.json();
+    if (!res.ok) {
+      // Check if response is ok (status in the range 200-299)
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
 
+    const tasks = await res.json();
+    console.log('POST task: ', tasks);
     return new Response(JSON.stringify(tasks), { status: 201 });
   } catch (error) {
-    if (res.status === 401) {
-      console.log('refreshing token');
-      refreshAccessToken(session);
-      return new Response('Token Unothorized, please sign out and in again', {
+    if (res && res.status === 401) {
+      // console.log('refreshing token');
+      // await refreshAccessToken(session);
+      return new Response('Token Unathorized, please sign out and in again', {
         status: 401,
       });
     }

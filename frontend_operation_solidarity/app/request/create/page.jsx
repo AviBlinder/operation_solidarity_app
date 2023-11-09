@@ -24,6 +24,7 @@ const CreateRequest = () => {
     cities: cities_short_list,
   } = useContext(RefDataContext);
   const { data: session } = useSession();
+  const [errorMessage, setErrorMessage] = useState('');
 
   const [availability, setAvailability] = useState([]);
   const [contact, setContact] = useState({ phone: '' });
@@ -96,7 +97,6 @@ const CreateRequest = () => {
           entryDate: new Date(),
         }),
       });
-      console.log('response after POST :', response);
       if (response.ok) {
         // revalidateTag('TasksCollection');
 
@@ -123,13 +123,21 @@ const CreateRequest = () => {
         });
 
         router.push('/tasks');
+      } else {
+        console.log('error response =', response);
+        // const errorData = await response.json();
+        console.log('errorData =', response.status, response.statusText);
+        // Set the error message in state. Customize or localize this message as needed.
+        const errorMessage =
+          response.statusText === 'Unauthorized'
+            ? 'There was an error processing your request. Please sign-in again'
+            : response.statusText;
+        setErrorMessage(errorMessage);
       }
     } catch (error) {
       console.log(error);
-      router.push('/tasks');
     } finally {
       setIsSubmitting(false);
-      router.push('/tasks');
     }
   };
 
@@ -151,6 +159,7 @@ const CreateRequest = () => {
           </div>
         </div>
         <Suspense fallback={<Loading />}>
+          {errorMessage && <div className="error_message">{errorMessage}</div>}
           <div>
             {session?.user.email ? (
               <form className="bg-gray-100/50" onSubmit={createRequest}>
