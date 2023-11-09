@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import Loading from './loading';
 import BackButton from '@/components/BackButton';
+import Comments from '@/components/Comments';
 import {
-  formatDate,
   translateCategory,
   translateStatus,
   translateAvailability,
@@ -229,8 +229,9 @@ const TaskDetails = ({ params }) => {
               </div>
             </div>
 
-            <div class="p-4 cols-span-1 md:col-span-6 md:col-start-1 bg-supporting2-400">
-              Comments
+            <div class="p-4 cols-span-1 md:col-span-6 md:col-start-1 bg-supporting2-100">
+              {labels[language].commentsLabel}
+              <Comments taskDetails={taskDetails} />
             </div>
           </div>
         </div>
