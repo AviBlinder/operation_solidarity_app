@@ -32,10 +32,10 @@ const Nav = () => {
         id="language-select"
         onChange={(event) => setLanguage(event.target.value)}
         defaultValue="he" // set default language as English
-        className="rounded-lg text-primary-600/90 "
+        className="rounded-lg text-primary-600/90 ml-3 md:ml-3 "
       >
         {/* Option for English */}
-        <option className="text-sm md:texl-lg" value="en">
+        <option className="text-sm md:texl-lg " value="en">
           English
         </option>
         {/* Option for Hebrew */}

@@ -35,7 +35,9 @@ const RequestsProposalsTab = ({ language, currentTab, setCurrentTab }) => {
           onChange={(e) => handleTabClick(e.target.value)}
         >
           {tabs.map((tab) => (
-            <option key={tab.name}>{tab.name}</option>
+            <option key={tab.name}>
+              {language === 'he' ? tab.nameHebrew : tab.name}
+            </option>
           ))}
         </select>
       </div>

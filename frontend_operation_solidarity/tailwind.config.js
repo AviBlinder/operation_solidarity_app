@@ -73,7 +73,7 @@ module.exports = {
           950: '#3c190c',
         },
         supporting1: colors.cyan,
-        supporting2: colors.red,
+        supporting2: colors.slate,
       },
     },
   },
