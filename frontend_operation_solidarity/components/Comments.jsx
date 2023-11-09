@@ -12,7 +12,7 @@ const Comments = ({ taskDetails }) => {
   const { data: session } = useSession();
 
   const fetchComments = async () => {
-    setComments(taskDetails.comments);
+    setComments(setComments([...comments, taskDetails.comments]));
   };
 
   const appendComment = async () => {
@@ -37,31 +37,38 @@ const Comments = ({ taskDetails }) => {
 
   // Run fetchComments when the component mounts
   useEffect(() => {
-    fetchComments();
-  }, []);
-
-  useEffect(() => {
-    setEmail(session?.user.email);
-  }, [session]);
-
+    if (taskDetails && taskDetails.comments && comments.length === 0) {
+      // Convert the comments object into an array
+      setComments(taskDetails.comments);
+    }
+  }, [taskDetails]);
+  console.log('taskDetails.comments =', taskDetails.comments);
+  console.log('comments =', comments);
   return (
     <div className="flex flex-col ">
-      {comments &&
-        comments.map((comment, index) => (
-          <div key={index} className="comment flex flex-col ">
-            <div className="metadata">
-              <span className="email">{comment?.email}</span> |
-              <span className="date">
-                {new Date(comment.date).toLocaleString()}
-              </span>
-            </div>
-            <textarea
-              className="comment-text"
-              value={comment.commentText}
-              readOnly // This makes the textarea read-only
-            />
-          </div>
-        ))}
+      <ul>
+        {comments &&
+          comments.map((comment, index) => (
+            <li
+              key={index}
+              className={`flex flex-col px-3 ${
+                index % 2 === 0 ? 'bg-white' : 'bg-gray-300'
+              }`}
+            >
+              <div>
+                <span className="font-normal">
+                  {comment.email} {' | '}
+                </span>
+                <span className="date pl-2">
+                  {new Date(comment.date).toLocaleString()}
+                </span>
+              </div>
+              <div>
+                <span>{comment.commentText}</span>
+              </div>
+            </li>
+          ))}
+      </ul>
 
       <div className="flex flex-col ">
         <div className="mb-3">

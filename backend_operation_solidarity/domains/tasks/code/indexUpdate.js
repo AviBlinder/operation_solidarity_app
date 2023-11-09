@@ -60,13 +60,17 @@ exports.updateTaskHandler = async (event) => {
     });
 
     // Prepare update for comments
-    if (data.comments) {
-      const commentDate = new Date().toISOString();
-      const commentEntry = {
+    //
+    if (data.comments && typeof data.comments === 'string') {
+      // Create a new comments object
+      const commentsObject = {
+        date: new Date().toISOString(),
         email: data.email,
-        date: commentDate,
         commentText: data.comments,
       };
+
+      // Replace the original comments string with the new comments object
+      data.comments = commentsObject;
 
       updateExpression +=
         ' comments = list_append(if_not_exists(comments, :empty_list), :comment),';
