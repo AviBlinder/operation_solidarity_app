@@ -32,8 +32,6 @@ const TaskDetails = ({ params }) => {
   const searchParams = useSearchParams();
   const entryDate = searchParams.get('entryDate');
 
-  const router = useRouter();
-
   useEffect(() => {
     const fetchPosts = async () => {
       const response = await fetch(
