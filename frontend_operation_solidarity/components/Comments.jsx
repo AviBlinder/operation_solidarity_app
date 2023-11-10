@@ -7,43 +7,45 @@ const Comments = ({ taskDetails }) => {
 
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
-  const [email, setEmail] = useState('');
   const [showAddComment, setShowAddComment] = useState(false);
   const { data: session } = useSession();
 
-  const fetchComments = async () => {
-    setComments(setComments([...comments, taskDetails.comments]));
-  };
-
+  let response = '';
   const appendComment = async () => {
     try {
-      const response = await fetch('/api/append-comment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      response = await fetch('/api/tasks/append-comment', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          accessToken: session?.accessToken,
+        },
         body: JSON.stringify({
-          taskId: task.taskId,
-          entryDate: task.entryDate,
+          taskId: taskDetails.taskId,
+          entryDate: taskDetails.entryDate,
           comments: newComment,
-          email: session?.user.email ? session?.user.email : 'Anonymous',
+          email: session?.user.email,
         }),
       });
-      setComments([...comments, response.data]); // Add the new comment to the local state
-      setNewComment(''); // Clear the input after submission
-      // Optionally, refetch comments here if your API response doesn't include the new comment
+      if (response.ok) {
+        const res = await response.json();
+        // setComments([...comments, res.comments]);
+        setComments(res.comments);
+        setNewComment('');
+      } else {
+        console.log('Error appending comment:', response.statusText);
+      }
     } catch (error) {
       console.error('Error appending comment:', error);
     }
   };
 
-  // Run fetchComments when the component mounts
   useEffect(() => {
     if (taskDetails && taskDetails.comments && comments.length === 0) {
       // Convert the comments object into an array
       setComments(taskDetails.comments);
     }
   }, [taskDetails]);
-  console.log('taskDetails.comments =', taskDetails.comments);
-  console.log('comments =', comments);
+
   return (
     <div className="flex flex-col ">
       <ul>
@@ -57,14 +59,14 @@ const Comments = ({ taskDetails }) => {
             >
               <div>
                 <span className="font-normal">
-                  {comment.email} {' | '}
+                  {comment?.email} {' | '}
                 </span>
                 <span className="date pl-2">
-                  {new Date(comment.date).toLocaleString()}
+                  {new Date(comment?.date).toLocaleString()}
                 </span>
               </div>
               <div>
-                <span>{comment.commentText}</span>
+                <span>{comment?.commentText}</span>
               </div>
             </li>
           ))}

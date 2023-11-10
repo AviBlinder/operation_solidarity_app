@@ -5,8 +5,8 @@ const entity = process.env.TASKS_TABLE || 'TasksTable';
 
 exports.updateTaskHandler = async (event) => {
   try {
-    const taskId = event.pathParameters.taskId;
-    const entryDate = event.pathParameters.entryDate;
+    const taskId = event.pathParameters.TaskId;
+    const entryDate = event.pathParameters.EntryDate;
 
     if (!taskId || !entryDate) {
       return {
@@ -32,14 +32,13 @@ exports.updateTaskHandler = async (event) => {
       }
     }
 
-    const updateExpression = [];
+    let updateExpression = 'SET';
     const expressionAttributeValues = {};
     const expressionAttributeNames = {};
-    let commentsUpdateParams = {};
 
     const fieldsToUpdate = [
       'description',
-      'comments',
+      // 'comments',
       'category',
       'city',
       'from',
@@ -62,15 +61,11 @@ exports.updateTaskHandler = async (event) => {
     // Prepare update for comments
     //
     if (data.comments && typeof data.comments === 'string') {
-      // Create a new comments object
-      const commentsObject = {
+      const commentEntry = {
         date: new Date().toISOString(),
         email: data.email,
         commentText: data.comments,
       };
-
-      // Replace the original comments string with the new comments object
-      data.comments = commentsObject;
 
       updateExpression +=
         ' comments = list_append(if_not_exists(comments, :empty_list), :comment),';
@@ -94,10 +89,14 @@ exports.updateTaskHandler = async (event) => {
       TableName: entity,
       Key: { taskId, entryDate },
       UpdateExpression: updateExpression,
-      ExpressionAttributeNames: expressionAttributeNames,
       ExpressionAttributeValues: expressionAttributeValues,
       ReturnValues: 'ALL_NEW',
     };
+
+    if (Object.keys(expressionAttributeNames).length > 0) {
+      params.ExpressionAttributeNames = expressionAttributeNames;
+    }
+
     console.log('params for update : ', params);
     const result = await dynamoDb.update(params).promise();
     return { statusCode: 200, body: JSON.stringify(result.Attributes) };
