@@ -22,6 +22,19 @@ exports.postTaskHandler = async (event) => {
       data.to.geohash = ngeohash.encode(data.to.lat, data.to.lng);
     }
 
+    if (data.comments && typeof data.comments === 'string') {
+      // Create a new comments object
+      const commentsObject = {
+        date: new Date().toISOString(),
+        email: data.email,
+        commentText: data.comments,
+      };
+
+      // Replace the original comments string with the new comments object
+      data.comments = [commentsObject];
+    }
+
+    console.log('data =', data);
     const params = {
       TableName: entity,
       Item: {

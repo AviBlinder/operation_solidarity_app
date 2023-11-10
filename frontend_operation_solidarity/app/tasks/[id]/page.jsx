@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation';
 import Loading from './loading';
 import BackButton from '@/components/BackButton';
+import Comments from '@/components/Comments';
 import {
-  formatDate,
   translateCategory,
   translateStatus,
   translateAvailability,
@@ -31,8 +31,6 @@ const TaskDetails = ({ params }) => {
   const [taskDetails, setTaskDetails] = useState(null);
   const searchParams = useSearchParams();
   const entryDate = searchParams.get('entryDate');
-
-  const router = useRouter();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -73,24 +71,18 @@ const TaskDetails = ({ params }) => {
                 : labels[language].proposalDetails}
             </h3>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-6 shadow-sm">
-            <div class="p-4 cols-span-1 md:col-span-6 md:col-start-1 bg-supporting1-100">
+          <div className="grid grid-cols-1 md:grid-cols-6 shadow-sm">
+            <div className="p-4 cols-span-1 md:col-span-6 md:col-start-1 bg-supporting1-100">
               <div className="flex flex-row">
-                <p classname="font-semibold text-xl">
-                  {' '}
-                  {labels[language].description}
-                </p>
+                <p className=""> {labels[language].description}</p>
                 <p>{':\u00A0 '}</p>
                 <p>{taskDetails.description}</p>
               </div>
             </div>
 
-            <div class="p-4 cols-span-1 md:col-span-1">
+            <div className="p-4 cols-span-1 md:col-span-1">
               <div className="flex flex-row">
-                <p classname="font-semibold text-xl">
-                  {' '}
-                  {labels[language].category}
-                </p>
+                <p className=""> {labels[language].category}</p>
                 <p>{':\u00A0 '}</p>
                 <p>
                   {translateCategory(
@@ -101,76 +93,70 @@ const TaskDetails = ({ params }) => {
                 </p>
               </div>
             </div>
-            <div class="p-4 cols-span-1 md:col-span-1">
+            <div className="p-4 cols-span-1 md:col-span-1">
               <div className="flex flex-row">
-                <p classname="font-semibold text-xl">
-                  {' '}
-                  {labels[language].statusLabel}
-                </p>
+                <p className=""> {labels[language].statusLabel}</p>
                 <p>{':\u00A0 '}</p>
                 <p>{translateStatus(statuses, taskDetails.status, language)}</p>
               </div>
             </div>
-            <div class="p-4 cols-span-1 md:col-span-4">
-              <div className="flex flex-row">
-                <p classname="font-semibold text-xl">
-                  {' '}
-                  {labels[language].requiredDays}
+            <div className="p-4 col-span-1 md:col-span-4">
+              <div className="block">
+                <p className="inline">
+                  {labels[language].requiredDays} {':\u00A0 '}
                 </p>
-                <p>{':\u00A0 '}</p>
-                {taskDetails.availability.map((day, index) => (
-                  <p className="capitalize" key={index}>
-                    {translateAvailability(weekDays, day, language)}{' '}
-                  </p>
-                ))}
+                <p className="capitalize inline">
+                  {taskDetails.availability
+                    .map((day, index) =>
+                      translateAvailability(weekDays, day, language)
+                    )
+                    .join(' / ')}
+                </p>
               </div>
             </div>
 
-            <div class="p-4 cols-span-1 md:col-span-3">
+            <div className="p-4 cols-span-1 md:col-span-3">
               {/* Location */}
               <div className="flex flex-row">
-                <p>
-                  {taskDetails.city ? (
-                    <div>
-                      <p classname="font-semibold text-xl">
-                        {' '}
-                        {labels[language].cityAndAddress}
-                      </p>
+                {taskDetails.city ? (
+                  <div>
+                    <p className="">
+                      {' '}
+                      {labels[language].cityAndAddress} {':\u00A0 '}
+                      {translateCity(taskDetails.city.city, language)}
+                    </p>
+                  </div>
+                ) : (
+                  <div className="flex flex-row">
+                    <div className="flex ">
+                      <p>{labels[language].startingPoint}</p>
                       <p>{':\u00A0 '}</p>
-                      <p>{translateCity(taskDetails.city.city, language)}</p>
+                      <p>
+                        {translateCity(taskDetails.from.cityFrom, language)}
+                      </p>
                     </div>
-                  ) : (
                     <div className="flex flex-row">
-                      <div className="flex ">
-                        <p>{labels[language].startingPoint}</p>
-                        <p>{':\u00A0 '}</p>
-                        <p>
-                          {translateCity(taskDetails.from.cityFrom, language)}
-                        </p>
-                      </div>
-                      <div className="flex flex-row">
-                        <span>{'\u00A0\u00A0 '}</span>
-                        <span className="">
-                          {' '}
-                          {direction === 'ltr' ? (
-                            <ArrowRightIcon className="h-5 w-5  text-gray-500" />
-                          ) : (
-                            <ArrowLeftIcon className="h-5 w-5  text-gray-500" />
-                          )}
-                        </span>
-                        <span>{'\u00A0\u00A0 '}</span>
-                      </div>
-                      <div className="flex flex-1 justify-between ">
-                        <p>{labels[language].targetPoint}</p>
-                        <p>{':\u00A0 '}</p>
-                        <p>{translateCity(taskDetails.to.cityTo, language)}</p>
-                      </div>
+                      <span>{'\u00A0\u00A0 '}</span>
+                      <span className="">
+                        {' '}
+                        {direction === 'ltr' ? (
+                          <ArrowRightIcon className="h-5 w-5  text-gray-500" />
+                        ) : (
+                          <ArrowLeftIcon className="h-5 w-5  text-gray-500" />
+                        )}
+                      </span>
+                      <span>{'\u00A0\u00A0 '}</span>
                     </div>
-                  )}
-                </p>
+                    <div className="flex flex-1 justify-between ">
+                      <p>{labels[language].targetPoint}</p>
+                      <p>{':\u00A0 '}</p>
+                      <p>{translateCity(taskDetails.to.cityTo, language)}</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-            <div class="p-4 cols-span-1 md:col-span-6 md:col-start-1 bg-supporting1-100">
+            <div className="p-4 cols-span-1 md:col-span-6 md:col-start-1 bg-supporting1-100">
               {/* Contact Details */}
               <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
                 <div className="md:col-span-2">
@@ -229,8 +215,9 @@ const TaskDetails = ({ params }) => {
               </div>
             </div>
 
-            <div class="p-4 cols-span-1 md:col-span-6 md:col-start-1 bg-supporting2-400">
-              Comments
+            <div className="p-4 cols-span-1 md:col-span-6 md:col-start-1 bg-supporting2-100">
+              {labels[language].commentsLabel}
+              <Comments taskDetails={taskDetails} />
             </div>
           </div>
         </div>

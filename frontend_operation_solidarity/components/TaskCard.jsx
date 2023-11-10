@@ -87,7 +87,7 @@ const TaskCard = ({ task }) => {
             </a>
           </div>
           {task.contact && (
-            <div className="flex flex-1">
+            <div className="flex flex-1 flex-wrap">
               <a
                 href={`tel:${task.contact.phone}`}
                 className="flex items-center justify-center space-x-3 rounded-br-lg border border-transparent p-4 text-sm font-semibold text-gray-900"
