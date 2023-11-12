@@ -61,6 +61,10 @@
 
 /* Tailwind Styles */
 /* max-w-7xl */
+
+.error_message {
+  @apply p-4 m-2 text-red-500 text-lg  rounded-lg bg-slate-100 text-center font-bold;
+}
 .div_main {
   @apply max-w-2xl mx-auto my-1 md:my-10 p-4;
 }

@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import { RefDataContext } from '@/components/RefDataContext';
 import Loading from './loading';
 import BackButton from '@/components/BackButton';
-
+import ErrorMessage from '@/components/ErrorMessage';
 import DescriptionField from '@/components/forms/DescriptionField';
 import LocationTypeSelector from '@/components/forms/LocationTypeSelector';
 import CitySelector from '@/components/forms/CitySelector';
@@ -159,7 +159,7 @@ const CreateRequest = () => {
           </div>
         </div>
         <Suspense fallback={<Loading />}>
-          {errorMessage && <div className="error_message">{errorMessage}</div>}
+          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
           <div>
             {session?.user.email ? (
               <form className="bg-gray-100/50" onSubmit={createRequest}>
