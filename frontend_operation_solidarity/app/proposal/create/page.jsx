@@ -1,6 +1,7 @@
 'use client';
 import { Suspense, useState, useContext } from 'react';
 import { revalidateTag } from 'next/cache';
+import ErrorMessage from '@/components/ErrorMessage';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { RefDataContext } from '@/components/RefDataContext';
@@ -136,6 +137,7 @@ const CreateProposal = () => {
       }
     } catch (error) {
       console.log(error);
+      setErrorMessage(error.message);
     } finally {
       setIsSubmitting(false);
     }
@@ -159,7 +161,7 @@ const CreateProposal = () => {
           </div>
         </div>
         <Suspense fallback={<Loading />}>
-          {errorMessage && <div className="error_message">{errorMessage}</div>}
+          {errorMessage && <ErrorMessage errorMessage={errorMessage} />}
           <div>
             {session?.user.email ? (
               <form className="bg-gray-100/50" onSubmit={createRequest}>

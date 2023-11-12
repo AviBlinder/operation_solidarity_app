@@ -115,7 +115,6 @@ export default function Home() {
       }
 
       const data = await response.json();
-      console.log('data =', data);
       data.length === 0 ? setTasks([]) : setTasks(data);
       // setTasks(data);
       setFilteredTasks(data);
